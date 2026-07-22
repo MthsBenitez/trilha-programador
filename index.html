@@ -111,48 +111,13 @@
             { n: 'EuCapacito', url: 'https://eucapacito.com.br/', d: 'Cursos de TI gratuitos com certificados de parceiros como FIAP, Microsoft e Oracle.' }
         ];
 
-        const projectsList = [
-            {
-                title: 'Dashboard Analytics & Financeiro SaaS',
-                time: '3 a 4 semanas',
-                icon: 'fa-chart-pie',
-                color: 'text-indigo-400',
-                bg: 'bg-indigo-500/10',
-                border: 'border-indigo-500/20',
-                desc: 'Envolve configurar TypeScript do zero, integrar bibliotecas de gráficos (Chart.js ou Recharts), tratar dados massivos para não travar a tela e criar filtros complexos com gerenciamento de estado global.',
-                skills: ['TypeScript', 'Recharts/Chart.js', 'State Management', 'Performance & Filtros']
-            },
-            {
-                title: 'Plataforma de Notificações e Chat em Tempo Real',
-                time: '2 a 3 semanas',
-                icon: 'fa-comments',
-                color: 'text-emerald-400',
-                bg: 'bg-emerald-500/10',
-                border: 'border-emerald-500/20',
-                desc: 'A lógica de WebSockets/Socket.io exige bastante atenção para lidar com reconexões de rede, estados de "digitando...", mensagens pendentes offline e controle de salas em tempo real.',
-                skills: ['WebSockets', 'Real-time UI', 'Offline Fallbacks', 'Sync State']
-            },
-            {
-                title: 'E-Commerce Headless de Alta Performance',
-                time: '4 a 5 semanas',
-                icon: 'fa-cart-shopping',
-                color: 'text-amber-400',
-                bg: 'bg-amber-500/10',
-                border: 'border-amber-500/20',
-                desc: 'Projeto denso em engenharia. Otimização pesada de Core Web Vitals (Lighthouse), Server-Side Rendering (SSR) no Next.js, estratégias de cache de produtos e suíte de testes end-to-end.',
-                skills: ['Next.js (SSR/SSG)', 'Core Web Vitals', 'Caching', 'Cypress (E2E)']
-            },
-            {
-                title: 'Design System Customizado e Documentado',
-                time: '2 a 3 semanas',
-                icon: 'fa-swatchbook',
-                color: 'text-rose-400',
-                bg: 'bg-rose-500/10',
-                border: 'border-rose-500/20',
-                desc: 'Não é só criar telas visuais, é arquitetar código reutilizável. Garantir acessibilidade (WAI-ARIA), simular empacotamento no npm e documentar interativamente variações de botões e modais no Storybook.',
-                skills: ['Storybook', 'Acessibilidade (A11y)', 'NPM / Bundling', 'Componentização Base']
-            }
-        ];
+        // Mapeamento visual dos 4 Projetos
+        const PROJ_META = {
+            saas: { name: 'Dashboard SaaS', icon: 'fa-chart-pie', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20' },
+            chat: { name: 'Chat Real-Time', icon: 'fa-comments', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+            ecom: { name: 'E-Commerce', icon: 'fa-cart-shopping', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+            ds: { name: 'Design System', icon: 'fa-swatchbook', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20' }
+        };
 
         const detailedRoadmapData = [
             {
@@ -160,6 +125,9 @@
                 description: 'A base da infraestrutura. Redes, DNS e como o mundo se conecta.',
                 platform: 'Fundação Bradesco', link: 'https://lms.ev.org.br/',
                 masterAdvice: 'Configure um servidor DNS local ou use o Wireshark para capturar o "3-way handshake" do TCP. Ver a internet pura em pacotes tira a magia e revela a engenharia.',
+                projectTasks: [
+                    { id: 'saas', task: 'Rascunhe mentalmente como o seu Dashboard fará requisições HTTP para buscar os dados financeiros do servidor.' }
+                ],
                 subItems: [ 
                     { id: 'i1', label: 'How does the internet work?' }, { id: 'i2', label: 'What is HTTP?' }, { id: 'i3', label: 'What is Domain Name?' }, 
                     { id: 'i4', label: 'What is hosting?' }, { id: 'i5', label: 'DNS and how it works?' }, { id: 'i6', label: 'Browsers and how they work?' } 
@@ -170,6 +138,9 @@
                 description: 'O esqueleto semântico da web e padrões de acessibilidade.',
                 platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
                 masterAdvice: 'Navegue pelo seu site usando um leitor de tela (NVDA) com o monitor desligado. Você aprenderá HTML semântico na dor e na prática.',
+                projectTasks: [
+                    { id: 'ecom', task: 'Crie o esqueleto semântico da página de produto (usando tags como <header>, <main>, <article> e <form> para o botão de compra).' }
+                ],
                 subItems: [
                     { id: 'h1', label: 'Learn the basics' }, { id: 'h2', label: 'Writing Semantic HTML' }, { id: 'h3', label: 'Forms and Validations' },
                     { id: 'h4', label: 'Accessibility' }, { id: 'h5', label: 'SEO Basics' }
@@ -180,6 +151,10 @@
                 description: 'Estilização profunda, algoritmos de layout e responsividade.',
                 platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
                 masterAdvice: 'Compreenda o Stacking Context (Contexto de Empilhamento). É o segredo para entender por que seu z-index: 9999 falha miseravelmente às vezes.',
+                projectTasks: [
+                    { id: 'ds', task: 'Defina as variáveis nativas (CSS Variables) para as cores primárias e tipografia do seu Design System.' },
+                    { id: 'saas', task: 'Desenvolva o layout principal usando Grid e Flexbox (Menu lateral fixo e painel de gráficos fluído).' }
+                ],
                 subItems: [
                     { id: 'c1', label: 'Learn the basics' }, { id: 'c2', label: 'Making Layouts' }, { id: 'c3', label: 'Responsive Design' }
                 ]
@@ -189,6 +164,10 @@
                 description: 'A linguagem do navegador. Closures, assincronicidade e manipulação.',
                 platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
                 masterAdvice: 'Domine a fundo o Event Loop. Desenhe em um papel a ordem em que Call Stack, Microtasks e Macrotasks são executadas.',
+                projectTasks: [
+                    { id: 'ecom', task: 'Construa a lógica de adicionar/remover produtos no carrinho manipulando Arrays e persistindo no LocalStorage.' },
+                    { id: 'saas', task: 'Use a Fetch API para buscar um arquivo JSON mockado e popular as tabelas financeiras dinamicamente.' }
+                ],
                 subItems: [
                     { id: 'j1', label: 'Learn the Basics' }, { id: 'j2', label: 'Learn DOM Manipulation' }, { id: 'j3', label: 'Fetch API / Ajax (XHR)' }
                 ]
@@ -198,6 +177,9 @@
                 description: 'Git, gerenciamento de branches, rebase e histórico.',
                 platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
                 masterAdvice: 'Crie conflitos intencionais e resolva-os manualmente no bloco de notas lendo os marcadores <<<<<<< HEAD. Perca o medo do terminal.',
+                projectTasks: [
+                    { id: 'saas', task: 'Inicialize repositórios Git locais separados para os seus projetos, faça o primeiro commit estrutural.' }
+                ],
                 subItems: [ { id: 'v1', label: 'Git' } ]
             },
             {
@@ -205,6 +187,9 @@
                 description: 'Plataformas de repositório e CI/CD.',
                 platform: 'GitHub Docs', link: 'https://docs.github.com/pt',
                 masterAdvice: 'Crie uma GitHub Action simples que faça "lint" automático a cada push. Equipes seniores exigem automação.',
+                projectTasks: [
+                    { id: 'ecom', task: 'Faça o push do código para o GitHub e ative o GitHub Pages para ver a interface estática já funcionando online.' }
+                ],
                 subItems: [ { id: 'vh1', label: 'GitHub' }, { id: 'vh2', label: 'GitLab' }, { id: 'vh3', label: 'Bitbucket' } ]
             },
             {
@@ -212,6 +197,9 @@
                 description: 'Ecossistema Node.js e gestão de dependências.',
                 platform: 'DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Entenda a diferença entre node_modules flat (npm clássico) e o sistema de symlinks ultrarrápido do PNPM.',
+                projectTasks: [
+                    { id: 'ds', task: 'Rode "npm init -y" no Design System para configurar o package.json e preparar futuras instalações de bibliotecas.' }
+                ],
                 subItems: [ { id: 'pk1', label: 'npm' }, { id: 'pk2', label: 'pnpm' }, { id: 'pk3', label: 'yarn' } ]
             },
             {
@@ -219,6 +207,10 @@
                 description: 'Adoção de UI libraries reativas (React, Vue, Angular).',
                 platform: 'DIO / FreeCodeCamp', link: 'https://www.freecodecamp.org/',
                 masterAdvice: 'Não decore hooks. Entenda o "Reconciliation" (Virtual DOM) ou os Signals. Entenda COMO o framework sabe o que atualizar, e você escreverá código performático.',
+                projectTasks: [
+                    { id: 'saas', task: 'Migre os trechos de HTML do Dashboard para Componentes isolados em React (ex: <Sidebar />, <KpiCard />).' },
+                    { id: 'chat', task: 'Inicie o Chat usando `useState` para armazenar o array de mensagens na tela ativamente.' }
+                ],
                 subItems: [ { id: 'fw1', label: 'React' }, { id: 'fw2', label: 'Vue.js' }, { id: 'fw3', label: 'Angular' }, { id: 'fw4', label: 'Svelte' }, { id: 'fw5', label: 'Solid JS' }, { id: 'fw6', label: 'Qwik' } ]
             },
             {
@@ -226,6 +218,10 @@
                 description: 'Tailwind e abordagens modernas Utility-First.',
                 platform: 'Tailwind Docs', link: 'https://tailwindcss.com/',
                 masterAdvice: 'Entenda como o compilador JIT (Just-in-Time) analisa seus arquivos e purga o CSS morto, gerando apenas os bytes estritamente necessários.',
+                projectTasks: [
+                    { id: 'saas', task: 'Refatore as antigas folhas de estilo CSS do Dashboard substituindo-as inteiramente por classes utilitárias do Tailwind.' },
+                    { id: 'ecom', task: 'Utilize classes responsivas do Tailwind (md:, lg:) para estruturar a vitrine de produtos mobile-first.' }
+                ],
                 subItems: [ { id: 'mcss1', label: 'Tailwind' } ]
             },
             {
@@ -233,6 +229,9 @@
                 description: 'Organização em larga escala para evitar conflitos.',
                 platform: 'Kultivi', link: 'https://kultivi.com/',
                 masterAdvice: 'A metodologia BEM não é só sobre classes longas. É sobre garantir que um componente NUNCA quebre os estilos de outro em projetos legados gigantes.',
+                projectTasks: [
+                    { id: 'ds', task: 'Aplique a padronização de nomenclatura (BEM) nos tokens e classes do Design System (se optar por não usar Tailwind).' }
+                ],
                 subItems: [ { id: 'carch1', label: 'BEM' } ]
             },
             {
@@ -240,6 +239,9 @@
                 description: 'Sass, mixins e manipulação com JS.',
                 platform: 'DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Evite o "nesting" profundo (> 3 níveis). Isso gera seletores CSS com peso (especificidade) colossal, destruindo a performance e a manutenção.',
+                projectTasks: [
+                    { id: 'ds', task: 'Configure processadores modernos como PostCSS (ou migre para Sass) para automatizar vendors e otimização do CSS exportado.' }
+                ],
                 subItems: [ { id: 'cpre1', label: 'Sass' }, { id: 'cpre2', label: 'PostCSS' } ]
             },
             {
@@ -247,6 +249,10 @@
                 description: 'Module bundlers e transpilação de código nativa.',
                 platform: 'Rocketseat / DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Aprenda por que o Vite (que usa ESM nativo e esbuild em Rust) estilhaçou a lentidão do Webpack antigo.',
+                projectTasks: [
+                    { id: 'chat', task: 'Estruture todo o ecossistema do Chat utilizando o Vite.js, tirando vantagem do Hot Module Replacement rápido.' },
+                    { id: 'ds', task: 'Instale ESLint e Prettier para padronizar obrigatoriamente a formatação do código no Design System.' }
+                ],
                 subItems: [ { id: 'bt1', label: 'Linters and Formatters (Prettier, ESLint)' }, { id: 'bt2', label: 'Module Bundlers (Vite, Webpack, Rollup, Parcel)' }, { id: 'bt3', label: 'Transpilers (SWC, esbuild)' } ]
             },
             {
@@ -254,6 +260,10 @@
                 description: 'Garantia de qualidade, testes unitários e E2E.',
                 platform: 'DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Entenda o conceito de Mocks e Spies. Testes unitários NUNCA devem bater em bancos de dados reais ou APIs externas.',
+                projectTasks: [
+                    { id: 'ecom', task: 'Desenvolva testes unitários completos em Jest ou Vitest para garantir que o cálculo de preço total do carrinho nunca quebre.' },
+                    { id: 'ds', task: 'Escreva validações de renderização que garantam que os botões do Design System emitem os eventos esperados.' }
+                ],
                 subItems: [ { id: 'tst1', label: 'Jest' }, { id: 'tst2', label: 'Vitest' }, { id: 'tst3', label: 'Playwright' }, { id: 'tst4', label: 'Cypress' } ]
             },
             {
@@ -261,6 +271,10 @@
                 description: 'Proteção essencial contra injeções e ataques.',
                 platform: 'Cisco', link: 'https://skillsforall.com/pt',
                 masterAdvice: 'Abra a aba Network. Entenda o que é a requisição OPTIONS (Preflight) do CORS e como Headers injetados previnem ataques XSS.',
+                projectTasks: [
+                    { id: 'chat', task: 'Ajuste os cabeçalhos de CORS no back-end (ou mock) para que o Chat só aceite requisições do seu domínio seguro.' },
+                    { id: 'saas', task: 'Implemente lógica de sanitização nos inputs de busca do Dashboard para prevenir ataques de injeção XSS.' }
+                ],
                 subItems: [ { id: 'sec1', label: 'CORS' }, { id: 'sec2', label: 'HTTPS' }, { id: 'sec3', label: 'Content Security Policy' }, { id: 'sec4', label: 'OWASP Security Risks' } ]
             },
             {
@@ -268,6 +282,10 @@
                 description: 'Validação e Sessão segura de usuários.',
                 platform: 'DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Cole um token no JWT.io. Veja como o Payload é público. O segredo da segurança não é esconder o Payload, mas validar a Assinatura (Signature).',
+                projectTasks: [
+                    { id: 'saas', task: 'Crie uma tela de Login e implemente a captura, armazenamento seguro e envio do JWT nos headers das requisições subsequentes.' },
+                    { id: 'chat', task: 'Proteja as rotas do seu chat para impedir renderização sem um usuário logado validado.' }
+                ],
                 subItems: [ { id: 'aut1', label: 'JWT' }, { id: 'aut2', label: 'OAuth' }, { id: 'aut3', label: 'SSO' }, { id: 'aut4', label: 'Basic Auth, Session Auth' } ]
             },
             {
@@ -275,6 +293,9 @@
                 description: 'Componentização isolada nativa sem frameworks.',
                 platform: 'MDN Web Docs', link: 'https://developer.mozilla.org/pt-BR/',
                 masterAdvice: 'O "Shadow DOM" é um escudo impenetrável onde estilos globais (até mesmo o body) não conseguem vazar para dentro do componente.',
+                projectTasks: [
+                    { id: 'ds', task: 'Desafio extra: Construa uma versão de um Modal ou Tooltip usando Shadow DOM nativo, totalmente agnóstico de frameworks.' }
+                ],
                 subItems: [ { id: 'wc1', label: 'HTML Templates' }, { id: 'wc2', label: 'Custom Elements' }, { id: 'wc3', label: 'Shadow DOM' } ]
             },
             {
@@ -282,6 +303,10 @@
                 description: 'Tipagem estática estrutural em Javascript.',
                 platform: 'Microsoft Learn', link: 'https://learn.microsoft.com/pt-br/',
                 masterAdvice: 'TypeScript adota "Duck Typing". Se tem bico e anda como pato, é um pato. Domine Generics (<T>) e crie funções reutilizáveis ilimitadas.',
+                projectTasks: [
+                    { id: 'saas', task: 'Substitua o JS pelo TS e mapeie rigidamente através de Interfaces todas as respostas JSON (ex: `type TransactionData`).' },
+                    { id: 'ds', task: 'Refatore o Design System para garantir tipagem obrigatória das Props de cada componente.' }
+                ],
                 subItems: [ { id: 'ts1', label: 'TypeScript' } ]
             },
             {
@@ -289,6 +314,9 @@
                 description: 'Renderização na borda para SEO e TTFB extremo.',
                 platform: 'Next.js Docs', link: 'https://nextjs.org/',
                 masterAdvice: 'Estude "Hydration": o momento em que o Javascript acorda no navegador e costura os eventos de clique no HTML estático recebido.',
+                projectTasks: [
+                    { id: 'ecom', task: 'A evolução máxima: Migre o E-commerce para Next.js implementando SSR e otimizando brutalmente a indexação das URLs de produtos no Google.' }
+                ],
                 subItems: [ { id: 'ssr1', label: 'React (Next.js, react-router)' }, { id: 'ssr2', label: 'Angular' }, { id: 'ssr3', label: 'Vue.js (Nuxt.js)' }, { id: 'ssr4', label: 'Svelte (Svelte Kit)' }, { id: 'ssr5', label: 'Astro' } ]
             },
             {
@@ -296,6 +324,9 @@
                 description: 'Queries em grafos para evitar under/overfetching.',
                 platform: 'DIO', link: 'https://www.dio.me/',
                 masterAdvice: 'Cuidado com o "Problema N+1". Entenda como o DataLoader cria lotes (batching) para impedir que sua API faça mil queries simultâneas no banco.',
+                projectTasks: [
+                    { id: 'saas', task: 'Substitua chamadas REST por Apollo Client, requisitando através do GraphQL apenas as chaves exatas que cada gráfico necessita.' }
+                ],
                 subItems: [ { id: 'gq1', label: 'Apollo' }, { id: 'gq2', label: 'Relay Modern' } ]
             },
             {
@@ -303,6 +334,9 @@
                 description: 'Geração estática no momento do Build.',
                 platform: 'Astro Docs', link: 'https://astro.build/',
                 masterAdvice: 'A Arquitetura em Ilhas (Islands Architecture) entrega zero JS pro cliente por padrão, hidratando apenas widgets altamente específicos.',
+                projectTasks: [
+                    { id: 'ds', task: 'Gere um portal completo de documentação estática dos seus componentes em produção utilizando ferramentas como o Storybook build ou o Astro.' }
+                ],
                 subItems: [ { id: 'ssg1', label: 'Next.js, Nuxt.js' }, { id: 'ssg2', label: 'Astro, Vuepress, Eleventy' } ]
             },
             {
@@ -310,6 +344,10 @@
                 description: 'Experiência nativa e offline e performance (Web Vitals).',
                 platform: 'Kultivi', link: 'https://kultivi.com/',
                 masterAdvice: 'Service Workers interceptam requisições na raiz. Eles são os deuses da sua rede, capazes de servir o site inteiro sem internet.',
+                projectTasks: [
+                    { id: 'chat', task: 'Configure o App Manifest e integre Service Workers, permitindo que o Chat seja instalado no celular e mostre cache de mensagens offline.' },
+                    { id: 'ecom', task: 'Realize auditorias completas até atingir score 100 em Perfomance no Lighthouse do E-commerce.' }
+                ],
                 subItems: [ { id: 'mp1', label: 'Mobile Apps (React Native, Flutter, Ionic)' }, { id: 'mp2', label: 'Desktop Apps (Electron, Tauri)' }, { id: 'mp3', label: 'PWAs (Service Workers, Web Sockets, Storage)' }, { id: 'mp4', label: 'Measure & Improve Perf. (Lighthouse, Core Vitals)' } ]
             }
         ];
@@ -356,7 +394,7 @@
                 achievements: ['start'],
                 studyLogs: {}, 
                 targetDate: '',
-                extraCourses: [] // NOVO: Para os cursos extras
+                extraCourses: [] 
             };
 
             const [state, setState] = useState(() => {
@@ -387,8 +425,7 @@
                                 }
                                 safeData.moduleTime = safeData.moduleTime || {};
                                 safeData.progress = safeData.progress || {};
-                                safeData.extraCourses = safeData.extraCourses || []; // NOVO
-                                // Firebase também corrompe arrays de objetos vazios
+                                safeData.extraCourses = safeData.extraCourses || []; 
                                 if (!Array.isArray(safeData.extraCourses)) {
                                     safeData.extraCourses = Object.values(safeData.extraCourses);
                                 }
@@ -454,7 +491,7 @@
             const [activeTab, setActiveTab] = useState('trilha');
             const [selectedModule, setSelectedModule] = useState(null); 
             const [linkInputText, setLinkInputText] = useState('');
-            const [extraCourseInput, setExtraCourseInput] = useState(''); // NOVO
+            const [extraCourseInput, setExtraCourseInput] = useState(''); 
             const [celebration, setCelebration] = useState(null); 
             const [calYear, setCalYear] = useState(new Date().getFullYear());
             const [calMonth, setCalMonth] = useState(new Date().getMonth());
@@ -723,9 +760,8 @@
                         <div className="max-w-7xl mx-auto flex gap-2 justify-start md:justify-center min-w-max">
                             {[
                                 { id: 'trilha', icon: 'fa-network-wired', name: 'Mapa' },
-                                { id: 'projetos', icon: 'fa-laptop-code', name: 'Projetos' }, // NOVO
                                 { id: 'diario', icon: 'fa-calendar-check', name: 'Diário' },
-                                { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, // NOVO
+                                { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, 
                                 { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
                                 { id: 'dicas', icon: 'fa-brain', name: 'Cérebro' },
                                 { id: 'cursos', icon: 'fa-globe', name: 'Cursos' },
@@ -888,6 +924,7 @@
                             </div>
                         )}
 
+                        {}
                         {activeTab === 'trilha' && (
                             <>
                                 <div className={`fixed inset-0 bg-[#020617]/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${selectedModule ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setSelectedModule(null)}></div>
@@ -966,6 +1003,34 @@
                                                         <p className="font-black text-indigo-300 text-lg">{formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</p>
                                                     </div>
                                                 </div>
+
+                                                {/* EVOLUÇÃO DOS PROJETOS (NOVO) */}
+                                                {m.projectTasks && m.projectTasks.length > 0 && !locked && (
+                                                    <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
+                                                        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-[50px] rounded-full pointer-events-none"></div>
+                                                        <h4 className="text-white font-bold text-xl mb-6 flex items-center gap-3 relative z-10">
+                                                            <i className="fa-solid fa-laptop-code text-purple-400"></i> Evolução Prática
+                                                        </h4>
+                                                        <p className="text-xs text-slate-400 leading-relaxed mb-6 relative z-10">Aplique o que aprendeu neste módulo diretamente nos seus projetos de portfólio:</p>
+                                                        
+                                                        <div className="space-y-4 relative z-10">
+                                                            {m.projectTasks.map((pt, ptIdx) => {
+                                                                const meta = PROJ_META[pt.id];
+                                                                return (
+                                                                    <div key={ptIdx} className={`p-5 rounded-2xl border ${meta.bg} ${meta.border} flex flex-col gap-3 shadow-inner`}>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-black/40 border ${meta.border} ${meta.color} shadow-sm`}>
+                                                                                <i className={`fa-solid ${meta.icon} text-sm`}></i>
+                                                                            </div>
+                                                                            <span className={`font-black text-sm uppercase tracking-widest ${meta.color}`}>{meta.name}</span>
+                                                                        </div>
+                                                                        <p className="text-sm text-slate-300 leading-relaxed pl-11">{pt.task}</p>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                )}
 
                                                 {/* SESSÃO DE VALIDAÇÃO E OBJETIVOS */}
                                                 {locked ? (
@@ -1059,45 +1124,6 @@
                             </>
                         )}
 
-                        {/* --- NOVA ABA: PROJETOS --- */}
-                        {activeTab === 'projetos' && (
-                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Projetos <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">Nível Pleno</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Para se destacar, fuja do "To-Do List". Estes são os 4 projetos robustos que provam sua arquitetura, performance e domínio técnico para recrutadores.</p>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                    {projectsList.map((proj, idx) => (
-                                        <div key={idx} className={`glass-panel p-8 md:p-10 rounded-[2.5rem] hover:border-white/20 transition-all duration-500 flex flex-col h-full hover:-translate-y-1.5 hover:shadow-2xl`}>
-                                            <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 mb-6">
-                                                <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-3xl mb-4 sm:mb-0 ${proj.bg} ${proj.border} border ${proj.color} shadow-inner`}>
-                                                    <i className={`fa-solid ${proj.icon}`}></i>
-                                                </div>
-                                                <div className="bg-black/30 border border-white/5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 shrink-0">
-                                                    <i className="fa-regular fa-clock mr-2"></i>{proj.time}
-                                                </div>
-                                            </div>
-                                            <h3 className="text-2xl font-black text-white mb-4 leading-tight">{proj.title}</h3>
-                                            <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-1">{proj.desc}</p>
-                                            
-                                            <div className="pt-6 border-t border-white/5">
-                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-4">Core Skills Comprovadas</p>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {proj.skills.map((skill, sIdx) => (
-                                                        <span key={sIdx} className="bg-black/40 border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300">
-                                                            {skill}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
                         {/* --- NOVA ABA: CURSOS EXTRAS --- */}
                         {activeTab === 'extras' && (
                             <div className="animate-fade-in pb-20 max-w-4xl mx-auto">
@@ -1138,7 +1164,6 @@
                                                             ${course.done ? 'text-emerald-400 line-through opacity-70' : 'text-slate-200'}`}>
                                                             {course.name}
                                                         </span>
-                                                        {/* Input hidden para manter a semântica de formulário/acessibilidade */}
                                                         <input type="checkbox" checked={course.done} onChange={() => toggleExtraCourse(course.id)} className="hidden" />
                                                     </label>
 
