@@ -33,11 +33,9 @@
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; border: 2px solid #020617; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
         
-        /* Ocultar barra de rolagem da skill tree, mantendo o scroll */
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Animação para o SVG Path (Linhas ativas) */
         .path-active { stroke-dasharray: 10; animation: dash 20s linear infinite; }
         @keyframes dash { to { stroke-dashoffset: 1000; } }
 
@@ -53,7 +51,6 @@
         .item-unlock { animation: itemUnlock 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: translateY(20px); }
         @keyframes itemUnlock { to { opacity: 1; transform: translateY(0); } }
 
-        /* Utilitários premium para Glassmorphism */
         .glass-panel {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(16px);
@@ -111,7 +108,7 @@
             { n: 'EuCapacito', url: 'https://eucapacito.com.br/', d: 'Cursos de TI gratuitos com certificados de parceiros como FIAP, Microsoft e Oracle.' }
         ];
 
-        // --- TRILHA 1: FRONT-END (Com projetos integrados) ---
+        // --- TRILHA 1: FRONT-END ---
         const PROJ_META = {
             saas: { name: 'Dashboard SaaS', icon: 'fa-chart-pie', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20' },
             chat: { name: 'Chat Real-Time', icon: 'fa-comments', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
@@ -123,232 +120,75 @@
             {
                 id: 'internet', title: '1. Internet', estimatedHours: 10, dependsOn: [],
                 description: 'A base da infraestrutura. Redes, DNS e como o mundo se conecta.',
-                platform: 'Fundação Bradesco', link: 'https://lms.ev.org.br/',
-                masterAdvice: 'Configure um servidor DNS local ou use o Wireshark para capturar o "3-way handshake" do TCP. Ver a internet pura em pacotes tira a magia e revela a engenharia.',
-                projectTasks: [
-                    { id: 'saas', task: 'Rascunhe mentalmente como o seu Dashboard fará requisições HTTP para buscar os dados financeiros do servidor.' }
-                ],
-                subItems: [ 
-                    { id: 'i1', label: 'How does the internet work?' }, { id: 'i2', label: 'What is HTTP?' }, { id: 'i3', label: 'What is Domain Name?' }, 
-                    { id: 'i4', label: 'What is hosting?' }, { id: 'i5', label: 'DNS and how it works?' }, { id: 'i6', label: 'Browsers and how they work?' } 
-                ]
+                masterAdvice: 'Configure um servidor DNS local ou use o Wireshark. Ver a internet pura em pacotes tira a magia.',
+                projectTasks: [{ id: 'saas', task: 'Rascunhe mentalmente como seu Dashboard fará requisições HTTP para buscar os dados financeiros do servidor.' }],
+                subItems: [ { id: 'i1', label: 'How does the internet work?' }, { id: 'i2', label: 'What is HTTP?' }, { id: 'i3', label: 'DNS and how it works?' } ]
             },
             {
                 id: 'html', title: '2. HTML', estimatedHours: 12, dependsOn: ['internet'],
                 description: 'O esqueleto semântico da web e padrões de acessibilidade.',
-                platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
-                masterAdvice: 'Navegue pelo seu site usando um leitor de tela (NVDA) com o monitor desligado. Você aprenderá HTML semântico na dor e na prática.',
-                projectTasks: [
-                    { id: 'ecom', task: 'Crie o esqueleto semântico da página de produto (usando tags como <header>, <main>, <article> e <form> para o botão de compra).' }
-                ],
-                subItems: [
-                    { id: 'h1', label: 'Learn the basics' }, { id: 'h2', label: 'Writing Semantic HTML' }, { id: 'h3', label: 'Forms and Validations' },
-                    { id: 'h4', label: 'Accessibility' }, { id: 'h5', label: 'SEO Basics' }
-                ]
+                masterAdvice: 'Navegue pelo seu site usando um leitor de tela (NVDA) com o monitor desligado.',
+                projectTasks: [{ id: 'ecom', task: 'Crie o esqueleto semântico da página de produto (tags <header>, <main>, <article> e <form> para compra).' }],
+                subItems: [ { id: 'h1', label: 'Writing Semantic HTML' }, { id: 'h2', label: 'Forms and Validations' }, { id: 'h3', label: 'Accessibility (A11y)' } ]
             },
             {
                 id: 'css', title: '3. CSS', estimatedHours: 25, dependsOn: ['html'],
                 description: 'Estilização profunda, algoritmos de layout e responsividade.',
-                platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
-                masterAdvice: 'Compreenda o Stacking Context (Contexto de Empilhamento). É o segredo para entender por que seu z-index: 9999 falha miseravelmente às vezes.',
-                projectTasks: [
-                    { id: 'ds', task: 'Defina as variáveis nativas (CSS Variables) para as cores primárias e tipografia do seu Design System.' },
-                    { id: 'saas', task: 'Desenvolva o layout principal usando Grid e Flexbox (Menu lateral fixo e painel de gráficos fluído).' }
-                ],
-                subItems: [
-                    { id: 'c1', label: 'Learn the basics' }, { id: 'c2', label: 'Making Layouts' }, { id: 'c3', label: 'Responsive Design' }
-                ]
+                masterAdvice: 'Compreenda o Stacking Context. É o segredo para entender por que seu z-index: 9999 falha.',
+                projectTasks: [{ id: 'ds', task: 'Defina as variáveis nativas (CSS Variables) para cores e tipografia do seu Design System.' }],
+                subItems: [ { id: 'c1', label: 'Box Model & Layouts' }, { id: 'c2', label: 'Flexbox & CSS Grid' }, { id: 'c3', label: 'Responsive Design' } ]
             },
             {
                 id: 'js', title: '4. JavaScript', estimatedHours: 40, dependsOn: ['html'],
                 description: 'A linguagem do navegador. Closures, assincronicidade e manipulação.',
-                platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
-                masterAdvice: 'Domine a fundo o Event Loop. Desenhe em um papel a ordem em que Call Stack, Microtasks e Macrotasks são executadas.',
-                projectTasks: [
-                    { id: 'ecom', task: 'Construa a lógica de adicionar/remover produtos no carrinho manipulando Arrays e persistindo no LocalStorage.' },
-                    { id: 'saas', task: 'Use a Fetch API para buscar um arquivo JSON mockado e popular as tabelas financeiras dinamicamente.' }
-                ],
-                subItems: [
-                    { id: 'j1', label: 'Learn the Basics' }, { id: 'j2', label: 'Learn DOM Manipulation' }, { id: 'j3', label: 'Fetch API / Ajax (XHR)' }
-                ]
+                masterAdvice: 'Domine a fundo o Event Loop. Desenhe num papel a ordem de Call Stack e Microtasks.',
+                projectTasks: [{ id: 'ecom', task: 'Construa a lógica de adicionar/remover produtos manipulando Arrays e salvando no LocalStorage.' }],
+                subItems: [ { id: 'j1', label: 'DOM Manipulation' }, { id: 'j2', label: 'ES6+ (Arrow Functions, Destructuring)' }, { id: 'j3', label: 'Fetch API / Async Await' } ]
             },
             {
-                id: 'vcs', title: '5. Version Control Systems', estimatedHours: 10, dependsOn: ['html'],
+                id: 'vcs', title: '5. Version Control', estimatedHours: 10, dependsOn: ['html'],
                 description: 'Git, gerenciamento de branches, rebase e histórico.',
-                platform: 'Curso em Vídeo', link: 'https://www.cursoemvideo.com/',
-                masterAdvice: 'Crie conflitos intencionais e resolva-os manualmente no bloco de notas lendo os marcadores <<<<<<< HEAD. Perca o medo do terminal.',
-                projectTasks: [
-                    { id: 'saas', task: 'Inicialize repositórios Git locais separados para os seus projetos, faça o primeiro commit estrutural.' }
-                ],
-                subItems: [ { id: 'v1', label: 'Git' } ]
+                masterAdvice: 'Crie conflitos intencionais e resolva-os no bloco de notas lendo os marcadores <<<<<<< HEAD.',
+                projectTasks: [{ id: 'saas', task: 'Inicialize um repositório Git local e faça o primeiro commit estrutural do Dashboard.' }],
+                subItems: [ { id: 'v1', label: 'Git Concepts (Commit, Push, Pull)' }, { id: 'v2', label: 'Branching & Merging' } ]
             },
             {
-                id: 'vcshost', title: '6. VCS Hosting', estimatedHours: 5, dependsOn: ['vcs'],
-                description: 'Plataformas de repositório e CI/CD.',
-                platform: 'GitHub Docs', link: 'https://docs.github.com/pt',
-                masterAdvice: 'Crie uma GitHub Action simples que faça "lint" automático a cada push. Equipes seniores exigem automação.',
+                id: 'frameworks', title: '6. Framework (React)', estimatedHours: 50, dependsOn: ['js', 'vcs'],
+                description: 'Adoção de UI libraries reativas.',
+                masterAdvice: 'Não decore hooks. Entenda o "Reconciliation" (Virtual DOM) para escrever código performático.',
                 projectTasks: [
-                    { id: 'ecom', task: 'Faça o push do código para o GitHub e ative o GitHub Pages para ver a interface estática já funcionando online.' }
+                    { id: 'saas', task: 'Migre os trechos de HTML para Componentes React (ex: <Sidebar />, <KpiCard />).' },
+                    { id: 'chat', task: 'Inicie o Chat usando useState para armazenar as mensagens ativamente.' }
                 ],
-                subItems: [ { id: 'vh1', label: 'GitHub' }, { id: 'vh2', label: 'GitLab' }, { id: 'vh3', label: 'Bitbucket' } ]
+                subItems: [ { id: 'fw1', label: 'Components & Props' }, { id: 'fw2', label: 'State & Effect Hooks' }, { id: 'fw3', label: 'Routing' } ]
             },
             {
-                id: 'pkg', title: '7. Package Managers', estimatedHours: 5, dependsOn: ['js'],
-                description: 'Ecossistema Node.js e gestão de dependências.',
-                platform: 'DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Entenda a diferença entre node_modules flat (npm clássico) e o sistema de symlinks ultrarrápido do PNPM.',
-                projectTasks: [
-                    { id: 'ds', task: 'Rode "npm init -y" no Design System para configurar o package.json e preparar futuras instalações de bibliotecas.' }
-                ],
-                subItems: [ { id: 'pk1', label: 'npm' }, { id: 'pk2', label: 'pnpm' }, { id: 'pk3', label: 'yarn' } ]
+                id: 'modcss', title: '7. Modern CSS (Tailwind)', estimatedHours: 15, dependsOn: ['css', 'frameworks'],
+                description: 'Abordagens modernas Utility-First e estilização ágil.',
+                masterAdvice: 'Entenda como o compilador JIT purga o CSS morto, gerando apenas os bytes necessários.',
+                projectTasks: [{ id: 'saas', task: 'Refatore as estilizações do Dashboard utilizando puramente Tailwind.' }],
+                subItems: [ { id: 'mcss1', label: 'Tailwind CSS Utility Classes' }, { id: 'mcss2', label: 'Configurando tailwind.config.js' } ]
             },
             {
-                id: 'frameworks', title: '8. Pick a Framework', estimatedHours: 50, dependsOn: ['js', 'pkg'],
-                description: 'Adoção de UI libraries reativas (React, Vue, Angular).',
-                platform: 'DIO / FreeCodeCamp', link: 'https://www.freecodecamp.org/',
-                masterAdvice: 'Não decore hooks. Entenda o "Reconciliation" (Virtual DOM) ou os Signals. Entenda COMO o framework sabe o que atualizar, e você escreverá código performático.',
-                projectTasks: [
-                    { id: 'saas', task: 'Migre os trechos de HTML do Dashboard para Componentes isolados em React (ex: <Sidebar />, <KpiCard />).' },
-                    { id: 'chat', task: 'Inicie o Chat usando `useState` para armazenar o array de mensagens na tela ativamente.' }
-                ],
-                subItems: [ { id: 'fw1', label: 'React' }, { id: 'fw2', label: 'Vue.js' }, { id: 'fw3', label: 'Angular' }, { id: 'fw4', label: 'Svelte' }, { id: 'fw5', label: 'Solid JS' }, { id: 'fw6', label: 'Qwik' } ]
+                id: 'security', title: '8. Web Security', estimatedHours: 15, dependsOn: ['js'],
+                description: 'Proteção essencial contra injeções e ataques reais.',
+                masterAdvice: 'Entenda o CORS e como Headers injetados previnem ataques XSS.',
+                projectTasks: [{ id: 'chat', task: 'Ajuste cabeçalhos CORS no mock do Chat para evitar requisições cross-origin inseguras.' }],
+                subItems: [ { id: 'sec1', label: 'CORS & Preflight' }, { id: 'sec2', label: 'XSS & CSRF Prevention' }, { id: 'sec3', label: 'Content Security Policy (CSP)' } ]
             },
             {
-                id: 'modcss', title: '9. Writing CSS (Modern)', estimatedHours: 15, dependsOn: ['css'],
-                description: 'Tailwind e abordagens modernas Utility-First.',
-                platform: 'Tailwind Docs', link: 'https://tailwindcss.com/',
-                masterAdvice: 'Entenda como o compilador JIT (Just-in-Time) analisa seus arquivos e purga o CSS morto, gerando apenas os bytes estritamente necessários.',
-                projectTasks: [
-                    { id: 'saas', task: 'Refatore as antigas folhas de estilo CSS do Dashboard substituindo-as inteiramente por classes utilitárias do Tailwind.' },
-                    { id: 'ecom', task: 'Utilize classes responsivas do Tailwind (md:, lg:) para estruturar a vitrine de produtos mobile-first.' }
-                ],
-                subItems: [ { id: 'mcss1', label: 'Tailwind' } ]
+                id: 'ts', title: '9. TypeScript', estimatedHours: 35, dependsOn: ['frameworks'],
+                description: 'Tipagem estática estrutural.',
+                masterAdvice: 'TypeScript adota "Duck Typing". Domine Generics (<T>) e crie funções reutilizáveis ilimitadas.',
+                projectTasks: [{ id: 'saas', task: 'Mapeie rigidamente as respostas JSON de gráficos criando interfaces (ex: type TransactionData).' }],
+                subItems: [ { id: 'ts1', label: 'Basic Types & Interfaces' }, { id: 'ts2', label: 'Generics & Utility Types' }, { id: 'ts3', label: 'React com TypeScript' } ]
             },
             {
-                id: 'cssarch', title: '10. CSS Architecture', estimatedHours: 10, dependsOn: ['modcss'],
-                description: 'Organização em larga escala para evitar conflitos.',
-                platform: 'Kultivi', link: 'https://kultivi.com/',
-                masterAdvice: 'A metodologia BEM não é só sobre classes longas. É sobre garantir que um componente NUNCA quebre os estilos de outro em projetos legados gigantes.',
-                projectTasks: [
-                    { id: 'ds', task: 'Aplique a padronização de nomenclatura (BEM) nos tokens e classes do Design System (se optar por não usar Tailwind).' }
-                ],
-                subItems: [ { id: 'carch1', label: 'BEM' } ]
-            },
-            {
-                id: 'csspre', title: '11. CSS Preprocessors', estimatedHours: 10, dependsOn: ['css'],
-                description: 'Sass, mixins e manipulação com JS.',
-                platform: 'DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Evite o "nesting" profundo (> 3 níveis). Isso gera seletores CSS com peso (especificidade) colossal, destruindo a performance e a manutenção.',
-                projectTasks: [
-                    { id: 'ds', task: 'Configure processadores modernos como PostCSS (ou migre para Sass) para automatizar vendors e otimização do CSS exportado.' }
-                ],
-                subItems: [ { id: 'cpre1', label: 'Sass' }, { id: 'cpre2', label: 'PostCSS' } ]
-            },
-            {
-                id: 'buildtools', title: '12. Build Tools', estimatedHours: 20, dependsOn: ['frameworks'],
-                description: 'Module bundlers e transpilação de código nativa.',
-                platform: 'Rocketseat / DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Aprenda por que o Vite (que usa ESM nativo e esbuild em Rust) estilhaçou a lentidão do Webpack antigo.',
-                projectTasks: [
-                    { id: 'chat', task: 'Estruture todo o ecossistema do Chat utilizando o Vite.js, tirando vantagem do Hot Module Replacement rápido.' },
-                    { id: 'ds', task: 'Instale ESLint e Prettier para padronizar obrigatoriamente a formatação do código no Design System.' }
-                ],
-                subItems: [ { id: 'bt1', label: 'Linters and Formatters (Prettier, ESLint)' }, { id: 'bt2', label: 'Module Bundlers (Vite, Webpack, Rollup, Parcel)' }, { id: 'bt3', label: 'Transpilers (SWC, esbuild)' } ]
-            },
-            {
-                id: 'testing', title: '13. Testing', estimatedHours: 25, dependsOn: ['js'],
-                description: 'Garantia de qualidade, testes unitários e E2E.',
-                platform: 'DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Entenda o conceito de Mocks e Spies. Testes unitários NUNCA devem bater em bancos de dados reais ou APIs externas.',
-                projectTasks: [
-                    { id: 'ecom', task: 'Desenvolva testes unitários completos em Jest ou Vitest para garantir que o cálculo de preço total do carrinho nunca quebre.' },
-                    { id: 'ds', task: 'Escreva validações de renderização que garantam que os botões do Design System emitem os eventos esperados.' }
-                ],
-                subItems: [ { id: 'tst1', label: 'Jest' }, { id: 'tst2', label: 'Vitest' }, { id: 'tst3', label: 'Playwright' }, { id: 'tst4', label: 'Cypress' } ]
-            },
-            {
-                id: 'security', title: '14. Web Security Basics', estimatedHours: 15, dependsOn: ['js'],
-                description: 'Proteção essencial contra injeções e ataques.',
-                platform: 'Cisco', link: 'https://skillsforall.com/pt',
-                masterAdvice: 'Abra a aba Network. Entenda o que é a requisição OPTIONS (Preflight) do CORS e como Headers injetados previnem ataques XSS.',
-                projectTasks: [
-                    { id: 'chat', task: 'Ajuste os cabeçalhos de CORS no back-end (ou mock) para que o Chat só aceite requisições do seu domínio seguro.' },
-                    { id: 'saas', task: 'Implemente lógica de sanitização nos inputs de busca do Dashboard para prevenir ataques de injeção XSS.' }
-                ],
-                subItems: [ { id: 'sec1', label: 'CORS' }, { id: 'sec2', label: 'HTTPS' }, { id: 'sec3', label: 'Content Security Policy' }, { id: 'sec4', label: 'OWASP Security Risks' } ]
-            },
-            {
-                id: 'auth', title: '15. Authentication Strategies', estimatedHours: 15, dependsOn: ['security'],
-                description: 'Validação e Sessão segura de usuários.',
-                platform: 'DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Cole um token no JWT.io. Veja como o Payload é público. O segredo da segurança não é esconder o Payload, mas validar a Assinatura (Signature).',
-                projectTasks: [
-                    { id: 'saas', task: 'Crie uma tela de Login e implemente a captura, armazenamento seguro e envio do JWT nos headers das requisições subsequentes.' },
-                    { id: 'chat', task: 'Proteja as rotas do seu chat para impedir renderização sem um usuário logado validado.' }
-                ],
-                subItems: [ { id: 'aut1', label: 'JWT' }, { id: 'aut2', label: 'OAuth' }, { id: 'aut3', label: 'SSO' }, { id: 'aut4', label: 'Basic Auth, Session Auth' } ]
-            },
-            {
-                id: 'webcomp', title: '16. Web Components', estimatedHours: 10, dependsOn: ['js'],
-                description: 'Componentização isolada nativa sem frameworks.',
-                platform: 'MDN Web Docs', link: 'https://developer.mozilla.org/pt-BR/',
-                masterAdvice: 'O "Shadow DOM" é um escudo impenetrável onde estilos globais (até mesmo o body) não conseguem vazar para dentro do componente.',
-                projectTasks: [
-                    { id: 'ds', task: 'Desafio extra: Construa uma versão de um Modal ou Tooltip usando Shadow DOM nativo, totalmente agnóstico de frameworks.' }
-                ],
-                subItems: [ { id: 'wc1', label: 'HTML Templates' }, { id: 'wc2', label: 'Custom Elements' }, { id: 'wc3', label: 'Shadow DOM' } ]
-            },
-            {
-                id: 'ts', title: '17. Type Checkers', estimatedHours: 35, dependsOn: ['js'],
-                description: 'Tipagem estática estrutural em Javascript.',
-                platform: 'Microsoft Learn', link: 'https://learn.microsoft.com/pt-br/',
-                masterAdvice: 'TypeScript adota "Duck Typing". Se tem bico e anda como pato, é um pato. Domine Generics (<T>) e crie funções reutilizáveis ilimitadas.',
-                projectTasks: [
-                    { id: 'saas', task: 'Substitua o JS pelo TS e mapeie rigidamente através de Interfaces todas as respostas JSON (ex: `type TransactionData`).' },
-                    { id: 'ds', task: 'Refatore o Design System para garantir tipagem obrigatória das Props de cada componente.' }
-                ],
-                subItems: [ { id: 'ts1', label: 'TypeScript' } ]
-            },
-            {
-                id: 'ssr', title: '18. SSR (Server Side Rendering)', estimatedHours: 35, dependsOn: ['frameworks', 'ts'],
-                description: 'Renderização na borda para SEO e TTFB extremo.',
-                platform: 'Next.js Docs', link: 'https://nextjs.org/',
-                masterAdvice: 'Estude "Hydration": o momento em que o Javascript acorda no navegador e costura os eventos de clique no HTML estático recebido.',
-                projectTasks: [
-                    { id: 'ecom', task: 'A evolução máxima: Migre o E-commerce para Next.js implementando SSR e otimizando brutalmente a indexação das URLs de produtos no Google.' }
-                ],
-                subItems: [ { id: 'ssr1', label: 'React (Next.js, react-router)' }, { id: 'ssr2', label: 'Angular' }, { id: 'ssr3', label: 'Vue.js (Nuxt.js)' }, { id: 'ssr4', label: 'Svelte (Svelte Kit)' }, { id: 'ssr5', label: 'Astro' } ]
-            },
-            {
-                id: 'graphql', title: '19. GraphQL', estimatedHours: 15, dependsOn: ['js'],
-                description: 'Queries em grafos para evitar under/overfetching.',
-                platform: 'DIO', link: 'https://www.dio.me/',
-                masterAdvice: 'Cuidado com o "Problema N+1". Entenda como o DataLoader cria lotes (batching) para impedir que sua API faça mil queries simultâneas no banco.',
-                projectTasks: [
-                    { id: 'saas', task: 'Substitua chamadas REST por Apollo Client, requisitando através do GraphQL apenas as chaves exatas que cada gráfico necessita.' }
-                ],
-                subItems: [ { id: 'gq1', label: 'Apollo' }, { id: 'gq2', label: 'Relay Modern' } ]
-            },
-            {
-                id: 'ssg', title: '20. Static Site Generators', estimatedHours: 15, dependsOn: ['frameworks'],
-                description: 'Geração estática no momento do Build.',
-                platform: 'Astro Docs', link: 'https://astro.build/',
-                masterAdvice: 'A Arquitetura em Ilhas (Islands Architecture) entrega zero JS pro cliente por padrão, hidratando apenas widgets altamente específicos.',
-                projectTasks: [
-                    { id: 'ds', task: 'Gere um portal completo de documentação estática dos seus componentes em produção utilizando ferramentas como o Storybook build ou o Astro.' }
-                ],
-                subItems: [ { id: 'ssg1', label: 'Next.js, Nuxt.js' }, { id: 'ssg2', label: 'Astro, Vuepress, Eleventy' } ]
-            },
-            {
-                id: 'mobile_pwa', title: '21. Mobile, Desktop & PWAs', estimatedHours: 40, dependsOn: ['frameworks'],
-                description: 'Experiência nativa e offline e performance (Web Vitals).',
-                platform: 'Kultivi', link: 'https://kultivi.com/',
-                masterAdvice: 'Service Workers interceptam requisições na raiz. Eles são os deuses da sua rede, capazes de servir o site inteiro sem internet.',
-                projectTasks: [
-                    { id: 'chat', task: 'Configure o App Manifest e integre Service Workers, permitindo que o Chat seja instalado no celular e mostre cache de mensagens offline.' },
-                    { id: 'ecom', task: 'Realize auditorias completas até atingir score 100 em Perfomance no Lighthouse do E-commerce.' }
-                ],
-                subItems: [ { id: 'mp1', label: 'Mobile Apps (React Native, Flutter, Ionic)' }, { id: 'mp2', label: 'Desktop Apps (Electron, Tauri)' }, { id: 'mp3', label: 'PWAs (Service Workers, Web Sockets, Storage)' }, { id: 'mp4', label: 'Measure & Improve Perf. (Lighthouse, Core Vitals)' } ]
+                id: 'ssr', title: '10. SSR (Next.js)', estimatedHours: 35, dependsOn: ['ts'],
+                description: 'Renderização na borda para SEO e performance absurda.',
+                masterAdvice: 'Estude "Hydration": o momento em que o JS acorda e costura eventos no HTML estático.',
+                projectTasks: [{ id: 'ecom', task: 'Evolução Máxima: Migre o E-commerce para Next.js implementando SSR nos produtos para SEO.' }],
+                subItems: [ { id: 'ssr1', label: 'Server Components vs Client Components' }, { id: 'ssr2', label: 'Data Fetching & Caching' }, { id: 'ssr3', label: 'App Router Architecture' } ]
             }
         ];
 
@@ -356,89 +196,65 @@
             ['internet'],
             ['html'],
             ['css', 'js', 'vcs'],
-            ['modcss', 'csspre', 'pkg', 'vcshost'],
-            ['cssarch', 'frameworks', 'ts'],
-            ['buildtools', 'testing', 'security'],
-            ['ssr', 'ssg', 'graphql', 'auth'],
-            ['mobile_pwa', 'webcomp']
+            ['frameworks'],
+            ['modcss', 'security'],
+            ['ts'],
+            ['ssr']
         ];
-
 
         // --- TRILHA 2: INGLÊS (Steven Universe 3x) ---
         const detailedEnglishData = [
             {
                 id: 'su_1', title: 'Season 1', estimatedHours: 29, dependsOn: [],
                 description: '52 episódios (11 min/cada). A introdução ao mundo e construção do vocabulário base.',
-                masterAdvice: 'Técnica 3x: Assista o MESMO episódio 3 vezes. 1) Áudio EN + Legenda PT (entender). 2) Áudio EN + Leg PT (associar). 3) Áudio EN puro (fluência).',
+                masterAdvice: 'Técnica 3x: Assista o MESMO episódio 3 vezes. 1) Áudio EN + Legenda PT. 2) Áudio EN + Leg PT. 3) Áudio EN puro.',
                 projectTasks: [],
                 subItems: [
-                    { id: 'su1_1', label: 'Episódios 01 a 13 (Técnica 3x Completada)' },
-                    { id: 'su1_2', label: 'Episódios 14 a 26 (Técnica 3x Completada)' },
-                    { id: 'su1_3', label: 'Episódios 27 a 39 (Técnica 3x Completada)' },
-                    { id: 'su1_4', label: 'Episódios 40 a 52 (Técnica 3x Completada)' }
+                    { id: 'su1_1', label: 'Episódios 01 a 13 (Técnica 3x)' }, { id: 'su1_2', label: 'Episódios 14 a 26 (Técnica 3x)' },
+                    { id: 'su1_3', label: 'Episódios 27 a 39 (Técnica 3x)' }, { id: 'su1_4', label: 'Episódios 40 a 52 (Técnica 3x)' }
                 ]
             },
             {
                 id: 'su_2', title: 'Season 2', estimatedHours: 15, dependsOn: ['su_1'],
                 description: '26 episódios. A trama se aprofunda. Você começará a notar padrões nos sotaques e piadas naturais.',
-                masterAdvice: 'Nesta fase, tente repetir frases curtas em voz alta (Shadowing) durante a 3ª rodada (sem legendas).',
+                masterAdvice: 'Nesta fase, tente repetir frases curtas em voz alta (Shadowing) durante a 3ª rodada.',
                 projectTasks: [],
-                subItems: [
-                    { id: 'su2_1', label: 'Episódios 01 a 13 (Técnica 3x Completada)' },
-                    { id: 'su2_2', label: 'Episódios 14 a 26 (Técnica 3x Completada)' }
-                ]
+                subItems: [ { id: 'su2_1', label: 'Episódios 01 a 13 (Técnica 3x)' }, { id: 'su2_2', label: 'Episódios 14 a 26 (Técnica 3x)' } ]
             },
             {
                 id: 'su_3', title: 'Season 3', estimatedHours: 14, dependsOn: ['su_2'],
                 description: '25 episódios. Foco em diálogos mais dramáticos e músicas mais complexas.',
-                masterAdvice: 'Use o recurso de velocidade 0.75x nas músicas caso tenha dificuldade de linkar o "Connected Speech" (quando emendam uma palavra na outra).',
+                masterAdvice: 'Use a velocidade 0.75x nas músicas se tiver dificuldade de linkar o "Connected Speech".',
                 projectTasks: [],
-                subItems: [
-                    { id: 'su3_1', label: 'Episódios 01 a 12 (Técnica 3x Completada)' },
-                    { id: 'su3_2', label: 'Episódios 13 a 25 (Técnica 3x Completada)' }
-                ]
+                subItems: [ { id: 'su3_1', label: 'Episódios 01 a 12 (Técnica 3x)' }, { id: 'su3_2', label: 'Episódios 13 a 25 (Técnica 3x)' } ]
             },
             {
                 id: 'su_4', title: 'Season 4', estimatedHours: 14, dependsOn: ['su_3'],
-                description: '25 episódios. O ritmo e a tensão do show exigem mais do seu vocabulário de emoções e ações.',
-                masterAdvice: 'A partir de agora, elimine a 1ª rodada (Legenda PT) nos episódios slice-of-life (cotidiano). Vá direto pro EN/EN.',
+                description: '25 episódios. O ritmo exige mais do seu vocabulário de emoções e ações.',
+                masterAdvice: 'A partir de agora, elimine a 1ª rodada (Legenda PT) nos episódios cotidianos. Vá direto pro EN/EN.',
                 projectTasks: [],
-                subItems: [
-                    { id: 'su4_1', label: 'Episódios 01 a 12 (Técnica 3x Adaptada)' },
-                    { id: 'su4_2', label: 'Episódios 13 a 25 (Técnica 3x Adaptada)' }
-                ]
+                subItems: [ { id: 'su4_1', label: 'Episódios 01 a 12 (Técnica 3x Adaptada)' }, { id: 'su4_2', label: 'Episódios 13 a 25 (Técnica 3x Adaptada)' } ]
             },
             {
                 id: 'su_5', title: 'Season 5', estimatedHours: 18, dependsOn: ['su_4'],
-                description: '32 episódios. Clímax absoluto da série. Diálogos rápidos e complexos sobre diplomacia espacial e sentimentos.',
-                masterAdvice: 'O verdadeiro teste de fogo do Listening. Seu cérebro já não traduz tudo pro português, ele entende o conceito diretamente.',
+                description: '32 episódios. Clímax absoluto. Diálogos rápidos sobre diplomacia e sentimentos.',
+                masterAdvice: 'Teste de fogo do Listening. Seu cérebro entende o conceito diretamente em inglês agora.',
                 projectTasks: [],
-                subItems: [
-                    { id: 'su5_1', label: 'Episódios 01 a 10 (Técnica Raw)' },
-                    { id: 'su5_2', label: 'Episódios 11 a 20 (Técnica Raw)' },
-                    { id: 'su5_3', label: 'Episódios 21 a 32 (Técnica Raw)' }
-                ]
+                subItems: [ { id: 'su5_1', label: 'Episódios 01 a 10 (Técnica Raw)' }, { id: 'su5_2', label: 'Episódios 11 a 20 (Técnica Raw)' }, { id: 'su5_3', label: 'Episódios 21 a 32 (Técnica Raw)' } ]
             },
             {
                 id: 'su_m', title: 'The Movie', estimatedHours: 4, dependsOn: ['su_5'],
                 description: 'O Filme Oficial (82 minutos). Um musical frenético que vai testar sua estamina.',
-                masterAdvice: 'Faça a técnica 3x dividindo o filme em 3 blocos de ~27 minutos para não causar exaustão neural.',
+                masterAdvice: 'Divida o filme em 3 blocos de ~27 minutos para não causar exaustão neural.',
                 projectTasks: [],
-                subItems: [
-                    { id: 'sum_1', label: 'Ato 1 (Ameaça Inicial) 3x' },
-                    { id: 'sum_2', label: 'Ato 2 (Recuperação) 3x' },
-                    { id: 'sum_3', label: 'Ato 3 (Clímax Musical) 3x' }
-                ]
+                subItems: [ { id: 'sum_1', label: 'Ato 1 (Ameaça) 3x' }, { id: 'sum_2', label: 'Ato 2 (Recuperação) 3x' }, { id: 'sum_3', label: 'Ato 3 (Clímax) 3x' } ]
             },
             {
                 id: 'su_f', title: 'Future (Epilogue)', estimatedHours: 11, dependsOn: ['su_m'],
-                description: '20 episódios que encerram a saga. Foco absurdo em saúde mental, terapia e conversas difíceis.',
-                masterAdvice: 'Sua graduação! O objetivo aqui é assistir APENAS em Raw (Inglês sem legenda) de primeira. Use a legenda EN só em emergências.',
+                description: '20 episódios que encerram a saga. Foco em saúde mental e conversas difíceis.',
+                masterAdvice: 'Sua graduação! Assista APENAS em Raw (sem legenda) de primeira.',
                 projectTasks: [],
-                subItems: [
-                    { id: 'suf_1', label: 'Episódios 01 a 10 (Imersão Total)' },
-                    { id: 'suf_2', label: 'Episódios 11 a 20 (Graduação Final)' }
-                ]
+                subItems: [ { id: 'suf_1', label: 'Episódios 01 a 10 (Imersão Total)' }, { id: 'suf_2', label: 'Episódios 11 a 20 (Graduação)' } ]
             }
         ];
 
@@ -449,6 +265,107 @@
             ['su_5'],
             ['su_m'],
             ['su_f']
+        ];
+
+        // --- TRILHA 3: DIGITAÇÃO ---
+        const detailedTypingData = [
+            {
+                id: 'typ_1', title: '1. Base (Home Row)', estimatedHours: 5, dependsOn: [],
+                description: 'Postura, posicionamento das mãos e domínio completo das teclas centrais.',
+                masterAdvice: 'NUNCA olhe para o teclado. O erro ensina o cérebro; olhar destrói a memória muscular.',
+                projectTasks: [],
+                subItems: [ { id: 't1_1', label: 'Dominar ASDF' }, { id: 't1_2', label: 'Dominar JKL;' }, { id: 't1_3', label: 'Precisão > 95%' } ]
+            },
+            {
+                id: 'typ_2', title: '2. Top Row', estimatedHours: 8, dependsOn: ['typ_1'],
+                description: 'Expansão para a linha superior (QWERTY UIOP).',
+                masterAdvice: 'Seus dedos sempre devem retornar à "Home Row" após apertar uma tecla superior.',
+                projectTasks: [],
+                subItems: [ { id: 't2_1', label: 'Mão Esquerda (QWERT)' }, { id: 't2_2', label: 'Mão Direita (YUIOP)' } ]
+            },
+            {
+                id: 'typ_3', title: '3. Bottom Row', estimatedHours: 8, dependsOn: ['typ_2'],
+                description: 'A linha inferior (ZXCVB NM,.). A mais desafiadora por causa do ângulo dos pulsos.',
+                masterAdvice: 'Evite mover os pulsos. Apenas os dedos devem esticar para alcançar a linha inferior.',
+                projectTasks: [],
+                subItems: [ { id: 't3_1', label: 'Mão Esquerda (ZXCVB)' }, { id: 't3_2', label: 'Mão Direita (NM,./)' } ]
+            },
+            {
+                id: 'typ_4', title: '4. Números e Shift', estimatedHours: 10, dependsOn: ['typ_3'],
+                description: 'Uso fluído das teclas Numéricas e ativação do Shift oposto.',
+                masterAdvice: 'Sempre use o Shift da mão OPOSTA à letra que você vai digitar. Ex: Para "A", use o Right Shift.',
+                projectTasks: [],
+                subItems: [ { id: 't4_1', label: 'Linha Numérica' }, { id: 't4_2', label: 'Letras Maiúsculas Fluídas' } ]
+            },
+            {
+                id: 'typ_5', title: '5. Símbolos Code', estimatedHours: 15, dependsOn: ['typ_4'],
+                description: 'O verdadeiro foco do Dev: chaves, colchetes, parênteses e operadores matemáticos.',
+                masterAdvice: 'Programação usa muito o dedo mindinho (pinky) da mão direita. Pratique para não causar lesão.',
+                projectTasks: [],
+                subItems: [ { id: 't5_1', label: 'Chaves e Colchetes { } [ ]' }, { id: 't5_2', label: 'Operadores = + - ! > <' } ]
+            },
+            {
+                id: 'typ_6', title: '6. Speed Building', estimatedHours: 20, dependsOn: ['typ_5'],
+                description: 'Consolidação. Atingir velocidade produtiva e manter a técnica em fluxo.',
+                masterAdvice: 'Treine com foco em precisão (98%+). A velocidade (WPM) é uma consequência natural da precisão contínua.',
+                projectTasks: [],
+                subItems: [ { id: 't6_1', label: 'Atingir 40 WPM Consistente' }, { id: 't6_2', label: 'Atingir 60+ WPM (Sênior Speed)' } ]
+            }
+        ];
+
+        const typingTreeTiers = [
+            ['typ_1'],
+            ['typ_2'],
+            ['typ_3'],
+            ['typ_4'],
+            ['typ_5'],
+            ['typ_6']
+        ];
+
+        // --- TRILHA 4: SOFT SKILLS / DESENVOLVIMENTO PESSOAL ---
+        const detailedPersonalData = [
+            {
+                id: 'pd_1', title: '1. Gestão de Foco', estimatedHours: 10, dependsOn: [],
+                description: 'Deep Work e design de ambiente. Como proteger sua atenção da dopamina barata.',
+                masterAdvice: 'Trabalho profundo não é força de vontade, é bloqueio arquitetural. Deixe o celular em outro cômodo.',
+                projectTasks: [],
+                subItems: [ { id: 'p1_1', label: 'Aplicar Pomodoro estrito' }, { id: 'p1_2', label: 'Remover notificações ativas' } ]
+            },
+            {
+                id: 'pd_2', title: '2. Inteligência Emocional', estimatedHours: 15, dependsOn: ['pd_1'],
+                description: 'Lidar com frustração (bugs infinitos) e Síndrome do Impostor.',
+                masterAdvice: 'A frustração é o cérebro gastando energia para criar novas conexões. Se não dói, você não está aprendendo.',
+                projectTasks: [],
+                subItems: [ { id: 'p2_1', label: 'Tolerância a Bugs Críticos' }, { id: 'p2_2', label: 'Desvincular o Ego do Código' } ]
+            },
+            {
+                id: 'pd_3', title: '3. Comunicação Clara', estimatedHours: 15, dependsOn: ['pd_1'],
+                description: 'Escuta ativa e como interagir no Slack/Teams sem causar ruídos.',
+                masterAdvice: 'Aprenda a fazer a "Pergunta Perfeita": o que você tentou, qual o erro exato e o que você esperava que acontecesse.',
+                projectTasks: [],
+                subItems: [ { id: 'p3_1', label: 'Sintetização de Ideias' }, { id: 'p3_2', label: 'Pedir Ajuda com Contexto' } ]
+            },
+            {
+                id: 'pd_4', title: '4. Marca Pessoal', estimatedHours: 20, dependsOn: ['pd_2', 'pd_3'],
+                description: 'Posicionamento no LinkedIn, GitHub Readme e Portfólio.',
+                masterAdvice: 'Recrutador não roda seu código, ele olha seu Readme. Documente seus projetos como se fossem produtos reais.',
+                projectTasks: [],
+                subItems: [ { id: 'p4_1', label: 'LinkedIn Otimizado (SEO)' }, { id: 'p4_2', label: 'Readmes Profissionais no GitHub' } ]
+            },
+            {
+                id: 'pd_5', title: '5. Entrevistas Técnicas', estimatedHours: 20, dependsOn: ['pd_4'],
+                description: 'Estratégias para Whiteboard, Live Coding e como "vender" sua lógica.',
+                masterAdvice: 'Em Live Coding, o avaliador quer ver COMO você pensa, não só se compila. Pense em voz alta o tempo todo.',
+                projectTasks: [],
+                subItems: [ { id: 'p5_1', label: 'Narrativa de Resolução de Problemas' }, { id: 'p5_2', label: 'STAR Method para Comportamental' } ]
+            }
+        ];
+
+        const personalTreeTiers = [
+            ['pd_1'],
+            ['pd_2', 'pd_3'],
+            ['pd_4'],
+            ['pd_5']
         ];
 
 
@@ -475,15 +392,19 @@
                 moduleTime: {}, 
                 dailyHours: 2,
                 achievements: ['start'],
-                studyLogs: {}, 
-                targetDate: '',
                 extraCourses: [] 
             };
 
             const [state, setState] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('FE_Definitive_V3.8');
-                    if (saved) return { ...defaultState, ...JSON.parse(saved) }; 
+                    const saved = localStorage.getItem('FE_Definitive_V4.0');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        // Clean legacy states if they exist
+                        delete parsed.studyLogs;
+                        delete parsed.targetDate;
+                        return { ...defaultState, ...parsed }; 
+                    }
                 } catch(e) {}
                 return defaultState;
             });
@@ -502,6 +423,9 @@
                                 safeData.progress = safeData.progress || {};
                                 safeData.extraCourses = safeData.extraCourses || []; 
                                 if (!Array.isArray(safeData.extraCourses)) safeData.extraCourses = Object.values(safeData.extraCourses);
+                                // Clean legacy
+                                delete safeData.studyLogs;
+                                delete safeData.targetDate;
                                 return { ...prev, ...safeData };
                             });
                         }
@@ -521,15 +445,26 @@
                 const p = state.progress || {};
                 const passedDev = detailedRoadmapData.filter(m => p[m.id]?.passed).length;
                 const passedEn = detailedEnglishData.filter(m => p[m.id]?.passed).length;
+                const passedTyp = detailedTypingData.filter(m => p[m.id]?.passed).length;
+                const passedPd = detailedPersonalData.filter(m => p[m.id]?.passed).length;
                 
-                if (passedDev >= 1 || passedEn >= 1) triggerAchievement('mod_1');
-                if ((passedDev / detailedRoadmapData.length) >= 0.5 || (passedEn / detailedEnglishData.length) >= 0.5) triggerAchievement('perc_50');
-                if (passedDev === detailedRoadmapData.length || passedEn === detailedEnglishData.length) triggerAchievement('perc_100');
+                if (passedDev >= 1 || passedEn >= 1 || passedTyp >= 1 || passedPd >= 1) triggerAchievement('mod_1');
+                
+                if ((passedDev / detailedRoadmapData.length) >= 0.5 || 
+                    (passedEn / detailedEnglishData.length) >= 0.5 ||
+                    (passedTyp / detailedTypingData.length) >= 0.5 ||
+                    (passedPd / detailedPersonalData.length) >= 0.5) triggerAchievement('perc_50');
+
+                if (passedDev === detailedRoadmapData.length || 
+                    passedEn === detailedEnglishData.length ||
+                    passedTyp === detailedTypingData.length ||
+                    passedPd === detailedPersonalData.length) triggerAchievement('perc_100');
+
                 if (p['su_1']?.passed) triggerAchievement('su_fan');
             };
 
             useEffect(() => {
-                localStorage.setItem('FE_Definitive_V3.8', JSON.stringify(state));
+                localStorage.setItem('FE_Definitive_V4.0', JSON.stringify(state));
                 checkGlobalAchievements();
 
                 if (isReadyForSync.current) {
@@ -545,16 +480,41 @@
             const [linkInputText, setLinkInputText] = useState('');
             const [extraCourseInput, setExtraCourseInput] = useState(''); 
             const [celebration, setCelebration] = useState(null); 
-            const [calYear, setCalYear] = useState(new Date().getFullYear());
-            const [calMonth, setCalMonth] = useState(new Date().getMonth());
-            const [selectedLogDate, setSelectedLogDate] = useState(null);
-            const [logForm, setLogForm] = useState({ hours: '', notes: '' });
             const [svgLines, setSvgLines] = useState([]);
             const treeContainerRef = useRef(null);
 
             // --- LÓGICA DE DADOS DINÂMICOS DA TRILHA ---
-            const currentData = activeTab === 'ingles' ? detailedEnglishData : detailedRoadmapData;
-            const currentTiers = activeTab === 'ingles' ? englishTreeTiers : skillTreeTiers;
+            const isTrailTab = ['trilha', 'ingles', 'digitacao', 'desenvolvimento'].includes(activeTab);
+            
+            let currentData = detailedRoadmapData;
+            let currentTiers = skillTreeTiers;
+            let tabNameDisplay = 'Dev';
+            let themeColor = 'indigo';
+            let gradientContainer = "from-indigo-500 via-purple-500 to-cyan-400 shadow-[0_10px_30px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(79,70,229,0.5)]";
+            let gradientText = "from-indigo-300 via-purple-300 to-cyan-300";
+
+            if (activeTab === 'ingles') {
+                currentData = detailedEnglishData;
+                currentTiers = englishTreeTiers;
+                tabNameDisplay = 'Inglês';
+                themeColor = 'rose';
+                gradientContainer = "from-rose-500 via-pink-500 to-amber-400 shadow-[0_10px_30px_-10px_rgba(244,63,94,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(244,63,94,0.5)]";
+                gradientText = "from-rose-300 via-pink-300 to-amber-300";
+            } else if (activeTab === 'digitacao') {
+                currentData = detailedTypingData;
+                currentTiers = typingTreeTiers;
+                tabNameDisplay = 'Digitação';
+                themeColor = 'sky';
+                gradientContainer = "from-sky-500 via-blue-500 to-indigo-400 shadow-[0_10px_30px_-10px_rgba(14,165,233,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(14,165,233,0.5)]";
+                gradientText = "from-sky-300 via-blue-300 to-indigo-300";
+            } else if (activeTab === 'desenvolvimento') {
+                currentData = detailedPersonalData;
+                currentTiers = personalTreeTiers;
+                tabNameDisplay = 'Soft Skills';
+                themeColor = 'amber';
+                gradientContainer = "from-amber-500 via-orange-500 to-rose-400 shadow-[0_10px_30px_-10px_rgba(245,158,11,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(245,158,11,0.5)]";
+                gradientText = "from-amber-300 via-orange-300 to-rose-300";
+            }
 
             const [timer, setTimer] = useState({ active: false, moduleId: null, seconds: 0 });
 
@@ -614,7 +574,7 @@
             };
 
             const calculateLines = useCallback(() => {
-                if (!treeContainerRef.current || (activeTab !== 'trilha' && activeTab !== 'ingles')) return;
+                if (!treeContainerRef.current || !isTrailTab) return;
                 const containerRect = treeContainerRef.current.getBoundingClientRect();
                 const newLines = [];
 
@@ -645,7 +605,7 @@
                     });
                 });
                 setSvgLines(newLines);
-            }, [activeTab, state.progress, currentData]);
+            }, [activeTab, state.progress, currentData, isTrailTab]);
 
             useLayoutEffect(() => {
                 const timerDelay = setTimeout(calculateLines, 100);
@@ -670,12 +630,7 @@
             const graduationDate = futureModules.length > 0 ? futureModules[futureModules.length-1].endDate : new Date();
             const totalRemainingDays = futureModules.reduce((acc, curr) => acc + curr.daysNeeded, 0);
             const formatDate = (d) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
-            const totalHoursStudied = useMemo(() => Object.values(state.studyLogs || {}).reduce((acc, log) => acc + (Number(log.hours) || 0), 0), [state.studyLogs]);
             
-            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
-            const firstDayOfMonth = (y, m) => new Date(y, m, 1).getDay();
-
             const triggerVictory = (mod) => {
                 setState(p => ({
                     ...p, progress: { ...(p.progress || {}), [mod.id]: { ...((p.progress||{})[mod.id]||{}), passed: true, cert: null, completionDate: new Date().toISOString() } }
@@ -685,19 +640,6 @@
 
                 setSelectedModule(null);
                 setCelebration(mod); 
-            };
-
-            const handleSaveLog = () => {
-                if(!selectedLogDate) return;
-                setState(p => ({ ...p, studyLogs: { ...(p.studyLogs || {}), [selectedLogDate]: { hours: Number(logForm.hours)||0, notes: logForm.notes } } }));
-                setSelectedLogDate(null);
-            };
-
-            const openLogModal = (y, m, d) => {
-                const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                setSelectedLogDate(dateStr);
-                const ex = (state.studyLogs || {})[dateStr] || { hours: '', notes: '' };
-                setLogForm({ hours: ex.hours || '', notes: ex.notes || '' });
             };
 
             if (celebration) {
@@ -743,9 +685,10 @@
                     <nav className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-2xl border-b border-white/5 px-4 py-4 overflow-x-auto shadow-2xl hide-scroll">
                         <div className="max-w-7xl mx-auto flex gap-2 justify-start md:justify-center min-w-max">
                             {[
-                                { id: 'trilha', icon: 'fa-network-wired', name: 'Trilha DEV' },
+                                { id: 'trilha', icon: 'fa-code', name: 'Trilha DEV' },
                                 { id: 'ingles', icon: 'fa-language', name: 'Trilha Inglês' }, 
-                                { id: 'diario', icon: 'fa-calendar-check', name: 'Diário' },
+                                { id: 'digitacao', icon: 'fa-keyboard', name: 'Trilha Digitação' }, 
+                                { id: 'desenvolvimento', icon: 'fa-user-ninja', name: 'Soft Skills' }, 
                                 { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, 
                                 { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
                                 { id: 'dicas', icon: 'fa-brain', name: 'Cérebro' },
@@ -764,17 +707,17 @@
 
                     <main className="max-w-7xl mx-auto mt-12 px-4 relative">
                         
-                        {/* --- MAPA DE HABILIDADES (Front-End OU Inglês) --- */}
-                        {(activeTab === 'trilha' || activeTab === 'ingles') && (
+                        {/* --- MAPAS DE HABILIDADES --- */}
+                        {isTrailTab && (
                             <div className="animate-fade-in pb-20 relative">
                                 
-                                <div className="mb-16 glass-panel rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden group hover:border-indigo-500/20 transition-colors duration-700">
-                                    <div className={`absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full pointer-events-none transition-colors duration-700 ${activeTab === 'ingles' ? 'bg-rose-500/10 group-hover:bg-rose-500/20' : 'bg-indigo-500/10 group-hover:bg-indigo-500/20'}`}></div>
+                                <div className="mb-16 glass-panel rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden group transition-colors duration-700 hover:border-white/10">
+                                    <div className={`absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full pointer-events-none transition-colors duration-700 bg-${themeColor}-500/10 group-hover:bg-${themeColor}-500/20`}></div>
                                     
                                     <div className="flex flex-col lg:flex-row justify-between items-center gap-8 relative z-10">
                                         <div className="flex-1 w-full lg:max-w-sm flex items-center justify-between gap-4 bg-black/40 border border-white/5 p-5 rounded-[2rem] shadow-inner transition-colors group-hover:border-white/10">
                                             <div className="text-left ml-2">
-                                                <p className={`font-black uppercase tracking-widest text-[10px] ${activeTab === 'ingles' ? 'text-rose-400' : 'text-indigo-400'}`}>Ritmo</p>
+                                                <p className={`font-black uppercase tracking-widest text-[10px] text-${themeColor}-400`}>Ritmo</p>
                                                 <p className="text-slate-300 font-bold text-sm">Horas/Dia</p>
                                             </div>
                                             <div className="flex items-center gap-2 bg-black/50 p-1.5 rounded-2xl border border-white/5">
@@ -785,11 +728,11 @@
                                         </div>
 
                                         <div className="flex-1 w-full text-center">
-                                            <p className="text-slate-500 font-black uppercase tracking-widest text-[10px] mb-3">Previsão Absoluta de Formatura ({activeTab === 'ingles' ? 'Inglês' : 'Dev'})</p>
+                                            <p className="text-slate-500 font-black uppercase tracking-widest text-[10px] mb-3">Previsão de Formatura ({tabNameDisplay})</p>
                                             {futureModules.length > 0 ? (
-                                                <div className={`inline-block bg-gradient-to-r p-[1px] rounded-[2.5rem] transition-shadow duration-500 cursor-default ${activeTab === 'ingles' ? 'from-rose-500 via-pink-500 to-amber-400 shadow-[0_10px_30px_-10px_rgba(244,63,94,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(244,63,94,0.5)]' : 'from-indigo-500 via-purple-500 to-cyan-400 shadow-[0_10px_30px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(79,70,229,0.5)]'}`}>
+                                                <div className={`inline-block bg-gradient-to-r p-[1px] rounded-[2.5rem] transition-shadow duration-500 cursor-default ${gradientContainer}`}>
                                                     <div className="bg-slate-950 px-10 py-4 rounded-[2.5rem]">
-                                                        <span className={`text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r tracking-tighter ${activeTab === 'ingles' ? 'from-rose-300 via-pink-300 to-amber-300' : 'from-indigo-300 via-purple-300 to-cyan-300'}`}>{formatDate(graduationDate)}</span>
+                                                        <span className={`text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r tracking-tighter ${gradientText}`}>{formatDate(graduationDate)}</span>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -829,7 +772,10 @@
                                                 strokeColor = "rgba(16, 185, 129, 0.6)"; 
                                                 strokeWidth = "3";
                                             } else if (line.status === 'active') {
-                                                strokeColor = activeTab === 'ingles' ? "rgba(244, 63, 94, 0.8)" : "rgba(99, 102, 241, 0.8)"; 
+                                                if (activeTab === 'ingles') strokeColor = "rgba(244, 63, 94, 0.8)";
+                                                else if (activeTab === 'digitacao') strokeColor = "rgba(14, 165, 233, 0.8)";
+                                                else if (activeTab === 'desenvolvimento') strokeColor = "rgba(245, 158, 11, 0.8)";
+                                                else strokeColor = "rgba(99, 102, 241, 0.8)";
                                                 strokeWidth = "3";
                                                 extraClass = "path-active"; 
                                             }
@@ -856,9 +802,7 @@
                                                     const isSelected = selectedModule === m.id;
                                                     const actualHours = (state.customHours || {})[m.id] || m.estimatedHours;
                                                     
-                                                    let nodeClass = "bg-black/40 border-white/5 text-slate-300 hover:bg-slate-800/80 cursor-pointer";
-                                                    if(activeTab === 'ingles') nodeClass += " hover:border-rose-500/30";
-                                                    else nodeClass += " hover:border-indigo-500/30";
+                                                    let nodeClass = `bg-black/40 border-white/5 text-slate-300 hover:bg-slate-800/80 cursor-pointer hover:border-${themeColor}-500/30`;
                                                     
                                                     let iconClass = "text-slate-500 bg-black/40 border-transparent";
                                                     let statusIcon = null;
@@ -874,7 +818,7 @@
                                                     }
 
                                                     if (isSelected) {
-                                                        const ringColor = activeTab === 'ingles' ? 'ring-rose-500/50' : 'ring-indigo-500/50';
+                                                        const ringColor = `ring-${themeColor}-500/50`;
                                                         nodeClass += ` ring-2 ${ringColor} scale-[1.05] z-30 shadow-2xl bg-slate-800/90`;
                                                     }
 
@@ -892,7 +836,7 @@
                                                             
                                                             <div className="flex flex-col gap-1.5 mt-2 w-full">
                                                                 <span className="text-[9px] uppercase font-black tracking-widest text-slate-400 bg-black/20 px-2 py-1.5 rounded-md border border-white/5">Meta: {actualHours}h</span>
-                                                                <span className={`text-[9px] uppercase font-black tracking-widest border px-2 py-1.5 rounded-md ${activeTab === 'ingles' ? 'text-rose-300 bg-rose-500/10 border-rose-500/20' : 'text-indigo-300 bg-indigo-500/10 border-indigo-500/20'}`}>Total: {formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</span>
+                                                                <span className={`text-[9px] uppercase font-black tracking-widest border px-2 py-1.5 rounded-md text-${themeColor}-300 bg-${themeColor}-500/10 border-${themeColor}-500/20`}>Total: {formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</span>
                                                             </div>
                                                             
                                                             {p.cert && (
@@ -910,15 +854,15 @@
                             </div>
                         )}
 
-                        {/* --- PAINEL LATERAL (Front-End OU Inglês) --- */}
-                        {(activeTab === 'trilha' || activeTab === 'ingles') && (
+                        {/* --- PAINEL LATERAL DE DETALHES --- */}
+                        {isTrailTab && (
                             <>
                                 <div className={`fixed inset-0 bg-[#020617]/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${selectedModule ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setSelectedModule(null)}></div>
                                 
                                 <div className={`fixed inset-y-0 right-0 w-full md:w-[500px] lg:w-[600px] bg-slate-950/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl z-50 transform transition-transform duration-500 ease-out overflow-y-auto ${selectedModule ? 'translate-x-0' : 'translate-x-full'}`}>
                                     {selectedModule && (() => {
                                         const m = currentData.find(d => d.id === selectedModule);
-                                        if(!m) return null; // Prevenção de quebra de estado
+                                        if(!m) return null;
                                         const p = (state.progress || {})[m.id] || {};
                                         const passed = p.passed;
                                         const locked = isModuleLocked(m.id);
@@ -926,8 +870,6 @@
                                         const isCurrentTimer = timer.moduleId === m.id;
                                         
                                         const pendingDeps = (m.dependsOn || []).filter(depId => !(state.progress || {})[depId]?.passed).map(depId => currentData.find(d => d.id === depId)?.title);
-
-                                        const themeColor = activeTab === 'ingles' ? 'rose' : 'indigo';
 
                                         return (
                                             <div className="p-6 md:p-10 relative">
@@ -991,7 +933,7 @@
                                                     </div>
                                                 </div>
 
-                                                {/* EVOLUÇÃO DOS PROJETOS (Apenas Front-End) */}
+                                                {/* EVOLUÇÃO DOS PROJETOS (Apenas quando houver tarefas associadas) */}
                                                 {m.projectTasks && m.projectTasks.length > 0 && !locked && (
                                                     <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
                                                         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-[50px] rounded-full pointer-events-none"></div>
@@ -1111,19 +1053,19 @@
                             </>
                         )}
 
-                        {/* --- ABAS RESTANTES (Comuns) --- */}
+                        {/* --- ABAS COMUNS RESTANTES --- */}
                         {activeTab === 'extras' && (
                             <div className="animate-fade-in pb-20 max-w-4xl mx-auto">
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-sky-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Cursos <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Adicionais</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Além do Front-End e Inglês, adicione aqui outras habilidades que fortalecem seu perfil profissional, como Digitação ou Soft Skills.</p>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Adicione aqui outras habilidades para construir sua T-Shape (Especialista em um, generalista em vários).</p>
                                 </div>
 
                                 <div className="glass-panel p-6 md:p-10 rounded-[2.5rem] relative overflow-hidden">
                                     <div className="flex flex-col sm:flex-row gap-3 mb-10 relative z-10">
                                         <input type="text" value={extraCourseInput} onChange={e => setExtraCourseInput(e.target.value)} 
-                                            placeholder="Ex: Curso de Digitação Rápida..." 
+                                            placeholder="Ex: Padrões de Projeto em JS..." 
                                             className="flex-1 bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all shadow-inner" 
                                             onKeyDown={e => e.key === 'Enter' && handleAddExtraCourse()} />
                                         <button onClick={handleAddExtraCourse} className="bg-sky-600 hover:bg-sky-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(2,132,199,0.4)] hover:scale-[1.02] active:scale-95">
@@ -1160,145 +1102,6 @@
                                                 </div>
                                             ))
                                         )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'diario' && (
-                            <div className="animate-fade-in pb-20">
-                                
-                                <div className="text-center mb-16">
-                                    <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 mb-4 tracking-tighter drop-shadow-lg">Diário & Metas</h2>
-                                    <p className="text-slate-400 max-w-2xl mx-auto text-lg mb-8">Planeje seu futuro, defina um dead-line rigoroso e registre suas horas em um heat-map visual.</p>
-                                </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-                                    <div className="lg:col-span-1 space-y-8">
-                                        <div className="glass-panel rounded-[2rem] p-8 relative overflow-hidden group hover:border-pink-500/30 transition-colors">
-                                            <div className="absolute top-0 right-0 w-40 h-40 bg-pink-500/10 blur-[60px] rounded-full pointer-events-none"></div>
-                                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-5 flex items-center gap-2"><i className="fa-solid fa-flag-checkered text-pink-400"></i> Dead-line Absoluto</h3>
-                                            <input type="date" 
-                                                value={state.targetDate} 
-                                                onChange={e => setState(p => ({...p, targetDate: e.target.value}))}
-                                                className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 mb-5 transition-all shadow-inner" />
-                                            
-                                            {state.targetDate && (
-                                                <div className="mt-4 p-5 rounded-xl bg-black/20 border border-white/5 relative z-10">
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase mb-2">Sua meta final é realista?</p>
-                                                    <p className="text-slate-300 text-sm mt-1">Lembre-se de ser flexível. Estudar e praticar projetos leva tempo real e cognitivo.</p>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <div className="glass-panel rounded-[2rem] p-8 hover:border-orange-500/30 transition-colors">
-                                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2"><i className="fa-solid fa-chart-line text-orange-400"></i> Esforço Histórico</h3>
-                                            <div className="flex items-center gap-4 mb-10">
-                                                <div className="w-16 h-16 rounded-[1.25rem] bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-                                                    <i className="fa-solid fa-fire text-3xl text-orange-500 drop-shadow-[0_0_10px_rgba(249,115,22,0.6)]"></i>
-                                                </div>
-                                                <div>
-                                                    <span className="text-5xl font-black text-white tracking-tighter">{totalHoursStudied}</span>
-                                                    <span className="text-slate-500 ml-2 text-sm font-bold uppercase tracking-widest">horas</span>
-                                                </div>
-                                            </div>
-
-                                            <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Volume (Últimos 7 Dias)</h4>
-                                            <div className="h-32 flex items-end justify-between gap-1.5 bg-black/20 p-5 rounded-2xl border border-white/5">
-                                                {chartData.data.map((d, i) => {
-                                                    const height = (d.hours / chartData.maxH) * 100;
-                                                    return (
-                                                        <div key={i} className="flex flex-col items-center gap-2 w-full group relative h-full justify-end">
-                                                            <div className="w-full rounded-md bg-gradient-to-t from-indigo-900/50 to-indigo-400 transition-all duration-300 group-hover:to-indigo-300 group-hover:shadow-[0_0_15px_rgba(129,140,248,0.5)] border border-indigo-500/20" style={{height: `${height}%`, minHeight: d.hours > 0 ? '6px' : '0'}}></div>
-                                                            <span className="text-[9px] text-slate-500 font-bold opacity-50 group-hover:opacity-100 transition-opacity">{d.date.split('/')[0]}</span>
-                                                            {d.hours > 0 && <div className="absolute -top-10 bg-slate-800 border border-white/10 text-white text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 pointer-events-none shadow-lg z-10 whitespace-nowrap">{d.hours}h</div>}
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="lg:col-span-2 glass-panel rounded-[2.5rem] p-6 md:p-10 hover:border-indigo-500/30 transition-colors">
-                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
-                                            <h3 className="text-3xl font-black text-white tracking-tight">{monthNames[calMonth]} {calYear}</h3>
-                                            <div className="flex gap-2 w-full sm:w-auto">
-                                                <select className="flex-1 sm:flex-none bg-black/40 text-white border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-500 appearance-none cursor-pointer" value={calMonth} onChange={e => setCalMonth(Number(e.target.value))}>
-                                                    {monthNames.map((m, i) => <option key={i} value={i} className="bg-slate-900">{m}</option>)}
-                                                </select>
-                                                <select className="flex-1 sm:flex-none bg-black/40 text-white border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-500 appearance-none cursor-pointer" value={calYear} onChange={e => setCalYear(Number(e.target.value))}>
-                                                    {[2024, 2025, 2026, 2027].map(y => <option key={y} value={y} className="bg-slate-900">{y}</option>)}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div className="grid grid-cols-7 gap-2 md:gap-3 text-center mb-4">
-                                            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => <div key={d} className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{d}</div>)}
-                                        </div>
-
-                                        <div className="grid grid-cols-7 gap-2 md:gap-3">
-                                            {Array.from({length: firstDayOfMonth(calYear, calMonth)}).map((_, i) => <div key={`empty-${i}`} />)}
-                                            {Array.from({length: daysInMonth(calYear, calMonth)}).map((_, i) => {
-                                                const d = i + 1;
-                                                const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                                                const hasLog = !!(state.studyLogs || {})[dateStr];
-                                                
-                                                return (
-                                                    <button key={d} onClick={() => openLogModal(calYear, calMonth, d)}
-                                                        className={`aspect-square rounded-[1rem] flex items-center justify-center font-bold text-sm md:text-base transition-all duration-300 border
-                                                        ${hasLog ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300 shadow-[0_0_15px_rgba(79,70,229,0.2)] hover:bg-indigo-500/40 hover:text-white hover:scale-105' : 'bg-black/20 border-white/5 text-slate-400 hover:border-white/20 hover:bg-white/5 hover:text-slate-200'}`}>
-                                                        {d}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {Object.keys(state.studyLogs || {}).length > 0 && (
-                                    <div className="glass-panel rounded-[2.5rem] p-6 md:p-10 relative overflow-hidden">
-                                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2"><i className="fa-solid fa-book-open"></i> Log de Retenção (Anotações)</h3>
-                                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4 scroll-smooth">
-                                            {Object.entries(state.studyLogs || {}).sort((a,b) => new Date(b[0]) - new Date(a[0])).map(([date, log]) => {
-                                                if(!log.notes) return null;
-                                                return (
-                                                    <div key={date} className="bg-black/20 p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors">
-                                                        <div className="flex flex-wrap gap-4 items-center mb-4 border-b border-white/5 pb-4">
-                                                            <span className="text-xs font-black tracking-widest text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1.5 rounded-lg">{date.split('-').reverse().join('/')}</span>
-                                                            <span className="text-xs text-slate-400 font-bold flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5"><i className="fa-regular fa-clock text-indigo-400"></i> {log.hours}h registradas</span>
-                                                        </div>
-                                                        <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{log.notes}</p>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {selectedLogDate && (
-                            <div className="fixed inset-0 z-50 bg-[#020617]/80 backdrop-blur-md flex items-center justify-center p-4">
-                                <div className="glass-panel w-full max-w-lg rounded-[2rem] border border-white/10 shadow-2xl p-8 animate-fade-in relative">
-                                    <button onClick={() => setSelectedLogDate(null)} className="absolute top-6 right-6 w-10 h-10 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white rounded-full flex items-center justify-center transition-colors"><i className="fa-solid fa-times"></i></button>
-                                    <h3 className="text-2xl font-black text-white mb-2 tracking-tight">Registro Diário</h3>
-                                    <p className="text-indigo-400 text-sm font-bold mb-8 uppercase tracking-widest bg-indigo-500/10 w-fit px-3 py-1 rounded-md border border-indigo-500/20">{selectedLogDate.split('-').reverse().join('/')}</p>
-                                    
-                                    <div className="space-y-6">
-                                        <div>
-                                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Horas Focadas</label>
-                                            <div className="relative">
-                                                <i className="fa-regular fa-clock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                                                <input type="number" step="0.5" min="0" value={logForm.hours} onChange={e => setLogForm(p => ({...p, hours: e.target.value}))}
-                                                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all text-lg font-bold" placeholder="Ex: 2.5" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Resumo (Active Recall)</label>
-                                            <textarea value={logForm.notes} onChange={e => setLogForm(p => ({...p, notes: e.target.value}))}
-                                                className="w-full h-40 bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none transition-all" placeholder="Forçar a mente a escrever o que aprendeu sela a memória de longo prazo..."></textarea>
-                                        </div>
-                                        <button onClick={handleSaveLog} className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black uppercase tracking-widest py-4.5 rounded-xl transition-all transform hover:scale-[1.02] shadow-[0_10px_20px_-5px_rgba(79,70,229,0.4)] border border-indigo-400/30">Gravar no Diário</button>
                                     </div>
                                 </div>
                             </div>
