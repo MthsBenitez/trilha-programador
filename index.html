@@ -33,23 +33,16 @@
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; border: 2px solid #020617; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
         
+        /* Ocultar barra de rolagem da skill tree, mantendo o scroll */
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Animação para o SVG Path (Linhas ativas) */
         .path-active { stroke-dasharray: 10; animation: dash 20s linear infinite; }
         @keyframes dash { to { stroke-dashoffset: 1000; } }
 
         .animate-fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .damage-flash { animation: damageFlash 0.5s ease-out forwards; }
-        @keyframes damageFlash { 
-            0% { background-color: rgba(225, 29, 72, 0.9); transform: scale(1.02) translateX(10px); }
-            20% { transform: scale(0.98) translateX(-10px); }
-            40% { transform: scale(1.01) translateX(5px); }
-            60% { transform: scale(0.99) translateX(-5px); }
-            100% { background-color: #020617; transform: scale(1) translateX(0); }
-        }
 
         .level-up-glow { animation: levelUpPulse 2s infinite alternate; }
         @keyframes levelUpPulse {
@@ -60,8 +53,7 @@
         .item-unlock { animation: itemUnlock 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: translateY(20px); }
         @keyframes itemUnlock { to { opacity: 1; transform: translateY(0); } }
 
-        .exam-mode { background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); }
-
+        /* Utilitários premium para Glassmorphism */
         .glass-panel {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(16px);
@@ -77,6 +69,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useLayoutEffect, useCallback } = React;
 
+        // --- DADOS ESTÁTICOS ---
         const toolList = [
             { n: 'Notion', i: 'fa-cube', d: 'Organização global, anotações em Markdown e gestão de projetos.', url: 'https://notion.so' },
             { n: 'Excalidraw', i: 'fa-pen-clip', d: 'Whiteboard virtual para desenhar arquitetura e fluxos de dados.', url: 'https://excalidraw.com/' },
@@ -291,7 +284,7 @@
 
         const allAchievements = [
             { id: 'start', t: 'O Despertar', d: 'Iniciou sua jornada definitiva no Front-end.' },
-            { id: 'mod_1', t: 'Primeira Vitória', d: 'Gabaritou a prova e validou seu primeiro módulo de forma brutal.' },
+            { id: 'mod_1', t: 'Primeira Vitória', d: 'Validou seu primeiro módulo de forma completa.' },
             { id: 'perc_25', t: 'Aprendiz Dedicado', d: 'Concluiu 25% de todo o Roadmap.' },
             { id: 'perc_50', t: 'Meio Caminho', d: 'Concluiu 50% de todo o Roadmap.' },
             { id: 'perc_75', t: 'Quase Mestre', d: 'Concluiu 75% de todo o Roadmap.' },
@@ -299,15 +292,14 @@
             { id: 'link_1', t: 'Curioso', d: 'Adicionou seu primeiro link customizado na trilha.' },
             { id: 'link_10', t: 'O Bibliotecário', d: 'Adicionou 10 ou mais links customizados.' },
             { id: 'time_lord', t: 'Senhor do Tempo', d: 'Recalculou a carga horária real de um curso no calendário.' },
-            { id: 'night_owl', t: 'Coruja', d: 'Venceu uma prova durante a madrugada (00:00 - 04:00).' },
-            { id: 'security_exp', t: 'Cão de Guarda', d: 'Passou na rigorosa prova de Segurança Web (Módulo 14).' },
+            { id: 'night_owl', t: 'Coruja', d: 'Validou um módulo durante a madrugada (00:00 - 04:00).' },
+            { id: 'security_exp', t: 'Cão de Guarda', d: 'Dominou rigorosamente Segurança Web (Módulo 14).' },
             { id: 'framework_king', t: 'Rei da Reatividade', d: 'Dominou o gigantesco módulo de Frameworks (Módulo 8).' },
             { id: 'ts_master', t: 'O Tipador', d: 'Gabaritou a validação pesada em TypeScript (Módulo 17).' },
             { id: 'cert_5', t: 'Caçador de Certificados', d: 'Emitiu e anexou 5 certificados na plataforma.' }
         ];
 
         // --- HIGIENIZADOR DA URL DO FIREBASE ---
-        // Aqui limpamos se a URL vier com ":null" no final, se faltar barra, etc, e injetamos o obrigatório ".json"
         const RAW_FIREBASE_URL = "https://trilha-frontend-2688f-default-rtdb.firebaseio.com/";
         const FIREBASE_URL = RAW_FIREBASE_URL.replace(/:null\/?$/, '').replace(/\/?$/, '') + "/trilha_data.json";
 
@@ -316,17 +308,16 @@
                 progress: {}, 
                 customLinks: {}, 
                 customHours: {}, 
+                moduleTime: {}, // Salva os segundos gastos por módulo
                 dailyHours: 2,
                 achievements: ['start'],
                 studyLogs: {}, 
-                targetDate: '', 
-                customExams: {}
+                targetDate: ''
             };
 
-            // LocalStorage (Estado Inicial) protegido
             const [state, setState] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('FE_Definitive_V3.4');
+                    const saved = localStorage.getItem('FE_Definitive_V3.5');
                     if (saved) {
                         const parsed = JSON.parse(saved);
                         return { ...defaultState, ...parsed }; 
@@ -335,10 +326,8 @@
                 return defaultState;
             });
 
-            // Ref para controlar sincronização e evitar que um state vazio limpe a nuvem
             const isReadyForSync = useRef(false);
 
-            // 1. FETCH INICIAL (NUVEM -> LOCAL)
             useEffect(() => {
                 fetch(FIREBASE_URL)
                     .then(res => {
@@ -349,14 +338,14 @@
                         if (data && typeof data === 'object' && !data.error) {
                             setState(prev => {
                                 const safeData = { ...data };
-                                // Firebase corrompe arrays vazios ou esparsos transformando-os em objetos, isso corrige:
                                 if (safeData.achievements && !Array.isArray(safeData.achievements)) {
                                     safeData.achievements = Object.values(safeData.achievements);
                                 }
+                                safeData.moduleTime = safeData.moduleTime || {};
+                                safeData.progress = safeData.progress || {};
                                 return { ...prev, ...safeData };
                             });
                         }
-                        // Libera permissão de salvar na nuvem 500ms depois (evita que o load sobrescreva)
                         setTimeout(() => { isReadyForSync.current = true; }, 500);
                     })
                     .catch(err => {
@@ -365,11 +354,10 @@
                     });
             }, []);
 
-            // Função segura e isolada para engatilhar achievements
             const triggerAchievement = (id) => {
                 setState(p => {
                     const currentAch = Array.isArray(p.achievements) ? p.achievements : Object.values(p.achievements || {});
-                    if (currentAch.includes(id)) return p; // bail out se já tem
+                    if (currentAch.includes(id)) return p; 
                     return { ...p, achievements: [...currentAch, id] };
                 });
             };
@@ -397,9 +385,8 @@
                 if (certCount >= 5) triggerAchievement('cert_5');
             };
 
-            // 2. SAVE CONTÍNUO (LOCAL -> NUVEM)
             useEffect(() => {
-                localStorage.setItem('FE_Definitive_V3.4', JSON.stringify(state));
+                localStorage.setItem('FE_Definitive_V3.5', JSON.stringify(state));
                 checkGlobalAchievements();
 
                 if (isReadyForSync.current) {
@@ -417,51 +404,102 @@
 
             const [activeTab, setActiveTab] = useState('trilha');
             const [selectedModule, setSelectedModule] = useState(null); 
-            
-            const [isExamFormOpen, setIsExamFormOpen] = useState(false);
-            const [aiToken, setAiToken] = useState('');
             const [linkInputText, setLinkInputText] = useState('');
-            const [formError, setFormError] = useState('');
-
-            const [examMode, setExamMode] = useState(null); 
-            const [examAnswers, setExamAnswers] = useState({});
-            const [examDamage, setExamDamage] = useState(false); 
-            const [examFailedMsg, setExamFailedMsg] = useState(null);
-
             const [celebration, setCelebration] = useState(null); 
-
             const [calYear, setCalYear] = useState(new Date().getFullYear());
             const [calMonth, setCalMonth] = useState(new Date().getMonth());
             const [selectedLogDate, setSelectedLogDate] = useState(null);
             const [logForm, setLogForm] = useState({ hours: '', notes: '' });
-
             const [svgLines, setSvgLines] = useState([]);
             const treeContainerRef = useRef(null);
 
+            // --- ESTADO DO CRONÔMETRO ---
+            const [timer, setTimer] = useState({ active: false, moduleId: null, seconds: 0 });
+
+            useEffect(() => {
+                let interval;
+                if (timer.active) {
+                    interval = setInterval(() => {
+                        setTimer(prev => ({ ...prev, seconds: prev.seconds + 1 }));
+                    }, 1000);
+                }
+                return () => clearInterval(interval);
+            }, [timer.active]);
+
+            const startTimer = (moduleId) => {
+                if (timer.moduleId !== moduleId) {
+                    setTimer({ active: true, moduleId, seconds: 0 });
+                } else {
+                    setTimer(prev => ({ ...prev, active: true }));
+                }
+            };
+
+            const pauseTimer = () => {
+                setTimer(prev => ({ ...prev, active: false }));
+            };
+
+            const saveTimer = () => {
+                if (!timer.moduleId || timer.seconds === 0) return;
+                setState(prev => ({
+                    ...prev,
+                    moduleTime: {
+                        ...(prev.moduleTime || {}),
+                        [timer.moduleId]: ((prev.moduleTime || {})[timer.moduleId] || 0) + timer.seconds
+                    }
+                }));
+                setTimer({ active: false, moduleId: null, seconds: 0 });
+            };
+
+            // Formatação do Relógio Ativo
+            const formatChrono = (totalSeconds) => {
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
+                return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            };
+
+            // Formatação para exibição no Card (Xh Ym)
+            const formatTimeDisplay = (totalSeconds) => {
+                if (!totalSeconds) return "0m";
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                if (h > 0) return `${h}h ${m}m`;
+                return `${m}m`;
+            };
+
+            // --- LÓGICA DA SKILL TREE E OBJETIVOS ---
             const isModuleLocked = useCallback((moduleId) => {
                 const mod = detailedRoadmapData.find(m => m.id === moduleId);
                 if (!mod || !mod.dependsOn) return false;
                 return mod.dependsOn.some(depId => !(state.progress || {})[depId]?.passed);
             }, [state.progress]);
 
+            const toggleObjective = (moduleId, objectiveId) => {
+                setState(prev => {
+                    const modProgress = (prev.progress || {})[moduleId] || {};
+                    const objectives = modProgress.objectives || [];
+                    const newObjectives = objectives.includes(objectiveId) 
+                        ? objectives.filter(id => id !== objectiveId)
+                        : [...objectives, objectiveId];
+                    
+                    return { ...prev, progress: { ...prev.progress, [moduleId]: { ...modProgress, objectives: newObjectives } } };
+                });
+            };
+
             const calculateLines = useCallback(() => {
                 if (!treeContainerRef.current || activeTab !== 'trilha') return;
-                
                 const containerRect = treeContainerRef.current.getBoundingClientRect();
                 const newLines = [];
 
                 detailedRoadmapData.forEach(module => {
                     if (!module.dependsOn || module.dependsOn.length === 0) return;
-                    
                     const targetEl = document.getElementById(`node-${module.id}`);
                     if (!targetEl) return;
-                    
                     const targetRect = targetEl.getBoundingClientRect();
 
                     module.dependsOn.forEach(depId => {
                         const sourceEl = document.getElementById(`node-${depId}`);
                         if (!sourceEl) return;
-
                         const sourceRect = sourceEl.getBoundingClientRect();
 
                         const startX = (sourceRect.left - containerRect.left) + (sourceRect.width / 2);
@@ -484,9 +522,9 @@
             }, [activeTab, state.progress]);
 
             useLayoutEffect(() => {
-                const timer = setTimeout(calculateLines, 100);
+                const timerDelay = setTimeout(calculateLines, 100);
                 window.addEventListener('resize', calculateLines);
-                return () => { clearTimeout(timer); window.removeEventListener('resize', calculateLines); };
+                return () => { clearTimeout(timerDelay); window.removeEventListener('resize', calculateLines); };
             }, [calculateLines, activeTab]);
 
             const calendarData = useMemo(() => {
@@ -539,104 +577,14 @@
                 return { data, maxH: maxH < 5 ? 5 : maxH }; 
             }, [state.studyLogs]);
 
-            const openExamForm = () => {
-                setAiToken('');
-                setFormError('');
-                setIsExamFormOpen(true);
-            };
-
-            const handleSaveCustomExam = (moduleId) => {
-                if (!aiToken.trim()) {
-                    setFormError('Cole o código gerado pela IA primeiro.'); return;
-                }
-
-                try {
-                    let decodedStr = '';
-                    try {
-                        decodedStr = decodeURIComponent(escape(window.atob(aiToken.trim())));
-                    } catch(e) {
-                        decodedStr = window.atob(aiToken.trim());
-                    }
-                    
-                    const parsed = JSON.parse(decodedStr);
-                    
-                    if (!parsed.q || !parsed.options || parsed.options.length !== 4 || typeof parsed.a !== 'number') {
-                        throw new Error("Formato inválido");
-                    }
-
-                    setState(prev => ({
-                        ...prev,
-                        customExams: { ...(prev.customExams || {}), [moduleId]: parsed }
-                    }));
-                    setIsExamFormOpen(false);
-                } catch (err) {
-                    setFormError('Código inválido. Copie exatamente a string Base64 que a IA gerou (sem formatação markdown).');
-                }
-            };
-
-            const handleDeleteCustomExam = (moduleId) => {
-                setState(prev => {
-                    const newExams = { ...(prev.customExams || {}) };
-                    delete newExams[moduleId];
-                    return { ...prev, customExams: newExams };
-                });
-            };
-
-            const startExam = (mod) => {
-                const customExam = (state.customExams || {})[mod.id];
-                if(!customExam) return;
-
-                setExamMode({ 
-                    ...mod, 
-                    shuffledQuiz: [{
-                        q: customExam.q,
-                        options: customExam.options,
-                        a: customExam.a,
-                        topicRef: "Avaliação Customizada"
-                    }] 
-                });
-                setExamAnswers({});
-                setExamDamage(false);
-                setExamFailedMsg(null);
-                setSelectedModule(null); 
-            };
-
-            const handleAnswer = (qIndex, oIndex, correctIndex) => {
-                if (examAnswers[qIndex] !== undefined || examFailedMsg) return;
-
-                if (oIndex !== correctIndex) {
-                    setExamDamage(true);
-                    setExamFailedMsg("SISTEMA COMPROMETIDO: Bloqueio de 24 Horas ativado.");
-                    
-                    const lockTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-                    setState(prev => ({
-                        ...prev,
-                        progress: { ...(prev.progress || {}), [examMode.id]: { ...((prev.progress || {})[examMode.id] || {}), lockedUntil: lockTime } }
-                    }));
-
-                    setTimeout(() => {
-                        setExamMode(null);
-                        setExamDamage(false);
-                        setExamFailedMsg(null);
-                        setSelectedModule(examMode.id); 
-                    }, 4500);
-                } else {
-                    const newAnswers = { ...examAnswers, [qIndex]: oIndex };
-                    setExamAnswers(newAnswers);
-                    if (Object.keys(newAnswers).length === examMode.shuffledQuiz.length) {
-                        triggerVictory(examMode);
-                    }
-                }
-            };
-
             const triggerVictory = (mod) => {
                 setState(p => ({
-                    ...p, progress: { ...(p.progress || {}), [mod.id]: { passed: true, cert: null, completionDate: new Date().toISOString() } }
+                    ...p, progress: { ...(p.progress || {}), [mod.id]: { ...((p.progress||{})[mod.id]||{}), passed: true, cert: null, completionDate: new Date().toISOString() } }
                 }));
                 const hour = new Date().getHours();
                 if (hour >= 0 && hour <= 4) triggerAchievement('night_owl');
 
-                setExamMode(null);
+                setSelectedModule(null);
                 setCelebration(mod); 
             };
 
@@ -688,76 +636,6 @@
                             <button onClick={() => setCelebration(null)} className="w-full py-5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white rounded-2xl font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(16,185,129,0.4)] transition-all transform hover:scale-[1.02] active:scale-95 animate-fade-in border border-emerald-400/30" style={{animationDelay: '1.5s'}}>
                                 Coletar Conhecimento e Continuar
                             </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            if (examMode) {
-                return (
-                    <div className={`min-h-screen exam-mode text-slate-300 p-4 md:p-10 font-sans transition-colors duration-300 ${examDamage ? 'damage-flash' : ''}`}>
-                        <div className="max-w-4xl mx-auto glass-panel rounded-[2.5rem] p-6 md:p-12 relative animate-fade-in border border-indigo-500/10">
-                            <div className="flex justify-between items-start mb-10 pb-8 border-b border-white/5">
-                                <div>
-                                    <h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-400 uppercase tracking-tighter mb-2">Avaliação Definitiva</h1>
-                                    <p className="text-slate-400 text-sm flex items-center gap-2"><i className="fa-solid fa-user-shield"></i> {examMode.title} (Desafio IA)</p>
-                                </div>
-                                <button onClick={() => { setExamMode(null); setSelectedModule(examMode.id); }} className="text-slate-400 hover:text-white text-xl bg-white/5 hover:bg-white/10 w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition-all shadow-lg"><i className="fa-solid fa-times"></i></button>
-                            </div>
-
-                            <div className="bg-rose-950/20 backdrop-blur-md border border-rose-500/20 p-5 rounded-2xl mb-10 flex items-start gap-5 shadow-lg shadow-rose-900/10">
-                                <div className="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center shrink-0 border border-rose-500/20">
-                                    <i className="fa-solid fa-skull text-rose-400 text-xl animate-pulse"></i>
-                                </div>
-                                <div>
-                                    <h4 className="text-rose-300 font-black uppercase tracking-wider text-sm mb-1.5">Regra de 1 Erro (Morte Súbita)</h4>
-                                    <p className="text-rose-200/60 text-xs leading-relaxed">Este é um desafio encriptado. Se errar, demonstra lacuna crítica e o sistema bloqueará a realização de exames neste módulo por 24 horas. Concentre-se.</p>
-                                </div>
-                            </div>
-
-                            {examFailedMsg && (
-                                <div className="absolute inset-0 z-20 bg-rose-950/95 backdrop-blur-xl flex flex-col items-center justify-center rounded-[2.5rem] border border-rose-500/30 p-6 text-center animate-fade-in shadow-2xl">
-                                    <i className="fa-solid fa-triangle-exclamation text-8xl text-rose-500 mb-8 drop-shadow-[0_0_30px_rgba(225,29,72,0.6)]"></i>
-                                    <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-widest mb-3">{examFailedMsg}</h2>
-                                    <p className="text-rose-200/80 max-w-md mx-auto">Você errou uma premissa do desafio ofuscado. A avaliação foi encerrada e o módulo ficará bloqueado. Retornando ao mapa em instantes...</p>
-                                </div>
-                            )}
-
-                            <div className="space-y-12">
-                                {examMode.shuffledQuiz.map((q, idx) => {
-                                    const isAnswered = examAnswers[idx] !== undefined;
-                                    const answerState = isAnswered ? (examAnswers[idx] === q.a ? 'correct' : 'wrong') : 'pending';
-
-                                    return (
-                                        <div key={idx} className={`relative transition-all duration-500 ${answerState === 'correct' ? 'opacity-40 grayscale blur-[1px]' : ''}`}>
-                                            <div className="mb-4 inline-flex bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-300 uppercase tracking-widest shadow-inner">
-                                                Alvo: {q.topicRef}
-                                            </div>
-                                            <div className="bg-slate-900/50 p-6 md:p-8 rounded-[2rem] border border-white/5 shadow-xl">
-                                                <p className="text-lg md:text-xl font-bold text-white mb-8 leading-relaxed">
-                                                    <span className="text-indigo-400 mr-3 opacity-50">{idx+1}.</span> {q.q}
-                                                </p>
-                                                <div className="space-y-3">
-                                                    {q.options.map((opt, optIdx) => {
-                                                        let btnClass = "bg-black/20 border-white/5 text-slate-300 hover:border-indigo-400/50 hover:bg-indigo-500/5 hover:text-white shadow-sm";
-                                                        if (isAnswered) {
-                                                            if (optIdx === q.a) btnClass = "bg-emerald-500/10 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(52,211,153,0.1)]"; 
-                                                            else if (examAnswers[idx] === optIdx) btnClass = "bg-rose-500/10 border-rose-500 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.1)]"; 
-                                                            else btnClass = "bg-black/10 border-transparent text-slate-600 opacity-30"; 
-                                                        }
-                                                        return (
-                                                            <button key={optIdx} onClick={() => handleAnswer(idx, optIdx, q.a)} disabled={isAnswered || examFailedMsg}
-                                                                className={`w-full text-left p-4 md:p-5 rounded-2xl border transition-all duration-300 text-sm md:text-base font-medium ${btnClass}`}>
-                                                                {opt}
-                                                            </button>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
                         </div>
                     </div>
                 );
@@ -906,7 +784,7 @@
                                                     }
 
                                                     return (
-                                                        <div key={m.id} id={`node-${m.id}`} onClick={() => { setSelectedModule(m.id); setIsExamFormOpen(false); setLinkInputText(''); setAiToken(''); }}
+                                                        <div key={m.id} id={`node-${m.id}`} onClick={() => { setSelectedModule(m.id); setLinkInputText(''); }}
                                                             className={`relative w-48 p-6 rounded-[2rem] border backdrop-blur-xl transition-all duration-300 flex flex-col items-center justify-center text-center group ${nodeClass} ${!isSelected && !isLocked && 'hover:-translate-y-1.5'}`}>
                                                             
                                                             {statusIcon}
@@ -915,9 +793,12 @@
                                                                 {isPassed ? <i className="fa-solid fa-check text-sm font-black"></i> : <span className="font-black text-sm">{m.id.substring(0,2).toUpperCase()}</span>}
                                                             </div>
                                                             
-                                                            <h3 className="font-bold text-sm md:text-base leading-tight mb-2 group-hover:text-white transition-colors">{m.title}</h3>
+                                                            <h3 className="font-bold text-sm md:text-base leading-tight mb-3 group-hover:text-white transition-colors">{m.title}</h3>
                                                             
-                                                            <span className="text-[10px] uppercase font-black tracking-widest opacity-50 bg-black/20 px-3 py-1 rounded-lg">~{actualHours}h</span>
+                                                            <div className="flex flex-col gap-1.5 mt-2 w-full">
+                                                                <span className="text-[9px] uppercase font-black tracking-widest text-slate-400 bg-black/20 px-2 py-1.5 rounded-md border border-white/5">Meta: {actualHours}h</span>
+                                                                <span className="text-[9px] uppercase font-black tracking-widest text-indigo-300 bg-indigo-500/10 px-2 py-1.5 rounded-md border border-indigo-500/20">Total: {formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</span>
+                                                            </div>
                                                             
                                                             {p.cert && (
                                                                 <div className="absolute -bottom-3 -right-3 w-8 h-8 bg-gradient-to-br from-amber-300 to-amber-600 text-slate-950 rounded-full flex items-center justify-center text-xs shadow-lg shadow-amber-500/30 border-2 border-slate-900" title="Certificado Anexado">
@@ -946,7 +827,7 @@
                                         const passed = p.passed;
                                         const locked = isModuleLocked(m.id);
                                         const actualHours = (state.customHours || {})[m.id] || m.estimatedHours;
-                                        const hasCustomExam = (state.customExams || {})[m.id];
+                                        const isCurrentTimer = timer.moduleId === m.id;
                                         
                                         const pendingDeps = (m.dependsOn || []).filter(depId => !(state.progress || {})[depId]?.passed).map(depId => detailedRoadmapData.find(d => d.id === depId)?.title);
 
@@ -963,8 +844,9 @@
                                                     <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-4 tracking-tight">{m.title}</h2>
                                                     <p className="text-slate-400 text-sm leading-relaxed mb-8">{m.description}</p>
 
+                                                    {/* Ajuste de Carga Real */}
                                                     <div className="flex items-center gap-4 bg-black/20 w-fit px-5 py-3 rounded-2xl border border-white/5 shadow-inner">
-                                                        <span className="text-[10px] text-indigo-400 uppercase font-black tracking-widest opacity-80">Carga Real:</span>
+                                                        <span className="text-[10px] text-indigo-400 uppercase font-black tracking-widest opacity-80">Carga Real Meta:</span>
                                                         <div className="flex items-center gap-1">
                                                             <input type="number" min="1" value={actualHours} 
                                                                 disabled={passed}
@@ -979,123 +861,96 @@
                                                     </div>
                                                 </div>
 
+                                                {/* Conselho do Mestre */}
                                                 <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-6 rounded-r-3xl mb-10 relative overflow-hidden group">
                                                     <i className="fa-solid fa-brain absolute -right-4 -bottom-4 text-8xl text-amber-500/5 group-hover:scale-110 transition-transform duration-700"></i>
                                                     <h4 className="text-amber-400 text-xs font-black uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2"><i className="fa-solid fa-lightbulb"></i> Conselho do Mestre</h4>
                                                     <p className="text-amber-100/70 text-sm italic relative z-10 leading-relaxed">"{m.masterAdvice}"</p>
                                                 </div>
 
-                                                {locked ? (
-                                                    <div className="bg-rose-950/30 border border-rose-500/30 p-6 rounded-[2rem] text-center shadow-inner mb-10">
-                                                        <i className="fa-solid fa-lock text-5xl text-rose-500/80 mb-5 drop-shadow-[0_0_15px_rgba(225,29,72,0.4)]"></i>
-                                                        <h3 className="text-white font-black text-lg mb-2">Conhecimento Bloqueado</h3>
-                                                        <p className="text-sm text-rose-200/70 mb-4">A base é a fundação do castelo. Você não pode tentar o exame sem antes dominar:</p>
-                                                        <div className="flex flex-wrap justify-center gap-2">
-                                                            {pendingDeps.map(dep => <span key={dep} className="text-[10px] uppercase font-black tracking-widest bg-rose-500/10 text-rose-400 border border-rose-500/20 px-3 py-1.5 rounded-lg">{dep}</span>)}
+                                                {/* CRONÔMETRO */}
+                                                <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
+                                                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[50px] rounded-full pointer-events-none"></div>
+                                                    <h4 className="text-white font-bold text-xl mb-6 flex items-center gap-3 relative z-10"><i className="fa-solid fa-stopwatch text-indigo-400"></i> Foco e Tempo de Estudo</h4>
+                                                    
+                                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-black/40 p-6 rounded-2xl border border-white/10 relative z-10">
+                                                        <div className="text-center sm:text-left">
+                                                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1.5">Sessão Atual</p>
+                                                            <div className="text-5xl font-black text-indigo-400 font-mono tracking-wider">
+                                                                {formatChrono(isCurrentTimer ? timer.seconds : 0)}
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-3">
+                                                            {!isCurrentTimer || !timer.active ? (
+                                                                <button onClick={() => startTimer(m.id)} className="bg-indigo-600 hover:bg-indigo-500 text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:scale-105 active:scale-95 text-xl"><i className="fa-solid fa-play"></i></button>
+                                                            ) : (
+                                                                <button onClick={pauseTimer} className="bg-amber-600 hover:bg-amber-500 text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(217,119,6,0.3)] hover:scale-105 active:scale-95 text-xl"><i className="fa-solid fa-pause"></i></button>
+                                                            )}
+                                                            <button onClick={saveTimer} disabled={!isCurrentTimer || timer.seconds === 0} className="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 disabled:shadow-none text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 text-xl"><i className="fa-solid fa-save"></i></button>
                                                         </div>
                                                     </div>
-                                                ) : !passed ? (
-                                                    <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
-                                                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[50px] rounded-full pointer-events-none"></div>
-                                                        <div className="flex items-start gap-5 mb-6 relative z-10">
-                                                            <div className="w-12 h-12 rounded-[1rem] bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shrink-0 shadow-inner">
-                                                                <i className="fa-solid fa-robot text-indigo-400 text-lg"></i>
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="text-white font-bold text-xl leading-tight mb-2">Desafio Encriptado (IA)</h4>
-                                                                <p className="text-xs text-slate-400 leading-relaxed">O gabarito fica ofuscado para evitar trapaças e testar você de verdade. Copie o prompt abaixo, envie à sua IA favorita e cole o código de volta aqui. Falhar gera bloqueio de 24h.</p>
-                                                            </div>
+                                                    <div className="mt-5 pt-5 border-t border-white/5 flex justify-between items-center relative z-10">
+                                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Acumulado</p>
+                                                        <p className="font-black text-indigo-300 text-lg">{formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</p>
+                                                    </div>
+                                                </div>
+
+                                                {/* SESSÃO DE VALIDAÇÃO E OBJETIVOS */}
+                                                {locked ? (
+                                                    <div className="bg-rose-950/30 border border-rose-500/30 p-6 md:p-8 rounded-[2rem] text-center shadow-inner mb-10">
+                                                        <i className="fa-solid fa-lock text-5xl text-rose-500/80 mb-5 drop-shadow-[0_0_15px_rgba(225,29,72,0.4)]"></i>
+                                                        <h3 className="text-white font-black text-lg mb-2">Conhecimento Bloqueado</h3>
+                                                        <p className="text-sm text-rose-200/70 mb-5">A base é a fundação do castelo. Você não pode dominar os tópicos deste módulo sem antes completar:</p>
+                                                        <div className="flex flex-wrap justify-center gap-2">
+                                                            {pendingDeps.map(dep => <span key={dep} className="text-xs uppercase font-black tracking-widest bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-lg">{dep}</span>)}
                                                         </div>
-
-                                                        {p.lockedUntil && new Date().getTime() < p.lockedUntil ? (
-                                                            <div className="bg-rose-500/10 border border-rose-500/30 p-6 rounded-[1.5rem] text-center animate-fade-in shadow-inner relative z-10">
-                                                                <i className="fa-solid fa-lock text-4xl text-rose-500 mb-4 drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]"></i>
-                                                                <h5 className="text-rose-300 font-bold mb-2 uppercase tracking-widest text-sm">Módulo Bloqueado</h5>
-                                                                <p className="text-xs text-rose-200/80 font-medium">Você falhou no último desafio. Retorne em <span className="font-black text-white">{Math.ceil((p.lockedUntil - new Date().getTime()) / 3600000)}h</span> para tentar novamente.</p>
-                                                            </div>
-                                                        ) : isExamFormOpen ? (
-                                                            <div className="bg-black/30 p-6 rounded-[1.5rem] border border-indigo-500/30 shadow-[0_10px_30px_-10px_rgba(79,70,229,0.15)] mb-4 animate-fade-in relative z-10">
-                                                                <h4 className="text-indigo-400 font-black uppercase tracking-widest text-[10px] mb-5 flex items-center gap-2"><i className="fa-solid fa-code"></i> Inserir Código IA</h4>
-                                                                
-                                                                {formError && <p className="text-rose-400 text-xs mb-4 font-bold bg-rose-500/10 p-3 rounded-lg border border-rose-500/20"><i className="fa-solid fa-triangle-exclamation"></i> {formError}</p>}
-                                                                
-                                                                <div className="bg-indigo-500/10 border border-indigo-500/20 p-5 rounded-xl mb-6 text-xs text-slate-300 shadow-inner group transition-colors hover:border-indigo-500/40">
-                                                                    <span className="text-indigo-300 block mb-3 font-bold font-sans flex items-center gap-2"><i className="fa-regular fa-copy"></i> Copie e mande para a IA:</span>
-                                                                    <div className="select-all text-white bg-black/60 p-4 rounded-lg font-mono leading-relaxed border border-white/5">
-                                                                        Gere um JSON com o formato exato: {'{"q": "sua pergunta difícil aqui?", "options": ["alt1", "alt2", "alt3", "alt4"], "a": indice_correto_0_a_3}'}. A pergunta deve ser técnica, de nível avançado sobre o módulo Front-end: '{m.title}'. Me retorne APENAS a string em formato Base64 desse JSON, sem usar markdown (```), sem aspas em volta e sem explicações.
-                                                                    </div>
-                                                                </div>
-
-                                                                <label className="text-xs font-bold text-slate-400 mb-2 block ml-1">Código Base64 Gerado pela IA</label>
-                                                                <textarea value={aiToken} onChange={e => setAiToken(e.target.value)}
-                                                                    placeholder="ex: eyJxIjogIlBlcmd1bnRh...="
-                                                                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none h-24 mb-5 transition-all shadow-inner font-mono break-all"></textarea>
-
-                                                                <div className="flex gap-3">
-                                                                    <button onClick={() => handleSaveCustomExam(m.id)} className="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold py-3.5 rounded-xl transition-all text-sm shadow-[0_4px_15px_rgba(79,70,229,0.3)]">Decodificar e Salvar</button>
-                                                                    <button onClick={() => setIsExamFormOpen(false)} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-all text-sm border border-white/10">Cancelar</button>
-                                                                </div>
-                                                            </div>
-                                                        ) : (
-                                                            <div className="relative z-10">
-                                                                {hasCustomExam ? (
-                                                                    <div className="bg-black/20 p-5 rounded-2xl border border-white/10 mb-4 animate-fade-in hover:border-indigo-500/30 transition-colors group">
-                                                                        <div className="flex justify-between items-start mb-4">
-                                                                            <span className="text-xs text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-2"><i className="fa-solid fa-check-circle"></i> Desafio Encriptado Carregado</span>
-                                                                            <div className="flex gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
-                                                                                <button onClick={() => handleDeleteCustomExam(m.id)} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 flex items-center justify-center transition-colors"><i className="fa-solid fa-trash text-xs"></i></button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <p className="text-slate-300 font-medium text-sm mb-6 line-clamp-2 italic border-l-2 border-indigo-500/50 pl-3 bg-indigo-500/5 py-2 pr-2 rounded-r-lg">"{hasCustomExam.q}"</p>
-                                                                        
-                                                                        <button onClick={() => startExam(m)} className="w-full bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white font-black uppercase tracking-widest py-4 rounded-xl text-sm transition-all transform hover:scale-[1.02] shadow-[0_10px_20px_-5px_rgba(225,29,72,0.4)] border border-rose-400/30">
-                                                                            Iniciar Validação Fatal
-                                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
+                                                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[50px] rounded-full pointer-events-none"></div>
+                                                        <h4 className="text-white font-bold text-xl mb-3 flex items-center gap-3 relative z-10"><i className="fa-solid fa-list-check text-emerald-400"></i> Objetivos do Módulo</h4>
+                                                        <p className="text-xs text-slate-400 leading-relaxed mb-6 relative z-10">Marque os tópicos abaixo conforme for estudando e dominando os conceitos (baseados no roadmap oficial).</p>
+                                                        
+                                                        <div className="space-y-3 relative z-10">
+                                                            {m.subItems.map(si => {
+                                                                const isChecked = ((state.progress[m.id] || {}).objectives || []).includes(si.id);
+                                                                return (
+                                                                    <label key={si.id} className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${isChecked ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-black/20 border-white/5 text-slate-300 hover:border-white/10'}`}>
+                                                                        <input type="checkbox" checked={isChecked} onChange={() => toggleObjective(m.id, si.id)} className="w-5 h-5 rounded border-white/10 bg-black/50 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-slate-900" />
+                                                                        <span className={`text-sm font-medium ${isChecked ? 'line-through opacity-70' : ''}`}>{si.label}</span>
+                                                                    </label>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                        
+                                                        {!passed && m.subItems.length > 0 && m.subItems.every(si => ((state.progress[m.id] || {}).objectives || []).includes(si.id)) && (
+                                                            <button onClick={() => triggerVictory(m)} className="w-full mt-8 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black uppercase tracking-widest py-4.5 rounded-xl text-sm transition-all transform hover:scale-[1.02] shadow-[0_10px_20px_-5px_rgba(16,185,129,0.4)] border border-emerald-400/30">
+                                                                Validar Domínio do Módulo
+                                                            </button>
+                                                        )}
+                                                        
+                                                        {passed && (
+                                                            <div className="mt-8 pt-6 border-t border-white/5 relative z-10 text-center">
+                                                                <p className="text-emerald-400 font-black tracking-widest uppercase mb-6 flex items-center justify-center gap-2"><i className="fa-solid fa-shield-check text-xl"></i> Domínio Comprovado!</p>
+                                                                {p.cert ? (
+                                                                    <div className="text-center text-sm font-bold text-amber-400 bg-amber-500/10 p-5 rounded-2xl border border-amber-500/20 flex flex-col gap-3 shadow-inner">
+                                                                        <div className="flex justify-center mb-1"><i className="fa-solid fa-award text-3xl drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]"></i></div>
+                                                                        <span className="truncate">Certificado: {p.cert}</span>
+                                                                        <button onClick={() => setState(prev => ({...prev, progress: {...(prev.progress || {}), [m.id]: {...(prev.progress || {})[m.id], cert: null}}}))} className="text-[10px] uppercase tracking-widest text-rose-400 hover:text-rose-300 mt-2 bg-rose-500/10 py-1.5 rounded-md w-fit mx-auto px-4 transition-colors">Remover Arquivo</button>
                                                                     </div>
                                                                 ) : (
-                                                                    <button onClick={() => openExamForm()} className="w-full bg-indigo-500/5 hover:bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 border-dashed font-bold py-6 rounded-2xl transition-all duration-300 text-sm flex flex-col items-center justify-center gap-3 group">
-                                                                        <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                                            <i className="fa-solid fa-code"></i>
-                                                                        </div>
-                                                                        Carregar Código Base64 da IA
-                                                                    </button>
+                                                                    <div>
+                                                                        <p className="text-xs text-slate-400 mb-4 px-4">Agora que validou o módulo, você pode anexar seu certificado oficial emitido pelos cursos para controle visual.</p>
+                                                                        <button onClick={() => {
+                                                                            const fileName = prompt("Qual o nome do arquivo do seu certificado?");
+                                                                            if(fileName) setState(prev => ({...prev, progress: {...(prev.progress || {}), [m.id]: {...(prev.progress || {})[m.id], cert: fileName}}}));
+                                                                        }} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl text-sm border border-white/10 transition-all flex justify-center items-center gap-2">
+                                                                            <i className="fa-solid fa-upload opacity-70"></i> Anexar Certificado
+                                                                        </button>
+                                                                    </div>
                                                                 )}
                                                             </div>
                                                         )}
-                                                    </div>
-                                                ) : (
-                                                    <div className="bg-emerald-950/10 rounded-[2rem] p-6 md:p-8 border border-emerald-500/20 mb-10 relative overflow-hidden">
-                                                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[50px] rounded-full pointer-events-none"></div>
-                                                        <h4 className="text-emerald-400 font-bold mb-5 flex items-center gap-3 text-lg relative z-10"><i className="fa-solid fa-shield-check text-2xl drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]"></i> Checklist Validado</h4>
-                                                        <p className="text-sm text-slate-400 mb-6 relative z-10">Você derrotou o desafio encriptado desta etapa.</p>
-                                                        <ul className="space-y-3 relative z-10">
-                                                            {m.subItems.map(si => (
-                                                                <li key={si.id} className="flex items-center gap-4 text-sm text-slate-300 bg-black/20 p-3.5 rounded-xl border border-white/5">
-                                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 shrink-0 border border-emerald-500/30"><i className="fa-solid fa-check text-[10px] font-black"></i></div>
-                                                                    <span className="leading-snug">{si.label}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                        
-                                                        <div className="mt-8 pt-6 border-t border-white/5 relative z-10">
-                                                            {p.cert ? (
-                                                                <div className="text-center text-sm font-bold text-amber-400 bg-amber-500/10 p-5 rounded-2xl border border-amber-500/20 flex flex-col gap-3 shadow-inner">
-                                                                    <div className="flex justify-center mb-1"><i className="fa-solid fa-award text-3xl drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]"></i></div>
-                                                                    <span className="truncate">Certificado: {p.cert}</span>
-                                                                    <button onClick={() => setState(prev => ({...prev, progress: {...(prev.progress || {}), [m.id]: {...(prev.progress || {})[m.id], cert: null}}}))} className="text-[10px] uppercase tracking-widest text-rose-400 hover:text-rose-300 mt-2 bg-rose-500/10 py-1.5 rounded-md w-fit mx-auto px-4 transition-colors">Remover Arquivo</button>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-center">
-                                                                    <p className="text-xs text-slate-400 mb-4 px-4">Agora que validou o módulo, você pode anexar seu certificado oficial emitido pelos cursos para controle visual.</p>
-                                                                    <button onClick={() => {
-                                                                        const fileName = prompt("Simulação: Qual o nome do arquivo do seu certificado?");
-                                                                        if(fileName) setState(prev => ({...prev, progress: {...(prev.progress || {}), [m.id]: {...(prev.progress || {})[m.id], cert: fileName}}}));
-                                                                    }} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl text-sm border border-white/10 transition-all flex justify-center items-center gap-2">
-                                                                        <i className="fa-solid fa-upload opacity-70"></i> Anexar Certificado
-                                                                    </button>
-                                                                </div>
-                                                            )}
-                                                        </div>
                                                     </div>
                                                 )}
 
