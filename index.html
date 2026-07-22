@@ -80,6 +80,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useLayoutEffect, useCallback } = React;
 
+        // --- DADOS ESTÁTICOS ---
         const toolList = [
             { n: 'Notion', i: 'fa-cube', d: 'Organização global, anotações em Markdown e gestão de projetos.', url: 'https://notion.so' },
             { n: 'Excalidraw', i: 'fa-pen-clip', d: 'Whiteboard virtual para desenhar arquitetura e fluxos de dados.', url: 'https://excalidraw.com/' },
@@ -309,21 +310,24 @@
             { id: 'cert_5', t: 'Caçador de Certificados', d: 'Emitiu e anexou 5 certificados na plataforma.' }
         ];
 
+        // --- URL DO FIREBASE FORNECIDA PELO USUÁRIO ---
+        const FIREBASE_URL = "https://trilha-frontend-2688f-default-rtdb.firebaseio.com/trilha_data.json";
+
         function App() {
-            // LocalStorage Profundo (Save/Load) com Mesclagem Segura
+            const defaultState = {
+                progress: {}, 
+                customLinks: {}, 
+                customHours: {}, 
+                dailyHours: 2,
+                achievements: ['start'],
+                studyLogs: {}, 
+                targetDate: '', 
+                customExams: {}
+            };
+
+            // LocalStorage (Estado Inicial Rápido)
             const [state, setState] = useState(() => {
                 const saved = localStorage.getItem('FE_Definitive_V3.3');
-                const defaultState = {
-                    progress: {}, 
-                    customLinks: {}, 
-                    customHours: {}, 
-                    dailyHours: 2,
-                    achievements: ['start'],
-                    studyLogs: {}, 
-                    targetDate: '', 
-                    customExams: {}
-                };
-                
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     return { ...defaultState, ...parsed }; 
@@ -331,9 +335,45 @@
                 return defaultState;
             });
 
+            // Ref para controlar sincronização e evitar loops
+            const isReadyForSync = useRef(false);
+
+            // 1. FETCH INICIAL (NUVEM -> LOCAL)
             useEffect(() => {
+                fetch(FIREBASE_URL)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data) {
+                            // Se a nuvem tem dados, mescla/sobrescreve os locais
+                            setState(prev => ({ ...prev, ...data }));
+                        }
+                        // Libera permissão de salvar na nuvem 500ms depois (evita que o load vazio limpe a nuvem)
+                        setTimeout(() => { isReadyForSync.current = true; }, 500);
+                    })
+                    .catch(err => {
+                        console.error("Erro ao puxar dados do Firebase:", err);
+                        isReadyForSync.current = true; // Libera save local mesmo se offline
+                    });
+            }, []);
+
+            // 2. SAVE CONTÍNUO (LOCAL -> NUVEM)
+            useEffect(() => {
+                // Sempre salva localmente
                 localStorage.setItem('FE_Definitive_V3.3', JSON.stringify(state));
                 checkGlobalAchievements();
+
+                // Se passou do load inicial, envia para o Firebase com Debounce (1 segundo)
+                if (isReadyForSync.current) {
+                    const syncTimeout = setTimeout(() => {
+                        fetch(FIREBASE_URL, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(state)
+                        }).catch(err => console.error("Erro ao sincronizar com Firebase:", err));
+                    }, 1000); // 1s de delay para não sobrecarregar API ao digitar notas
+
+                    return () => clearTimeout(syncTimeout);
+                }
             }, [state]);
 
             const [activeTab, setActiveTab] = useState('trilha');
@@ -385,19 +425,17 @@
 
                         const sourceRect = sourceEl.getBoundingClientRect();
 
-                        // Desenha saindo do centro da parte de baixo do pai
                         const startX = (sourceRect.left - containerRect.left) + (sourceRect.width / 2);
                         const startY = (sourceRect.bottom - containerRect.top);
-                        // E entra no topo do centro do filho
                         const endX = (targetRect.left - containerRect.left) + (targetRect.width / 2);
                         const endY = (targetRect.top - containerRect.top);
 
                         const isSourcePassed = state.progress[depId]?.passed;
                         const isTargetPassed = state.progress[module.id]?.passed;
                         
-                        let lineStatus = 'locked'; // Cinza Escuro
-                        if (isSourcePassed && isTargetPassed) lineStatus = 'passed'; // Verde
-                        else if (isSourcePassed) lineStatus = 'active'; // Azul/Indigo ativo com animação
+                        let lineStatus = 'locked'; 
+                        if (isSourcePassed && isTargetPassed) lineStatus = 'passed'; 
+                        else if (isSourcePassed) lineStatus = 'active'; 
 
                         newLines.push({ id: `${depId}-${module.id}`, x1: startX, y1: startY, x2: endX, y2: endY, status: lineStatus });
                     });
@@ -1210,283 +1248,4 @@
                                     
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Horas Focadas</label>
-                                            <div className="relative">
-                                                <i className="fa-regular fa-clock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                                                <input type="number" step="0.5" min="0" value={logForm.hours} onChange={e => setLogForm(p => ({...p, hours: e.target.value}))}
-                                                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all text-lg font-bold" placeholder="Ex: 2.5" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Resumo (Active Recall)</label>
-                                            <textarea value={logForm.notes} onChange={e => setLogForm(p => ({...p, notes: e.target.value}))}
-                                                className="w-full h-40 bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none transition-all" placeholder="Forçar a mente a escrever o que aprendeu sela a memória de longo prazo..."></textarea>
-                                        </div>
-                                        <button onClick={handleSaveLog} className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black uppercase tracking-widest py-4.5 rounded-xl transition-all transform hover:scale-[1.02] shadow-[0_10px_20px_-5px_rgba(79,70,229,0.4)] border border-indigo-400/30">Gravar no Diário</button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'ferramentas' && (
-                            <div className="animate-fade-in pb-20">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10"><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Arsenal</span> Grátis</h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">As mesmas ferramentas de arquitetura e auditoria usadas pelas big techs, sem custo algum.</p>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8">
-                                    {toolList.map((t, idx) => (
-                                        <div key={idx} className="glass-panel p-8 rounded-[2rem] hover:border-cyan-500/40 hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full hover:shadow-[0_15px_40px_-15px_rgba(6,182,212,0.3)]">
-                                            <div className="w-16 h-16 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center text-3xl text-cyan-400 mb-6 border border-white/5 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-500"><i className={`fa-solid ${t.i}`}></i></div>
-                                            <h3 className="text-xl font-black text-white mb-3 group-hover:text-cyan-300 transition-colors">{t.n}</h3>
-                                            <p className="text-sm text-slate-400 mb-8 leading-relaxed flex-1">{t.d}</p>
-                                            <a href={t.url} target="_blank" className="mt-auto block w-full text-center bg-black/30 hover:bg-cyan-500/10 text-cyan-400 hover:text-cyan-300 font-bold py-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all text-sm uppercase tracking-widest">Acessar</a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'dicas' && (
-                            <div className="animate-fade-in pb-20 max-w-5xl mx-auto">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Engenharia do <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-400">Cérebro</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">O front-end não entra na cabeça lendo tutorial. Use métodos baseados em neurociência.</p>
-                                </div>
-                                <div className="space-y-6">
-                                    {tipsList.map((t, idx) => (
-                                        <div key={idx} className="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row gap-6 md:gap-8 items-start hover:border-amber-500/30 transition-all duration-500 group hover:shadow-[0_10px_30px_-10px_rgba(245,158,11,0.15)] hover:bg-slate-900/60">
-                                            <div className="w-20 h-20 bg-amber-500/5 rounded-[1.5rem] flex items-center justify-center text-4xl text-amber-500 shrink-0 border border-amber-500/20 group-hover:scale-110 transition-transform duration-500 shadow-inner"><i className={`fa-solid ${t.icon}`}></i></div>
-                                            <div>
-                                                <h3 className="text-2xl font-black text-white mb-3 group-hover:text-amber-400 transition-colors">{t.title}</h3>
-                                                <p className="text-slate-300 leading-relaxed text-lg">{t.tip}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'cursos' && (
-                            <div className="animate-fade-in pb-20">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Mina de Ouro <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">PT-BR</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Milhares de horas em vídeos gratuitos. Todos emitem certificado. Sem desculpas.</p>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                                    {platformList.map((p, idx) => (
-                                        <div key={idx} className="glass-panel p-8 rounded-[2rem] flex flex-col h-full hover:border-emerald-500/40 hover:shadow-[0_15px_40px_-15px_rgba(16,185,129,0.2)] transition-all duration-500 group hover:-translate-y-1.5 hover:bg-slate-900/60">
-                                            <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/20 mb-6 group-hover:scale-110 transition-transform"><i className="fa-solid fa-graduation-cap"></i></div>
-                                            <h3 className="text-2xl font-black text-white mb-4 group-hover:text-emerald-300 transition-colors">{p.n}</h3>
-                                            <p className="text-slate-400 mb-8 flex-1 leading-relaxed text-sm">{p.d}</p>
-                                            <a href={p.url} target="_blank" className="block text-center w-full py-4 bg-black/30 hover:bg-emerald-500/10 text-emerald-400 hover:text-emerald-300 font-black uppercase tracking-widest rounded-xl border border-white/5 hover:border-emerald-500/30 transition-all text-xs">
-                                                Explorar Acervo
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'trofeus' && (
-                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
-                                <div className="text-center mb-16 glass-panel p-10 md:p-16 rounded-[3rem] border-2 border-amber-500/20 shadow-2xl relative overflow-hidden">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    
-                                    <i className="fa-solid fa-trophy text-7xl md:text-[8rem] text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 mb-8 drop-shadow-[0_0_40px_rgba(245,158,11,0.5)] relative z-10 animate-pulse"></i>
-                                    <h2 className="text-4xl md:text-5xl font-black text-white mb-10 relative z-10 tracking-tighter">Hall da Fama</h2>
-                                    
-                                    <div className="inline-flex bg-black/40 border border-white/10 p-4 md:p-6 rounded-[2rem] items-center gap-6 relative z-10 shadow-inner backdrop-blur-xl">
-                                        <div className="text-left hidden sm:block border-r border-white/10 pr-6">
-                                            <span className="text-[10px] font-black text-amber-400/70 uppercase tracking-widest block mb-1">Ouro Coletado</span>
-                                            <span className="text-white font-bold text-sm">Status Atual</span>
-                                        </div>
-                                        <span className="text-4xl md:text-6xl font-black text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">
-                                            {state.achievements.length} <span className="text-slate-600 text-2xl md:text-4xl">/ {allAchievements.length}</span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 relative z-10">
-                                    {allAchievements.map(a => {
-                                        const unl = state.achievements.includes(a.id);
-                                        return (
-                                            <div key={a.id} className={`p-8 rounded-[2rem] border transition-all duration-500 flex flex-col text-center relative overflow-hidden glass-panel
-                                                ${unl ? 'bg-slate-900/60 border-amber-500/40 shadow-[0_10px_30px_-10px_rgba(245,158,11,0.2)] transform hover:-translate-y-2 group' : 'bg-black/20 border-white/5 grayscale opacity-50 hover:opacity-70'}`}>
-                                                
-                                                {unl && <div className="absolute -right-10 -top-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-colors duration-500"></div>}
-                                                
-                                                <div className={`w-16 h-16 rounded-[1.25rem] mx-auto mb-6 flex items-center justify-center text-3xl shadow-inner relative z-10 transition-transform duration-500 ${unl ? 'group-hover:scale-110' : ''}
-                                                    ${unl ? 'bg-gradient-to-br from-amber-300 to-orange-600 text-slate-950 shadow-amber-500/40 border-2 border-amber-200' : 'bg-black/40 text-slate-600 border border-white/10'}`}>
-                                                    <i className={`fa-solid ${unl ? 'fa-medal' : 'fa-lock'}`}></i>
-                                                </div>
-                                                <h3 className={`text-lg font-black mb-3 relative z-10 ${unl ? 'text-white' : 'text-slate-500'}`}>{a.t}</h3>
-                                                <p className="text-xs text-slate-400 leading-relaxed relative z-10 mb-6 flex-1">{a.d}</p>
-                                                
-                                                {unl && (
-                                                    <div className="mt-auto w-full text-[10px] font-black text-amber-300 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 py-2.5 rounded-xl shadow-inner">
-                                                        Desbloqueado
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'motivacao' && (
-                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-fuchsia-400 to-indigo-400 mb-6 tracking-tighter drop-shadow-2xl relative z-10">
-                                        Combustível de Foguete
-                                    </h2>
-                                    <p className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed relative z-10">
-                                        O caminho é árduo e a regra é cruel por um motivo: <strong>o prêmio final é extraordinário</strong>. Veja o que te aguarda no topo desta montanha quando você dominar os 21 módulos.
-                                    </p>
-                                </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
-                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group hover:border-fuchsia-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(217,70,239,0.2)] hover:bg-slate-900/60">
-                                        <div className="absolute -right-20 -top-20 w-64 h-64 bg-fuchsia-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-fuchsia-500/20 transition-colors duration-700"></div>
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
-                                            <div className="w-20 h-20 bg-fuchsia-500/10 rounded-[1.5rem] flex items-center justify-center border border-fuchsia-500/20 text-4xl text-fuchsia-400 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-bolt drop-shadow-[0_0_15px_rgba(217,70,239,0.5)]"></i>
-                                            </div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight">Superpoderes Técnicos</h3>
-                                        </div>
-                                        <ul className="space-y-6 relative z-10">
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Arquitetura Impecável:</strong> Criar aplicações complexas do zero, escaláveis para milhões de usuários, usando React/Next.js.</p></li>
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Performance de Elite:</strong> Dominar o Render Tree, SSR e SSG para fazer sites carregarem em menos de 1 segundo.</p></li>
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Segurança Bancária:</strong> Proteger sistemas contra ataques reais (XSS, CSRF) entendendo cabeçalhos, CSP e JWT.</p></li>
-                                        </ul>
-                                    </div>
-
-                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(16,185,129,0.2)] hover:bg-slate-900/60">
-                                        <div className="absolute -left-20 -top-20 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
-                                            <div className="w-20 h-20 bg-emerald-500/10 rounded-[1.5rem] flex items-center justify-center border border-emerald-500/20 text-4xl text-emerald-400 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-sack-dollar drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
-                                            </div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight">O Mapa da Riqueza</h3>
-                                        </div>
-                                        <div className="space-y-4 relative z-10">
-                                            <div className="bg-black/20 p-5 rounded-2xl border border-white/5 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-white/10 transition-colors">
-                                                <div>
-                                                    <p className="font-bold text-slate-200">Júnior (Início pós-trilha)</p>
-                                                    <p className="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Desenvolve com supervisão.</p>
-                                                </div>
-                                                <span className="text-xl font-black text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">R$ 3.5k - 6k</span>
-                                            </div>
-                                            <div className="bg-emerald-500/5 p-5 rounded-2xl border border-emerald-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative overflow-hidden">
-                                                <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                                                <div className="ml-2">
-                                                    <p className="font-black text-emerald-300">Pleno (O seu alvo)</p>
-                                                    <p className="text-[11px] text-emerald-400/60 uppercase tracking-widest mt-1">Autonomia e arquitetura.</p>
-                                                </div>
-                                                <span className="text-2xl font-black text-emerald-400 drop-shadow-md">R$ 7k - 12k</span>
-                                            </div>
-                                            <div className="bg-black/20 p-5 rounded-2xl border border-white/5 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-white/10 transition-colors">
-                                                <div>
-                                                    <p className="font-bold text-slate-200">Sênior / Tech Lead</p>
-                                                    <p className="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Liderança de alta carga.</p>
-                                                </div>
-                                                <span className="text-xl font-black text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">R$ 13k - 20k+</span>
-                                            </div>
-                                            <div className="bg-gradient-to-r from-amber-500/10 to-black/20 p-5 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 mt-6 shadow-inner">
-                                                <div>
-                                                    <p className="font-black text-amber-400 flex items-center gap-2"><i className="fa-solid fa-earth-americas"></i> Carreira Gringa (Remoto)</p>
-                                                    <p className="text-[11px] text-amber-400/60 uppercase tracking-widest mt-1">Dólar / Euro direto no Brasil.</p>
-                                                </div>
-                                                <span className="text-2xl font-black text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">U$ 3k - 8k+</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 relative z-10">
-                                    <div className="glass-panel rounded-[2rem] p-8 md:p-10 hover:border-indigo-500/30 transition-colors">
-                                        <h3 className="text-xl font-black text-white mb-8 border-b border-white/5 pb-5 flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20"><i className="fa-solid fa-briefcase text-indigo-400"></i></div> Cargos Atingíveis</h3>
-                                        <div className="flex flex-wrap gap-3">
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">Front-End Engineer</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">UI/UX Developer</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">Web Perf Specialist</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">React/Next.js Expert</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="glass-panel rounded-[2rem] p-8 md:p-10 hover:border-indigo-500/30 transition-colors">
-                                        <h3 className="text-xl font-black text-white mb-8 border-b border-white/5 pb-5 flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20"><i className="fa-solid fa-building text-indigo-400"></i></div> Campos de Batalha</h3>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-slate-500/30 transition-colors group">
-                                                <i className="fa-solid fa-building-columns text-2xl text-slate-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Bancos & Fintechs</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Nubank, Itaú, XP</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-rose-500/30 transition-colors group">
-                                                <i className="fa-solid fa-rocket text-2xl text-rose-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Startups Ágeis</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Ifood, QuintoAndar</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-colors group">
-                                                <i className="fa-solid fa-globe text-2xl text-cyan-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Big Techs</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Mercado Livre, Amazon</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-colors group">
-                                                <i className="fa-solid fa-laptop-code text-2xl text-emerald-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Consultorias</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">CI&T, Accenture</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
-                                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-                                    <div className="text-center mb-16 relative z-10">
-                                        <h3 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter">O Escudo de Titânio <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">(Anti-IA)</span></h3>
-                                        <p className="text-slate-400 text-lg max-w-3xl mx-auto">Por que o ChatGPT, Cursor ou Copilot não vão roubar a sua cadeira após você terminar esta trilha.</p>
-                                    </div>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-rose-500/20 hover:border-rose-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-rose-500/10 rounded-[1.25rem] flex items-center justify-center border border-rose-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-brain text-3xl text-rose-400 drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]"></i>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white mb-3">Engenharia, não Digitação</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">A IA gera o código da função, mas não decide <strong>onde</strong> a função deve morar, qual padrão arquitetural usar ou como lidar com as dívidas técnicas legadas da empresa.</p>
-                                        </div>
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-amber-500/20 hover:border-amber-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-amber-500/10 rounded-[1.25rem] flex items-center justify-center border border-amber-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-comments-dollar text-3xl text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]"></i>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white mb-3">Tradução de Negócios</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">O trabalho de um Sênior é ouvir o CEO, identificar ambiguidades absurdas nos pedidos e transformar o caos conceitual em um software lucrativo.</p>
-                                        </div>
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-cyan-500/10 rounded-[1.25rem] flex items-center justify-center border border-cyan-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-shield-halved text-3xl text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"></i>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white mb-3">O Orquestrador</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">Você não será substituído pela IA. Você será o <strong>Desenvolvedor que julga e orquestra a IA</strong> usando a base sólida dos 21 módulos para garantir segurança e performance.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                    </main>
-                </div>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-</body>
-</html>
+                                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Horas F
