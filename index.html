@@ -111,6 +111,49 @@
             { n: 'EuCapacito', url: 'https://eucapacito.com.br/', d: 'Cursos de TI gratuitos com certificados de parceiros como FIAP, Microsoft e Oracle.' }
         ];
 
+        const projectsList = [
+            {
+                title: 'Dashboard Analytics & Financeiro SaaS',
+                time: '3 a 4 semanas',
+                icon: 'fa-chart-pie',
+                color: 'text-indigo-400',
+                bg: 'bg-indigo-500/10',
+                border: 'border-indigo-500/20',
+                desc: 'Envolve configurar TypeScript do zero, integrar bibliotecas de gráficos (Chart.js ou Recharts), tratar dados massivos para não travar a tela e criar filtros complexos com gerenciamento de estado global.',
+                skills: ['TypeScript', 'Recharts/Chart.js', 'State Management', 'Performance & Filtros']
+            },
+            {
+                title: 'Plataforma de Notificações e Chat em Tempo Real',
+                time: '2 a 3 semanas',
+                icon: 'fa-comments',
+                color: 'text-emerald-400',
+                bg: 'bg-emerald-500/10',
+                border: 'border-emerald-500/20',
+                desc: 'A lógica de WebSockets/Socket.io exige bastante atenção para lidar com reconexões de rede, estados de "digitando...", mensagens pendentes offline e controle de salas em tempo real.',
+                skills: ['WebSockets', 'Real-time UI', 'Offline Fallbacks', 'Sync State']
+            },
+            {
+                title: 'E-Commerce Headless de Alta Performance',
+                time: '4 a 5 semanas',
+                icon: 'fa-cart-shopping',
+                color: 'text-amber-400',
+                bg: 'bg-amber-500/10',
+                border: 'border-amber-500/20',
+                desc: 'Projeto denso em engenharia. Otimização pesada de Core Web Vitals (Lighthouse), Server-Side Rendering (SSR) no Next.js, estratégias de cache de produtos e suíte de testes end-to-end.',
+                skills: ['Next.js (SSR/SSG)', 'Core Web Vitals', 'Caching', 'Cypress (E2E)']
+            },
+            {
+                title: 'Design System Customizado e Documentado',
+                time: '2 a 3 semanas',
+                icon: 'fa-swatchbook',
+                color: 'text-rose-400',
+                bg: 'bg-rose-500/10',
+                border: 'border-rose-500/20',
+                desc: 'Não é só criar telas visuais, é arquitetar código reutilizável. Garantir acessibilidade (WAI-ARIA), simular empacotamento no npm e documentar interativamente variações de botões e modais no Storybook.',
+                skills: ['Storybook', 'Acessibilidade (A11y)', 'NPM / Bundling', 'Componentização Base']
+            }
+        ];
+
         const detailedRoadmapData = [
             {
                 id: 'internet', title: '1. Internet', estimatedHours: 10, dependsOn: [],
@@ -308,16 +351,17 @@
                 progress: {}, 
                 customLinks: {}, 
                 customHours: {}, 
-                moduleTime: {}, // Salva os segundos gastos por módulo
+                moduleTime: {}, 
                 dailyHours: 2,
                 achievements: ['start'],
                 studyLogs: {}, 
-                targetDate: ''
+                targetDate: '',
+                extraCourses: [] // NOVO: Para os cursos extras
             };
 
             const [state, setState] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('FE_Definitive_V3.5');
+                    const saved = localStorage.getItem('FE_Definitive_V3.6');
                     if (saved) {
                         const parsed = JSON.parse(saved);
                         return { ...defaultState, ...parsed }; 
@@ -343,6 +387,11 @@
                                 }
                                 safeData.moduleTime = safeData.moduleTime || {};
                                 safeData.progress = safeData.progress || {};
+                                safeData.extraCourses = safeData.extraCourses || []; // NOVO
+                                // Firebase também corrompe arrays de objetos vazios
+                                if (!Array.isArray(safeData.extraCourses)) {
+                                    safeData.extraCourses = Object.values(safeData.extraCourses);
+                                }
                                 return { ...prev, ...safeData };
                             });
                         }
@@ -386,7 +435,7 @@
             };
 
             useEffect(() => {
-                localStorage.setItem('FE_Definitive_V3.5', JSON.stringify(state));
+                localStorage.setItem('FE_Definitive_V3.6', JSON.stringify(state));
                 checkGlobalAchievements();
 
                 if (isReadyForSync.current) {
@@ -405,6 +454,7 @@
             const [activeTab, setActiveTab] = useState('trilha');
             const [selectedModule, setSelectedModule] = useState(null); 
             const [linkInputText, setLinkInputText] = useState('');
+            const [extraCourseInput, setExtraCourseInput] = useState(''); // NOVO
             const [celebration, setCelebration] = useState(null); 
             const [calYear, setCalYear] = useState(new Date().getFullYear());
             const [calMonth, setCalMonth] = useState(new Date().getMonth());
@@ -450,7 +500,6 @@
                 setTimer({ active: false, moduleId: null, seconds: 0 });
             };
 
-            // Formatação do Relógio Ativo
             const formatChrono = (totalSeconds) => {
                 const h = Math.floor(totalSeconds / 3600);
                 const m = Math.floor((totalSeconds % 3600) / 60);
@@ -458,13 +507,36 @@
                 return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             };
 
-            // Formatação para exibição no Card (Xh Ym)
             const formatTimeDisplay = (totalSeconds) => {
                 if (!totalSeconds) return "0m";
                 const h = Math.floor(totalSeconds / 3600);
                 const m = Math.floor((totalSeconds % 3600) / 60);
                 if (h > 0) return `${h}h ${m}m`;
                 return `${m}m`;
+            };
+
+            // --- FUNÇÕES DE CURSOS EXTRAS ---
+            const handleAddExtraCourse = () => {
+                if(!extraCourseInput.trim()) return;
+                setState(p => ({
+                    ...p,
+                    extraCourses: [...(p.extraCourses || []), { id: Date.now().toString(), name: extraCourseInput.trim(), done: false }]
+                }));
+                setExtraCourseInput('');
+            };
+
+            const toggleExtraCourse = (id) => {
+                setState(p => ({
+                    ...p,
+                    extraCourses: (p.extraCourses || []).map(c => c.id === id ? { ...c, done: !c.done } : c)
+                }));
+            };
+
+            const deleteExtraCourse = (id) => {
+                setState(p => ({
+                    ...p,
+                    extraCourses: (p.extraCourses || []).filter(c => c.id !== id)
+                }));
             };
 
             // --- LÓGICA DA SKILL TREE E OBJETIVOS ---
@@ -651,7 +723,9 @@
                         <div className="max-w-7xl mx-auto flex gap-2 justify-start md:justify-center min-w-max">
                             {[
                                 { id: 'trilha', icon: 'fa-network-wired', name: 'Mapa' },
+                                { id: 'projetos', icon: 'fa-laptop-code', name: 'Projetos' }, // NOVO
                                 { id: 'diario', icon: 'fa-calendar-check', name: 'Diário' },
+                                { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, // NOVO
                                 { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
                                 { id: 'dicas', icon: 'fa-brain', name: 'Cérebro' },
                                 { id: 'cursos', icon: 'fa-globe', name: 'Cursos' },
@@ -669,7 +743,7 @@
 
                     <main className="max-w-7xl mx-auto mt-12 px-4 relative">
                         
-                        {/* MAPA DE HABILIDADES */}
+                        {/* --- MAPA DE HABILIDADES --- */}
                         {activeTab === 'trilha' && (
                             <div className="animate-fade-in pb-20 relative">
                                 
@@ -714,7 +788,6 @@
                                     </div>
                                 </div>
 
-                                {}
                                 <div className="w-full overflow-x-auto hide-scroll pb-10" ref={treeContainerRef} style={{ position: 'relative' }}>
                                     
                                     {/* Camada SVG para as linhas de conexão */}
@@ -815,7 +888,6 @@
                             </div>
                         )}
 
-                        {}
                         {activeTab === 'trilha' && (
                             <>
                                 <div className={`fixed inset-0 bg-[#020617]/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${selectedModule ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setSelectedModule(null)}></div>
@@ -985,6 +1057,100 @@
                                     })()}
                                 </div>
                             </>
+                        )}
+
+                        {/* --- NOVA ABA: PROJETOS --- */}
+                        {activeTab === 'projetos' && (
+                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
+                                <div className="text-center mb-16 relative">
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Projetos <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">Nível Pleno</span></h2>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Para se destacar, fuja do "To-Do List". Estes são os 4 projetos robustos que provam sua arquitetura, performance e domínio técnico para recrutadores.</p>
+                                </div>
+                                
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    {projectsList.map((proj, idx) => (
+                                        <div key={idx} className={`glass-panel p-8 md:p-10 rounded-[2.5rem] hover:border-white/20 transition-all duration-500 flex flex-col h-full hover:-translate-y-1.5 hover:shadow-2xl`}>
+                                            <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 mb-6">
+                                                <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-3xl mb-4 sm:mb-0 ${proj.bg} ${proj.border} border ${proj.color} shadow-inner`}>
+                                                    <i className={`fa-solid ${proj.icon}`}></i>
+                                                </div>
+                                                <div className="bg-black/30 border border-white/5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 shrink-0">
+                                                    <i className="fa-regular fa-clock mr-2"></i>{proj.time}
+                                                </div>
+                                            </div>
+                                            <h3 className="text-2xl font-black text-white mb-4 leading-tight">{proj.title}</h3>
+                                            <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-1">{proj.desc}</p>
+                                            
+                                            <div className="pt-6 border-t border-white/5">
+                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-4">Core Skills Comprovadas</p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {proj.skills.map((skill, sIdx) => (
+                                                        <span key={sIdx} className="bg-black/40 border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300">
+                                                            {skill}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* --- NOVA ABA: CURSOS EXTRAS --- */}
+                        {activeTab === 'extras' && (
+                            <div className="animate-fade-in pb-20 max-w-4xl mx-auto">
+                                <div className="text-center mb-16 relative">
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-sky-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Cursos <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Adicionais</span></h2>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Além do Front-End, adicione aqui outras habilidades que fortalecem seu perfil profissional, como Inglês, Digitação ou Soft Skills.</p>
+                                </div>
+
+                                <div className="glass-panel p-6 md:p-10 rounded-[2.5rem] relative overflow-hidden">
+                                    <div className="flex flex-col sm:flex-row gap-3 mb-10 relative z-10">
+                                        <input type="text" value={extraCourseInput} onChange={e => setExtraCourseInput(e.target.value)} 
+                                            placeholder="Ex: Curso de Inglês Intermediário..." 
+                                            className="flex-1 bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all shadow-inner" 
+                                            onKeyDown={e => e.key === 'Enter' && handleAddExtraCourse()} />
+                                        <button onClick={handleAddExtraCourse} className="bg-sky-600 hover:bg-sky-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(2,132,199,0.4)] hover:scale-[1.02] active:scale-95">
+                                            Adicionar
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-4 relative z-10">
+                                        {!(state.extraCourses || []).length ? (
+                                            <div className="text-center py-10 bg-black/20 rounded-2xl border border-white/5 border-dashed">
+                                                <i className="fa-solid fa-book-open-reader text-4xl text-slate-600 mb-4"></i>
+                                                <p className="text-slate-400 font-medium text-sm">Nenhum curso extra adicionado ainda.</p>
+                                            </div>
+                                        ) : (
+                                            (state.extraCourses || []).map(course => (
+                                                <div key={course.id} className={`flex items-center justify-between p-5 md:p-6 rounded-2xl border transition-all duration-300 group
+                                                    ${course.done ? 'bg-emerald-950/20 border-emerald-500/30 shadow-[0_5px_15px_-5px_rgba(16,185,129,0.15)]' : 'bg-black/30 border-white/5 hover:border-white/10 hover:bg-black/50'}`}>
+                                                    
+                                                    <label className="flex items-center gap-5 cursor-pointer flex-1 mr-4">
+                                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors border
+                                                            ${course.done ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-black/50 border-white/20 group-hover:border-sky-500/50'}`}>
+                                                            {course.done && <i className="fa-solid fa-check text-slate-900 font-black text-sm"></i>}
+                                                        </div>
+                                                        <span className={`text-base md:text-lg font-bold transition-colors
+                                                            ${course.done ? 'text-emerald-400 line-through opacity-70' : 'text-slate-200'}`}>
+                                                            {course.name}
+                                                        </span>
+                                                        {/* Input hidden para manter a semântica de formulário/acessibilidade */}
+                                                        <input type="checkbox" checked={course.done} onChange={() => toggleExtraCourse(course.id)} className="hidden" />
+                                                    </label>
+
+                                                    <button onClick={() => deleteExtraCourse(course.id)} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 flex items-center justify-center transition-colors shrink-0">
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         )}
 
                         {}
