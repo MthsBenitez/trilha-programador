@@ -69,7 +69,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useLayoutEffect, useCallback } = React;
 
-        // --- DADOS ESTÁTICOS ---
+        // --- DADOS ESTÁTICOS COMUNS ---
         const toolList = [
             { n: 'Notion', i: 'fa-cube', d: 'Organização global, anotações em Markdown e gestão de projetos.', url: 'https://notion.so' },
             { n: 'Excalidraw', i: 'fa-pen-clip', d: 'Whiteboard virtual para desenhar arquitetura e fluxos de dados.', url: 'https://excalidraw.com/' },
@@ -111,7 +111,7 @@
             { n: 'EuCapacito', url: 'https://eucapacito.com.br/', d: 'Cursos de TI gratuitos com certificados de parceiros como FIAP, Microsoft e Oracle.' }
         ];
 
-        // Mapeamento visual dos 4 Projetos
+        // --- TRILHA 1: FRONT-END (Com projetos integrados) ---
         const PROJ_META = {
             saas: { name: 'Dashboard SaaS', icon: 'fa-chart-pie', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20' },
             chat: { name: 'Chat Real-Time', icon: 'fa-comments', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
@@ -363,24 +363,107 @@
             ['mobile_pwa', 'webcomp']
         ];
 
-        const allAchievements = [
-            { id: 'start', t: 'O Despertar', d: 'Iniciou sua jornada definitiva no Front-end.' },
-            { id: 'mod_1', t: 'Primeira Vitória', d: 'Validou seu primeiro módulo de forma completa.' },
-            { id: 'perc_25', t: 'Aprendiz Dedicado', d: 'Concluiu 25% de todo o Roadmap.' },
-            { id: 'perc_50', t: 'Meio Caminho', d: 'Concluiu 50% de todo o Roadmap.' },
-            { id: 'perc_75', t: 'Quase Mestre', d: 'Concluiu 75% de todo o Roadmap.' },
-            { id: 'perc_100', t: 'Deus do Front-end', d: 'Concluiu 100% da Trilha. O mercado é seu.' },
-            { id: 'link_1', t: 'Curioso', d: 'Adicionou seu primeiro link customizado na trilha.' },
-            { id: 'link_10', t: 'O Bibliotecário', d: 'Adicionou 10 ou mais links customizados.' },
-            { id: 'time_lord', t: 'Senhor do Tempo', d: 'Recalculou a carga horária real de um curso no calendário.' },
-            { id: 'night_owl', t: 'Coruja', d: 'Validou um módulo durante a madrugada (00:00 - 04:00).' },
-            { id: 'security_exp', t: 'Cão de Guarda', d: 'Dominou rigorosamente Segurança Web (Módulo 14).' },
-            { id: 'framework_king', t: 'Rei da Reatividade', d: 'Dominou o gigantesco módulo de Frameworks (Módulo 8).' },
-            { id: 'ts_master', t: 'O Tipador', d: 'Gabaritou a validação pesada em TypeScript (Módulo 17).' },
-            { id: 'cert_5', t: 'Caçador de Certificados', d: 'Emitiu e anexou 5 certificados na plataforma.' }
+
+        // --- TRILHA 2: INGLÊS (Steven Universe 3x) ---
+        const detailedEnglishData = [
+            {
+                id: 'su_1', title: 'Season 1', estimatedHours: 29, dependsOn: [],
+                description: '52 episódios (11 min/cada). A introdução ao mundo e construção do vocabulário base.',
+                masterAdvice: 'Técnica 3x: Assista o MESMO episódio 3 vezes. 1) Áudio EN + Legenda PT (entender). 2) Áudio EN + Leg PT (associar). 3) Áudio EN puro (fluência).',
+                projectTasks: [],
+                subItems: [
+                    { id: 'su1_1', label: 'Episódios 01 a 13 (Técnica 3x Completada)' },
+                    { id: 'su1_2', label: 'Episódios 14 a 26 (Técnica 3x Completada)' },
+                    { id: 'su1_3', label: 'Episódios 27 a 39 (Técnica 3x Completada)' },
+                    { id: 'su1_4', label: 'Episódios 40 a 52 (Técnica 3x Completada)' }
+                ]
+            },
+            {
+                id: 'su_2', title: 'Season 2', estimatedHours: 15, dependsOn: ['su_1'],
+                description: '26 episódios. A trama se aprofunda. Você começará a notar padrões nos sotaques e piadas naturais.',
+                masterAdvice: 'Nesta fase, tente repetir frases curtas em voz alta (Shadowing) durante a 3ª rodada (sem legendas).',
+                projectTasks: [],
+                subItems: [
+                    { id: 'su2_1', label: 'Episódios 01 a 13 (Técnica 3x Completada)' },
+                    { id: 'su2_2', label: 'Episódios 14 a 26 (Técnica 3x Completada)' }
+                ]
+            },
+            {
+                id: 'su_3', title: 'Season 3', estimatedHours: 14, dependsOn: ['su_2'],
+                description: '25 episódios. Foco em diálogos mais dramáticos e músicas mais complexas.',
+                masterAdvice: 'Use o recurso de velocidade 0.75x nas músicas caso tenha dificuldade de linkar o "Connected Speech" (quando emendam uma palavra na outra).',
+                projectTasks: [],
+                subItems: [
+                    { id: 'su3_1', label: 'Episódios 01 a 12 (Técnica 3x Completada)' },
+                    { id: 'su3_2', label: 'Episódios 13 a 25 (Técnica 3x Completada)' }
+                ]
+            },
+            {
+                id: 'su_4', title: 'Season 4', estimatedHours: 14, dependsOn: ['su_3'],
+                description: '25 episódios. O ritmo e a tensão do show exigem mais do seu vocabulário de emoções e ações.',
+                masterAdvice: 'A partir de agora, elimine a 1ª rodada (Legenda PT) nos episódios slice-of-life (cotidiano). Vá direto pro EN/EN.',
+                projectTasks: [],
+                subItems: [
+                    { id: 'su4_1', label: 'Episódios 01 a 12 (Técnica 3x Adaptada)' },
+                    { id: 'su4_2', label: 'Episódios 13 a 25 (Técnica 3x Adaptada)' }
+                ]
+            },
+            {
+                id: 'su_5', title: 'Season 5', estimatedHours: 18, dependsOn: ['su_4'],
+                description: '32 episódios. Clímax absoluto da série. Diálogos rápidos e complexos sobre diplomacia espacial e sentimentos.',
+                masterAdvice: 'O verdadeiro teste de fogo do Listening. Seu cérebro já não traduz tudo pro português, ele entende o conceito diretamente.',
+                projectTasks: [],
+                subItems: [
+                    { id: 'su5_1', label: 'Episódios 01 a 10 (Técnica Raw)' },
+                    { id: 'su5_2', label: 'Episódios 11 a 20 (Técnica Raw)' },
+                    { id: 'su5_3', label: 'Episódios 21 a 32 (Técnica Raw)' }
+                ]
+            },
+            {
+                id: 'su_m', title: 'The Movie', estimatedHours: 4, dependsOn: ['su_5'],
+                description: 'O Filme Oficial (82 minutos). Um musical frenético que vai testar sua estamina.',
+                masterAdvice: 'Faça a técnica 3x dividindo o filme em 3 blocos de ~27 minutos para não causar exaustão neural.',
+                projectTasks: [],
+                subItems: [
+                    { id: 'sum_1', label: 'Ato 1 (Ameaça Inicial) 3x' },
+                    { id: 'sum_2', label: 'Ato 2 (Recuperação) 3x' },
+                    { id: 'sum_3', label: 'Ato 3 (Clímax Musical) 3x' }
+                ]
+            },
+            {
+                id: 'su_f', title: 'Future (Epilogue)', estimatedHours: 11, dependsOn: ['su_m'],
+                description: '20 episódios que encerram a saga. Foco absurdo em saúde mental, terapia e conversas difíceis.',
+                masterAdvice: 'Sua graduação! O objetivo aqui é assistir APENAS em Raw (Inglês sem legenda) de primeira. Use a legenda EN só em emergências.',
+                projectTasks: [],
+                subItems: [
+                    { id: 'suf_1', label: 'Episódios 01 a 10 (Imersão Total)' },
+                    { id: 'suf_2', label: 'Episódios 11 a 20 (Graduação Final)' }
+                ]
+            }
         ];
 
-        // --- HIGIENIZADOR DA URL DO FIREBASE ---
+        const englishTreeTiers = [
+            ['su_1'],
+            ['su_2', 'su_3'],
+            ['su_4'],
+            ['su_5'],
+            ['su_m'],
+            ['su_f']
+        ];
+
+
+        const allAchievements = [
+            { id: 'start', t: 'O Despertar', d: 'Iniciou sua jornada no sistema.' },
+            { id: 'mod_1', t: 'Primeira Vitória', d: 'Validou seu primeiro módulo de forma completa.' },
+            { id: 'perc_50', t: 'Meio Caminho', d: 'Concluiu 50% de uma Trilha.' },
+            { id: 'perc_100', t: 'Domínio Total', d: 'Gabaritou 100% de uma Trilha.' },
+            { id: 'link_1', t: 'Curioso', d: 'Adicionou seu primeiro link customizado na trilha.' },
+            { id: 'time_lord', t: 'Senhor do Tempo', d: 'Ajustou a carga horária real de um módulo.' },
+            { id: 'night_owl', t: 'Coruja', d: 'Validou um módulo durante a madrugada (00:00 - 04:00).' },
+            { id: 'su_fan', t: 'Crystal Gem', d: 'Completou a 1ª Temporada de S.U. inteira na técnica 3x!' }
+        ];
+
+        // --- FIREBASE URL ---
         const RAW_FIREBASE_URL = "https://trilha-frontend-2688f-default-rtdb.firebaseio.com/";
         const FIREBASE_URL = RAW_FIREBASE_URL.replace(/:null\/?$/, '').replace(/\/?$/, '') + "/trilha_data.json";
 
@@ -399,12 +482,9 @@
 
             const [state, setState] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('FE_Definitive_V3.6');
-                    if (saved) {
-                        const parsed = JSON.parse(saved);
-                        return { ...defaultState, ...parsed }; 
-                    }
-                } catch(e) { console.warn("Erro ao ler backup local", e); }
+                    const saved = localStorage.getItem('FE_Definitive_V3.8');
+                    if (saved) return { ...defaultState, ...JSON.parse(saved) }; 
+                } catch(e) {}
                 return defaultState;
             });
 
@@ -412,32 +492,21 @@
 
             useEffect(() => {
                 fetch(FIREBASE_URL)
-                    .then(res => {
-                        if(!res.ok) throw new Error("Erro HTTP");
-                        return res.json();
-                    })
+                    .then(res => res.json())
                     .then(data => {
                         if (data && typeof data === 'object' && !data.error) {
                             setState(prev => {
                                 const safeData = { ...data };
-                                if (safeData.achievements && !Array.isArray(safeData.achievements)) {
-                                    safeData.achievements = Object.values(safeData.achievements);
-                                }
+                                if (safeData.achievements && !Array.isArray(safeData.achievements)) safeData.achievements = Object.values(safeData.achievements);
                                 safeData.moduleTime = safeData.moduleTime || {};
                                 safeData.progress = safeData.progress || {};
                                 safeData.extraCourses = safeData.extraCourses || []; 
-                                if (!Array.isArray(safeData.extraCourses)) {
-                                    safeData.extraCourses = Object.values(safeData.extraCourses);
-                                }
+                                if (!Array.isArray(safeData.extraCourses)) safeData.extraCourses = Object.values(safeData.extraCourses);
                                 return { ...prev, ...safeData };
                             });
                         }
                         setTimeout(() => { isReadyForSync.current = true; }, 500);
-                    })
-                    .catch(err => {
-                        console.warn("Nuvem inacessível ou vazia, usando local. Motivo:", err);
-                        isReadyForSync.current = true; 
-                    });
+                    }).catch(err => { isReadyForSync.current = true; });
             }, []);
 
             const triggerAchievement = (id) => {
@@ -449,41 +518,24 @@
             };
 
             const checkGlobalAchievements = () => {
-                const progressObj = state.progress || {};
-                const passedCount = Object.keys(progressObj).filter(k => progressObj[k]?.passed).length;
-                const perc = (passedCount / detailedRoadmapData.length) * 100;
+                const p = state.progress || {};
+                const passedDev = detailedRoadmapData.filter(m => p[m.id]?.passed).length;
+                const passedEn = detailedEnglishData.filter(m => p[m.id]?.passed).length;
                 
-                if (passedCount >= 1) triggerAchievement('mod_1');
-                if (perc >= 25) triggerAchievement('perc_25');
-                if (perc >= 50) triggerAchievement('perc_50');
-                if (perc >= 75) triggerAchievement('perc_75');
-                if (perc === 100) triggerAchievement('perc_100');
-
-                if (progressObj['security']?.passed) triggerAchievement('security_exp');
-                if (progressObj['frameworks']?.passed) triggerAchievement('framework_king');
-                if (progressObj['ts']?.passed) triggerAchievement('ts_master');
-
-                const linksCount = Object.values(state.customLinks || {}).flat().length;
-                if (linksCount >= 1) triggerAchievement('link_1');
-                if (linksCount >= 10) triggerAchievement('link_10');
-
-                const certCount = Object.keys(progressObj).filter(k => progressObj[k].cert).length;
-                if (certCount >= 5) triggerAchievement('cert_5');
+                if (passedDev >= 1 || passedEn >= 1) triggerAchievement('mod_1');
+                if ((passedDev / detailedRoadmapData.length) >= 0.5 || (passedEn / detailedEnglishData.length) >= 0.5) triggerAchievement('perc_50');
+                if (passedDev === detailedRoadmapData.length || passedEn === detailedEnglishData.length) triggerAchievement('perc_100');
+                if (p['su_1']?.passed) triggerAchievement('su_fan');
             };
 
             useEffect(() => {
-                localStorage.setItem('FE_Definitive_V3.6', JSON.stringify(state));
+                localStorage.setItem('FE_Definitive_V3.8', JSON.stringify(state));
                 checkGlobalAchievements();
 
                 if (isReadyForSync.current) {
                     const syncTimeout = setTimeout(() => {
-                        fetch(FIREBASE_URL, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(state)
-                        }).catch(err => console.error("Erro ao sincronizar com Firebase:", err));
+                        fetch(FIREBASE_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state) });
                     }, 1000); 
-
                     return () => clearTimeout(syncTimeout);
                 }
             }, [state]);
@@ -500,107 +552,73 @@
             const [svgLines, setSvgLines] = useState([]);
             const treeContainerRef = useRef(null);
 
-            // --- ESTADO DO CRONÔMETRO ---
+            // --- LÓGICA DE DADOS DINÂMICOS DA TRILHA ---
+            const currentData = activeTab === 'ingles' ? detailedEnglishData : detailedRoadmapData;
+            const currentTiers = activeTab === 'ingles' ? englishTreeTiers : skillTreeTiers;
+
             const [timer, setTimer] = useState({ active: false, moduleId: null, seconds: 0 });
 
             useEffect(() => {
                 let interval;
                 if (timer.active) {
-                    interval = setInterval(() => {
-                        setTimer(prev => ({ ...prev, seconds: prev.seconds + 1 }));
-                    }, 1000);
+                    interval = setInterval(() => setTimer(prev => ({ ...prev, seconds: prev.seconds + 1 })), 1000);
                 }
                 return () => clearInterval(interval);
             }, [timer.active]);
 
             const startTimer = (moduleId) => {
-                if (timer.moduleId !== moduleId) {
-                    setTimer({ active: true, moduleId, seconds: 0 });
-                } else {
-                    setTimer(prev => ({ ...prev, active: true }));
-                }
+                if (timer.moduleId !== moduleId) setTimer({ active: true, moduleId, seconds: 0 });
+                else setTimer(prev => ({ ...prev, active: true }));
             };
-
-            const pauseTimer = () => {
-                setTimer(prev => ({ ...prev, active: false }));
-            };
-
+            const pauseTimer = () => setTimer(prev => ({ ...prev, active: false }));
             const saveTimer = () => {
                 if (!timer.moduleId || timer.seconds === 0) return;
                 setState(prev => ({
                     ...prev,
-                    moduleTime: {
-                        ...(prev.moduleTime || {}),
-                        [timer.moduleId]: ((prev.moduleTime || {})[timer.moduleId] || 0) + timer.seconds
-                    }
+                    moduleTime: { ...(prev.moduleTime || {}), [timer.moduleId]: ((prev.moduleTime || {})[timer.moduleId] || 0) + timer.seconds }
                 }));
                 setTimer({ active: false, moduleId: null, seconds: 0 });
             };
 
-            const formatChrono = (totalSeconds) => {
-                const h = Math.floor(totalSeconds / 3600);
-                const m = Math.floor((totalSeconds % 3600) / 60);
-                const s = totalSeconds % 60;
+            const formatChrono = (ts) => {
+                const h = Math.floor(ts / 3600); const m = Math.floor((ts % 3600) / 60); const s = ts % 60;
                 return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             };
-
-            const formatTimeDisplay = (totalSeconds) => {
-                if (!totalSeconds) return "0m";
-                const h = Math.floor(totalSeconds / 3600);
-                const m = Math.floor((totalSeconds % 3600) / 60);
-                if (h > 0) return `${h}h ${m}m`;
-                return `${m}m`;
+            const formatTimeDisplay = (ts) => {
+                if (!ts) return "0m";
+                const h = Math.floor(ts / 3600); const m = Math.floor((ts % 3600) / 60);
+                return h > 0 ? `${h}h ${m}m` : `${m}m`;
             };
 
-            // --- FUNÇÕES DE CURSOS EXTRAS ---
             const handleAddExtraCourse = () => {
                 if(!extraCourseInput.trim()) return;
-                setState(p => ({
-                    ...p,
-                    extraCourses: [...(p.extraCourses || []), { id: Date.now().toString(), name: extraCourseInput.trim(), done: false }]
-                }));
+                setState(p => ({ ...p, extraCourses: [...(p.extraCourses || []), { id: Date.now().toString(), name: extraCourseInput.trim(), done: false }] }));
                 setExtraCourseInput('');
             };
+            const toggleExtraCourse = (id) => setState(p => ({ ...p, extraCourses: (p.extraCourses || []).map(c => c.id === id ? { ...c, done: !c.done } : c) }));
+            const deleteExtraCourse = (id) => setState(p => ({ ...p, extraCourses: (p.extraCourses || []).filter(c => c.id !== id) }));
 
-            const toggleExtraCourse = (id) => {
-                setState(p => ({
-                    ...p,
-                    extraCourses: (p.extraCourses || []).map(c => c.id === id ? { ...c, done: !c.done } : c)
-                }));
-            };
-
-            const deleteExtraCourse = (id) => {
-                setState(p => ({
-                    ...p,
-                    extraCourses: (p.extraCourses || []).filter(c => c.id !== id)
-                }));
-            };
-
-            // --- LÓGICA DA SKILL TREE E OBJETIVOS ---
             const isModuleLocked = useCallback((moduleId) => {
-                const mod = detailedRoadmapData.find(m => m.id === moduleId);
+                const mod = currentData.find(m => m.id === moduleId);
                 if (!mod || !mod.dependsOn) return false;
                 return mod.dependsOn.some(depId => !(state.progress || {})[depId]?.passed);
-            }, [state.progress]);
+            }, [state.progress, currentData]);
 
             const toggleObjective = (moduleId, objectiveId) => {
                 setState(prev => {
                     const modProgress = (prev.progress || {})[moduleId] || {};
-                    const objectives = modProgress.objectives || [];
-                    const newObjectives = objectives.includes(objectiveId) 
-                        ? objectives.filter(id => id !== objectiveId)
-                        : [...objectives, objectiveId];
-                    
-                    return { ...prev, progress: { ...prev.progress, [moduleId]: { ...modProgress, objectives: newObjectives } } };
+                    const objs = modProgress.objectives || [];
+                    const nObjs = objs.includes(objectiveId) ? objs.filter(id => id !== objectiveId) : [...objs, objectiveId];
+                    return { ...prev, progress: { ...prev.progress, [moduleId]: { ...modProgress, objectives: nObjs } } };
                 });
             };
 
             const calculateLines = useCallback(() => {
-                if (!treeContainerRef.current || activeTab !== 'trilha') return;
+                if (!treeContainerRef.current || (activeTab !== 'trilha' && activeTab !== 'ingles')) return;
                 const containerRect = treeContainerRef.current.getBoundingClientRect();
                 const newLines = [];
 
-                detailedRoadmapData.forEach(module => {
+                currentData.forEach(module => {
                     if (!module.dependsOn || module.dependsOn.length === 0) return;
                     const targetEl = document.getElementById(`node-${module.id}`);
                     if (!targetEl) return;
@@ -626,9 +644,8 @@
                         newLines.push({ id: `${depId}-${module.id}`, x1: startX, y1: startY, x2: endX, y2: endY, status: lineStatus });
                     });
                 });
-                
                 setSvgLines(newLines);
-            }, [activeTab, state.progress]);
+            }, [activeTab, state.progress, currentData]);
 
             useLayoutEffect(() => {
                 const timerDelay = setTimeout(calculateLines, 100);
@@ -637,54 +654,27 @@
             }, [calculateLines, activeTab]);
 
             const calendarData = useMemo(() => {
-                let currentDate = new Date();
-                currentDate.setHours(0,0,0,0);
-                
-                return detailedRoadmapData.map(mod => {
-                    const moduleHours = (state.customHours || {})[mod.id] || mod.estimatedHours;
-                    const isPassed = (state.progress || {})[mod.id]?.passed;
-                    
-                    if (isPassed) {
-                        return { ...mod, actualHours: moduleHours, isPassed, compDate: new Date((state.progress || {})[mod.id].completionDate) };
-                    }
-
-                    const daysNeeded = Math.ceil(moduleHours / state.dailyHours) || 1;
-                    const startDate = new Date(currentDate);
-                    currentDate.setDate(currentDate.getDate() + daysNeeded);
-                    const endDate = new Date(currentDate);
-                    endDate.setDate(endDate.getDate() - 1); 
-
-                    return { ...mod, actualHours: moduleHours, daysNeeded, startDate, endDate: endDate < startDate ? startDate : endDate, isPassed: false };
+                let d = new Date(); d.setHours(0,0,0,0);
+                return currentData.map(mod => {
+                    const h = (state.customHours || {})[mod.id] || mod.estimatedHours;
+                    const passed = (state.progress || {})[mod.id]?.passed;
+                    if (passed) return { ...mod, actualHours: h, isPassed: true, compDate: new Date((state.progress || {})[mod.id].completionDate) };
+                    const days = Math.ceil(h / state.dailyHours) || 1;
+                    const sDate = new Date(d); d.setDate(d.getDate() + days);
+                    const eDate = new Date(d); eDate.setDate(eDate.getDate() - 1); 
+                    return { ...mod, actualHours: h, daysNeeded: days, startDate: sDate, endDate: eDate < sDate ? sDate : eDate, isPassed: false };
                 });
-            }, [state.customHours, state.dailyHours, state.progress]);
+            }, [state.customHours, state.dailyHours, state.progress, currentData]);
 
             const futureModules = calendarData.filter(c => !c.isPassed);
             const graduationDate = futureModules.length > 0 ? futureModules[futureModules.length-1].endDate : new Date();
             const totalRemainingDays = futureModules.reduce((acc, curr) => acc + curr.daysNeeded, 0);
-
-            const formatDate = (date) => date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+            const formatDate = (d) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+            const totalHoursStudied = useMemo(() => Object.values(state.studyLogs || {}).reduce((acc, log) => acc + (Number(log.hours) || 0), 0), [state.studyLogs]);
             
             const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
-            const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
-
-            const totalHoursStudied = useMemo(() => {
-                return Object.values(state.studyLogs || {}).reduce((acc, log) => acc + (Number(log.hours) || 0), 0);
-            }, [state.studyLogs]);
-
-            const chartData = useMemo(() => {
-                const data = [];
-                let maxH = 0;
-                for(let i=6; i>=0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
-                    const dStr = d.toISOString().split('T')[0];
-                    const h = (state.studyLogs || {})[dStr]?.hours || 0;
-                    if(h > maxH) maxH = h;
-                    data.push({ date: `${d.getDate()}/${d.getMonth()+1}`, hours: h });
-                }
-                return { data, maxH: maxH < 5 ? 5 : maxH }; 
-            }, [state.studyLogs]);
+            const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
+            const firstDayOfMonth = (y, m) => new Date(y, m, 1).getDay();
 
             const triggerVictory = (mod) => {
                 setState(p => ({
@@ -699,21 +689,15 @@
 
             const handleSaveLog = () => {
                 if(!selectedLogDate) return;
-                setState(p => ({
-                    ...p, 
-                    studyLogs: { 
-                        ...(p.studyLogs || {}), 
-                        [selectedLogDate]: { hours: Number(logForm.hours)||0, notes: logForm.notes } 
-                    }
-                }));
+                setState(p => ({ ...p, studyLogs: { ...(p.studyLogs || {}), [selectedLogDate]: { hours: Number(logForm.hours)||0, notes: logForm.notes } } }));
                 setSelectedLogDate(null);
             };
 
-            const openLogModal = (year, month, day) => {
-                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            const openLogModal = (y, m, d) => {
+                const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 setSelectedLogDate(dateStr);
-                const existing = (state.studyLogs || {})[dateStr] || { hours: '', notes: '' };
-                setLogForm({ hours: existing.hours || '', notes: existing.notes || '' });
+                const ex = (state.studyLogs || {})[dateStr] || { hours: '', notes: '' };
+                setLogForm({ hours: ex.hours || '', notes: ex.notes || '' });
             };
 
             if (celebration) {
@@ -759,7 +743,8 @@
                     <nav className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-2xl border-b border-white/5 px-4 py-4 overflow-x-auto shadow-2xl hide-scroll">
                         <div className="max-w-7xl mx-auto flex gap-2 justify-start md:justify-center min-w-max">
                             {[
-                                { id: 'trilha', icon: 'fa-network-wired', name: 'Mapa' },
+                                { id: 'trilha', icon: 'fa-network-wired', name: 'Trilha DEV' },
+                                { id: 'ingles', icon: 'fa-language', name: 'Trilha Inglês' }, 
                                 { id: 'diario', icon: 'fa-calendar-check', name: 'Diário' },
                                 { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, 
                                 { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
@@ -768,8 +753,8 @@
                                 { id: 'trofeus', icon: 'fa-medal', name: 'Troféus' },
                                 { id: 'motivacao', icon: 'fa-rocket', name: 'Futuro' }
                             ].map(tab => (
-                                <button key={tab.id} onClick={() => setActiveTab(tab.id)} 
-                                    className={`px-5 py-2.5 rounded-[1.25rem] font-bold text-sm transition-all duration-500 flex items-center gap-2.5 border
+                                <button key={tab.id} onClick={() => { setActiveTab(tab.id); setSelectedModule(null); }} 
+                                    className={`px-5 py-2.5 rounded-[1.25rem] font-bold text-sm transition-all duration-500 flex items-center gap-2.5 border whitespace-nowrap
                                     ${activeTab === tab.id ? 'bg-indigo-600 border-indigo-500 text-white shadow-[0_5px_20px_-5px_rgba(79,70,229,0.5)]' : 'bg-transparent border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200 hover:border-white/10'}`}>
                                     <i className={`fa-solid ${tab.icon} ${activeTab === tab.id ? 'opacity-100' : 'opacity-50'}`}></i> {tab.name}
                                 </button>
@@ -779,18 +764,17 @@
 
                     <main className="max-w-7xl mx-auto mt-12 px-4 relative">
                         
-                        {/* --- MAPA DE HABILIDADES --- */}
-                        {activeTab === 'trilha' && (
+                        {/* --- MAPA DE HABILIDADES (Front-End OU Inglês) --- */}
+                        {(activeTab === 'trilha' || activeTab === 'ingles') && (
                             <div className="animate-fade-in pb-20 relative">
                                 
                                 <div className="mb-16 glass-panel rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden group hover:border-indigo-500/20 transition-colors duration-700">
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-indigo-500/20 transition-colors duration-700"></div>
+                                    <div className={`absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full pointer-events-none transition-colors duration-700 ${activeTab === 'ingles' ? 'bg-rose-500/10 group-hover:bg-rose-500/20' : 'bg-indigo-500/10 group-hover:bg-indigo-500/20'}`}></div>
                                     
                                     <div className="flex flex-col lg:flex-row justify-between items-center gap-8 relative z-10">
-                                        
                                         <div className="flex-1 w-full lg:max-w-sm flex items-center justify-between gap-4 bg-black/40 border border-white/5 p-5 rounded-[2rem] shadow-inner transition-colors group-hover:border-white/10">
                                             <div className="text-left ml-2">
-                                                <p className="text-indigo-400 font-black uppercase tracking-widest text-[10px]">Ritmo</p>
+                                                <p className={`font-black uppercase tracking-widest text-[10px] ${activeTab === 'ingles' ? 'text-rose-400' : 'text-indigo-400'}`}>Ritmo</p>
                                                 <p className="text-slate-300 font-bold text-sm">Horas/Dia</p>
                                             </div>
                                             <div className="flex items-center gap-2 bg-black/50 p-1.5 rounded-2xl border border-white/5">
@@ -801,11 +785,11 @@
                                         </div>
 
                                         <div className="flex-1 w-full text-center">
-                                            <p className="text-slate-500 font-black uppercase tracking-widest text-[10px] mb-3">Previsão Absoluta de Formatura</p>
+                                            <p className="text-slate-500 font-black uppercase tracking-widest text-[10px] mb-3">Previsão Absoluta de Formatura ({activeTab === 'ingles' ? 'Inglês' : 'Dev'})</p>
                                             {futureModules.length > 0 ? (
-                                                <div className="inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 p-[1px] rounded-[2.5rem] shadow-[0_10px_30px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(79,70,229,0.5)] transition-shadow duration-500 cursor-default">
+                                                <div className={`inline-block bg-gradient-to-r p-[1px] rounded-[2.5rem] transition-shadow duration-500 cursor-default ${activeTab === 'ingles' ? 'from-rose-500 via-pink-500 to-amber-400 shadow-[0_10px_30px_-10px_rgba(244,63,94,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(244,63,94,0.5)]' : 'from-indigo-500 via-purple-500 to-cyan-400 shadow-[0_10px_30px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_40px_-5px_rgba(79,70,229,0.5)]'}`}>
                                                     <div className="bg-slate-950 px-10 py-4 rounded-[2.5rem]">
-                                                        <span className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-cyan-300 tracking-tighter">{formatDate(graduationDate)}</span>
+                                                        <span className={`text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r tracking-tighter ${activeTab === 'ingles' ? 'from-rose-300 via-pink-300 to-amber-300' : 'from-indigo-300 via-purple-300 to-cyan-300'}`}>{formatDate(graduationDate)}</span>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -826,7 +810,6 @@
 
                                 <div className="w-full overflow-x-auto hide-scroll pb-10" ref={treeContainerRef} style={{ position: 'relative' }}>
                                     
-                                    {/* Camada SVG para as linhas de conexão */}
                                     <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-0" style={{ minWidth: '1000px' }}>
                                         <defs>
                                             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -846,7 +829,7 @@
                                                 strokeColor = "rgba(16, 185, 129, 0.6)"; 
                                                 strokeWidth = "3";
                                             } else if (line.status === 'active') {
-                                                strokeColor = "rgba(99, 102, 241, 0.8)"; 
+                                                strokeColor = activeTab === 'ingles' ? "rgba(244, 63, 94, 0.8)" : "rgba(99, 102, 241, 0.8)"; 
                                                 strokeWidth = "3";
                                                 extraClass = "path-active"; 
                                             }
@@ -860,12 +843,11 @@
                                         })}
                                     </svg>
 
-                                    {/* Camada DOM com Tiers e Cards */}
                                     <div className="flex flex-col gap-12 md:gap-20 min-w-[1000px] relative z-10 pt-4">
-                                        {skillTreeTiers.map((tierRow, tierIdx) => (
+                                        {currentTiers.map((tierRow, tierIdx) => (
                                             <div key={tierIdx} className="flex justify-center items-center gap-6 md:gap-12 w-full">
                                                 {tierRow.map(modId => {
-                                                    const m = detailedRoadmapData.find(d => d.id === modId);
+                                                    const m = currentData.find(d => d.id === modId);
                                                     if (!m) return null;
                                                     
                                                     const p = (state.progress || {})[m.id] || {};
@@ -874,7 +856,10 @@
                                                     const isSelected = selectedModule === m.id;
                                                     const actualHours = (state.customHours || {})[m.id] || m.estimatedHours;
                                                     
-                                                    let nodeClass = "bg-black/40 border-white/5 text-slate-300 hover:bg-slate-800/80 hover:border-indigo-500/30 cursor-pointer";
+                                                    let nodeClass = "bg-black/40 border-white/5 text-slate-300 hover:bg-slate-800/80 cursor-pointer";
+                                                    if(activeTab === 'ingles') nodeClass += " hover:border-rose-500/30";
+                                                    else nodeClass += " hover:border-indigo-500/30";
+                                                    
                                                     let iconClass = "text-slate-500 bg-black/40 border-transparent";
                                                     let statusIcon = null;
 
@@ -889,7 +874,8 @@
                                                     }
 
                                                     if (isSelected) {
-                                                        nodeClass += " ring-2 ring-indigo-500/50 scale-[1.05] z-30 shadow-2xl bg-slate-800/90";
+                                                        const ringColor = activeTab === 'ingles' ? 'ring-rose-500/50' : 'ring-indigo-500/50';
+                                                        nodeClass += ` ring-2 ${ringColor} scale-[1.05] z-30 shadow-2xl bg-slate-800/90`;
                                                     }
 
                                                     return (
@@ -906,7 +892,7 @@
                                                             
                                                             <div className="flex flex-col gap-1.5 mt-2 w-full">
                                                                 <span className="text-[9px] uppercase font-black tracking-widest text-slate-400 bg-black/20 px-2 py-1.5 rounded-md border border-white/5">Meta: {actualHours}h</span>
-                                                                <span className="text-[9px] uppercase font-black tracking-widest text-indigo-300 bg-indigo-500/10 px-2 py-1.5 rounded-md border border-indigo-500/20">Total: {formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</span>
+                                                                <span className={`text-[9px] uppercase font-black tracking-widest border px-2 py-1.5 rounded-md ${activeTab === 'ingles' ? 'text-rose-300 bg-rose-500/10 border-rose-500/20' : 'text-indigo-300 bg-indigo-500/10 border-indigo-500/20'}`}>Total: {formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</span>
                                                             </div>
                                                             
                                                             {p.cert && (
@@ -924,21 +910,24 @@
                             </div>
                         )}
 
-                        {}
-                        {activeTab === 'trilha' && (
+                        {/* --- PAINEL LATERAL (Front-End OU Inglês) --- */}
+                        {(activeTab === 'trilha' || activeTab === 'ingles') && (
                             <>
                                 <div className={`fixed inset-0 bg-[#020617]/60 backdrop-blur-sm z-40 transition-opacity duration-500 ${selectedModule ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setSelectedModule(null)}></div>
                                 
                                 <div className={`fixed inset-y-0 right-0 w-full md:w-[500px] lg:w-[600px] bg-slate-950/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl z-50 transform transition-transform duration-500 ease-out overflow-y-auto ${selectedModule ? 'translate-x-0' : 'translate-x-full'}`}>
                                     {selectedModule && (() => {
-                                        const m = detailedRoadmapData.find(d => d.id === selectedModule);
+                                        const m = currentData.find(d => d.id === selectedModule);
+                                        if(!m) return null; // Prevenção de quebra de estado
                                         const p = (state.progress || {})[m.id] || {};
                                         const passed = p.passed;
                                         const locked = isModuleLocked(m.id);
                                         const actualHours = (state.customHours || {})[m.id] || m.estimatedHours;
                                         const isCurrentTimer = timer.moduleId === m.id;
                                         
-                                        const pendingDeps = (m.dependsOn || []).filter(depId => !(state.progress || {})[depId]?.passed).map(depId => detailedRoadmapData.find(d => d.id === depId)?.title);
+                                        const pendingDeps = (m.dependsOn || []).filter(depId => !(state.progress || {})[depId]?.passed).map(depId => currentData.find(d => d.id === depId)?.title);
+
+                                        const themeColor = activeTab === 'ingles' ? 'rose' : 'indigo';
 
                                         return (
                                             <div className="p-6 md:p-10 relative">
@@ -946,16 +935,15 @@
                                                 
                                                 <div className="mb-10 pr-14 relative z-0">
                                                     <div className="flex gap-2 mb-4">
-                                                        <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border inline-block ${passed ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : locked ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' : 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400'}`}>
-                                                            {passed ? 'Dominado' : locked ? 'Bloqueado (Falta Base)' : 'Habilidade Disponível'}
+                                                        <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border inline-block ${passed ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : locked ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' : `bg-${themeColor}-500/10 border-${themeColor}-500/30 text-${themeColor}-400`}`}>
+                                                            {passed ? 'Dominado' : locked ? 'Bloqueado (Falta Base)' : 'Disponível'}
                                                         </span>
                                                     </div>
                                                     <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-4 tracking-tight">{m.title}</h2>
                                                     <p className="text-slate-400 text-sm leading-relaxed mb-8">{m.description}</p>
 
-                                                    {/* Ajuste de Carga Real */}
                                                     <div className="flex items-center gap-4 bg-black/20 w-fit px-5 py-3 rounded-2xl border border-white/5 shadow-inner">
-                                                        <span className="text-[10px] text-indigo-400 uppercase font-black tracking-widest opacity-80">Carga Real Meta:</span>
+                                                        <span className={`text-[10px] text-${themeColor}-400 uppercase font-black tracking-widest opacity-80`}>Carga Real Meta:</span>
                                                         <div className="flex items-center gap-1">
                                                             <input type="number" min="1" value={actualHours} 
                                                                 disabled={passed}
@@ -964,13 +952,12 @@
                                                                     triggerAchievement('time_lord');
                                                                 }} 
                                                                 className={`font-black text-xl w-16 text-center rounded-lg outline-none transition-all
-                                                                ${passed ? 'bg-transparent text-emerald-400 cursor-not-allowed' : 'bg-black/40 text-white border border-white/10 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 py-1'}`} />
+                                                                ${passed ? 'bg-transparent text-emerald-400 cursor-not-allowed' : `bg-black/40 text-white border border-white/10 focus:border-${themeColor}-500 focus:ring-1 focus:ring-${themeColor}-500 py-1`}`} />
                                                             <span className="text-[10px] text-slate-500 font-bold uppercase">h</span>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                {/* Conselho do Mestre */}
                                                 <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-6 rounded-r-3xl mb-10 relative overflow-hidden group">
                                                     <i className="fa-solid fa-brain absolute -right-4 -bottom-4 text-8xl text-amber-500/5 group-hover:scale-110 transition-transform duration-700"></i>
                                                     <h4 className="text-amber-400 text-xs font-black uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2"><i className="fa-solid fa-lightbulb"></i> Conselho do Mestre</h4>
@@ -979,19 +966,19 @@
 
                                                 {/* CRONÔMETRO */}
                                                 <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
-                                                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[50px] rounded-full pointer-events-none"></div>
-                                                    <h4 className="text-white font-bold text-xl mb-6 flex items-center gap-3 relative z-10"><i className="fa-solid fa-stopwatch text-indigo-400"></i> Foco e Tempo de Estudo</h4>
+                                                    <div className={`absolute top-0 right-0 w-32 h-32 blur-[50px] rounded-full pointer-events-none bg-${themeColor}-500/10`}></div>
+                                                    <h4 className="text-white font-bold text-xl mb-6 flex items-center gap-3 relative z-10"><i className={`fa-solid fa-stopwatch text-${themeColor}-400`}></i> Foco e Tempo de Estudo</h4>
                                                     
                                                     <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-black/40 p-6 rounded-2xl border border-white/10 relative z-10">
                                                         <div className="text-center sm:text-left">
                                                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1.5">Sessão Atual</p>
-                                                            <div className="text-5xl font-black text-indigo-400 font-mono tracking-wider">
+                                                            <div className={`text-5xl font-black font-mono tracking-wider text-${themeColor}-400`}>
                                                                 {formatChrono(isCurrentTimer ? timer.seconds : 0)}
                                                             </div>
                                                         </div>
                                                         <div className="flex gap-3">
                                                             {!isCurrentTimer || !timer.active ? (
-                                                                <button onClick={() => startTimer(m.id)} className="bg-indigo-600 hover:bg-indigo-500 text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:scale-105 active:scale-95 text-xl"><i className="fa-solid fa-play"></i></button>
+                                                                <button onClick={() => startTimer(m.id)} className={`bg-${themeColor}-600 hover:bg-${themeColor}-500 text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 text-xl`}><i className="fa-solid fa-play"></i></button>
                                                             ) : (
                                                                 <button onClick={pauseTimer} className="bg-amber-600 hover:bg-amber-500 text-white w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(217,119,6,0.3)] hover:scale-105 active:scale-95 text-xl"><i className="fa-solid fa-pause"></i></button>
                                                             )}
@@ -1000,11 +987,11 @@
                                                     </div>
                                                     <div className="mt-5 pt-5 border-t border-white/5 flex justify-between items-center relative z-10">
                                                         <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Total Acumulado</p>
-                                                        <p className="font-black text-indigo-300 text-lg">{formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</p>
+                                                        <p className={`font-black text-lg text-${themeColor}-300`}>{formatTimeDisplay((state.moduleTime || {})[m.id] || 0)}</p>
                                                     </div>
                                                 </div>
 
-                                                {/* EVOLUÇÃO DOS PROJETOS (NOVO) */}
+                                                {/* EVOLUÇÃO DOS PROJETOS (Apenas Front-End) */}
                                                 {m.projectTasks && m.projectTasks.length > 0 && !locked && (
                                                     <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
                                                         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-[50px] rounded-full pointer-events-none"></div>
@@ -1046,7 +1033,7 @@
                                                     <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-inner mb-10 relative overflow-hidden">
                                                         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[50px] rounded-full pointer-events-none"></div>
                                                         <h4 className="text-white font-bold text-xl mb-3 flex items-center gap-3 relative z-10"><i className="fa-solid fa-list-check text-emerald-400"></i> Objetivos do Módulo</h4>
-                                                        <p className="text-xs text-slate-400 leading-relaxed mb-6 relative z-10">Marque os tópicos abaixo conforme for estudando e dominando os conceitos (baseados no roadmap oficial).</p>
+                                                        <p className="text-xs text-slate-400 leading-relaxed mb-6 relative z-10">Marque os tópicos abaixo conforme for estudando e dominando os conceitos.</p>
                                                         
                                                         <div className="space-y-3 relative z-10">
                                                             {m.subItems.map(si => {
@@ -1077,7 +1064,7 @@
                                                                     </div>
                                                                 ) : (
                                                                     <div>
-                                                                        <p className="text-xs text-slate-400 mb-4 px-4">Agora que validou o módulo, você pode anexar seu certificado oficial emitido pelos cursos para controle visual.</p>
+                                                                        <p className="text-xs text-slate-400 mb-4 px-4">Anexe um certificado para este módulo caso possua.</p>
                                                                         <button onClick={() => {
                                                                             const fileName = prompt("Qual o nome do arquivo do seu certificado?");
                                                                             if(fileName) setState(prev => ({...prev, progress: {...(prev.progress || {}), [m.id]: {...(prev.progress || {})[m.id], cert: fileName}}}));
@@ -1092,22 +1079,22 @@
                                                 )}
 
                                                 <div className="bg-slate-900/50 rounded-[2rem] p-6 md:p-8 border border-white/5">
-                                                    <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5 flex items-center gap-2"><i className="fa-solid fa-link"></i> Meus Links Específicos</h4>
+                                                    <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5 flex items-center gap-2"><i className="fa-solid fa-link"></i> Links e Artigos Salvos</h4>
                                                     <div className="flex gap-2 mb-6">
-                                                        <input type="text" value={linkInputText} onChange={e => setLinkInputText(e.target.value)} placeholder="Cole a URL de um artigo ou aula..." className="flex-1 bg-black/40 border border-white/10 rounded-xl px-5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-inner" />
+                                                        <input type="text" value={linkInputText} onChange={e => setLinkInputText(e.target.value)} placeholder="Cole a URL do material extra..." className="flex-1 bg-black/40 border border-white/10 rounded-xl px-5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-inner" />
                                                         <button onClick={() => {
                                                             if(linkInputText.trim()) {
                                                                 setState(prev => ({...prev, customLinks: {...(prev.customLinks || {}), [m.id]: [...((prev.customLinks || {})[m.id]||[]), linkInputText.trim()]}}));
                                                                 triggerAchievement('link_1'); 
                                                                 setLinkInputText('');
                                                             }
-                                                        }} className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] text-sm active:scale-95">Add</button>
+                                                        }} className={`bg-${themeColor}-600 hover:bg-${themeColor}-500 text-white px-6 rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(0,0,0,0.3)] text-sm active:scale-95`}>Add</button>
                                                     </div>
                                                     {(state.customLinks || {})[m.id] && (state.customLinks || {})[m.id].length > 0 && (
                                                         <ul className="space-y-3">
                                                             {(state.customLinks || {})[m.id].map((url, i) => (
                                                                 <li key={i} className="flex justify-between items-center text-xs bg-black/20 p-3.5 rounded-xl border border-white/5 group hover:border-white/10 transition-colors">
-                                                                    <a href={url} target="_blank" className="text-indigo-400 hover:text-indigo-300 hover:underline truncate mr-4 flex-1 flex items-center gap-2"><i className="fa-solid fa-arrow-up-right-from-square opacity-50"></i> {url}</a>
+                                                                    <a href={url} target="_blank" className={`text-${themeColor}-400 hover:text-${themeColor}-300 hover:underline truncate mr-4 flex-1 flex items-center gap-2`}><i className="fa-solid fa-arrow-up-right-from-square opacity-50"></i> {url}</a>
                                                                     <button onClick={() => {
                                                                         setState(prev => ({...prev, customLinks: {...(prev.customLinks || {}), [m.id]: (prev.customLinks || {})[m.id].filter((_, index) => index !== i)}}));
                                                                     }} className="text-slate-500 hover:text-rose-400 w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-rose-500/10 rounded-lg transition-colors"><i className="fa-solid fa-trash"></i></button>
@@ -1124,19 +1111,19 @@
                             </>
                         )}
 
-                        {/* --- NOVA ABA: CURSOS EXTRAS --- */}
+                        {/* --- ABAS RESTANTES (Comuns) --- */}
                         {activeTab === 'extras' && (
                             <div className="animate-fade-in pb-20 max-w-4xl mx-auto">
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-sky-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Cursos <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Adicionais</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Além do Front-End, adicione aqui outras habilidades que fortalecem seu perfil profissional, como Inglês, Digitação ou Soft Skills.</p>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Além do Front-End e Inglês, adicione aqui outras habilidades que fortalecem seu perfil profissional, como Digitação ou Soft Skills.</p>
                                 </div>
 
                                 <div className="glass-panel p-6 md:p-10 rounded-[2.5rem] relative overflow-hidden">
                                     <div className="flex flex-col sm:flex-row gap-3 mb-10 relative z-10">
                                         <input type="text" value={extraCourseInput} onChange={e => setExtraCourseInput(e.target.value)} 
-                                            placeholder="Ex: Curso de Inglês Intermediário..." 
+                                            placeholder="Ex: Curso de Digitação Rápida..." 
                                             className="flex-1 bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all shadow-inner" 
                                             onKeyDown={e => e.key === 'Enter' && handleAddExtraCourse()} />
                                         <button onClick={handleAddExtraCourse} className="bg-sky-600 hover:bg-sky-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(2,132,199,0.4)] hover:scale-[1.02] active:scale-95">
@@ -1178,7 +1165,6 @@
                             </div>
                         )}
 
-                        {}
                         {activeTab === 'diario' && (
                             <div className="animate-fade-in pb-20">
                                 
@@ -1199,12 +1185,8 @@
                                             
                                             {state.targetDate && (
                                                 <div className="mt-4 p-5 rounded-xl bg-black/20 border border-white/5 relative z-10">
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase mb-2">Projeção Baseada no Ritmo Atual</p>
-                                                    {new Date(state.targetDate) >= graduationDate ? (
-                                                        <p className="text-emerald-400 font-bold text-sm flex items-start gap-3"><div className="mt-0.5"><i className="fa-solid fa-circle-check"></i></div> Matematicamente possível! Mantenha a disciplina.</p>
-                                                    ) : (
-                                                        <p className="text-rose-400 font-bold text-sm flex items-start gap-3"><div className="mt-0.5"><i className="fa-solid fa-triangle-exclamation"></i></div> Atrasado. Aumente as horas/dia no mapa ou mude a data.</p>
-                                                    )}
+                                                    <p className="text-[10px] text-slate-500 font-bold uppercase mb-2">Sua meta final é realista?</p>
+                                                    <p className="text-slate-300 text-sm mt-1">Lembre-se de ser flexível. Estudar e praticar projetos leva tempo real e cognitivo.</p>
                                                 </div>
                                             )}
                                         </div>
@@ -1440,26 +1422,11 @@
                                         Combustível de Foguete
                                     </h2>
                                     <p className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed relative z-10">
-                                        O caminho é árduo e a regra é cruel por um motivo: <strong>o prêmio final é extraordinário</strong>. Veja o que te aguarda no topo desta montanha quando você dominar os 21 módulos.
+                                        O caminho é árduo e a regra é cruel por um motivo: <strong>o prêmio final é extraordinário</strong>.
                                     </p>
                                 </div>
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
-                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group hover:border-fuchsia-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(217,70,239,0.2)] hover:bg-slate-900/60">
-                                        <div className="absolute -right-20 -top-20 w-64 h-64 bg-fuchsia-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-fuchsia-500/20 transition-colors duration-700"></div>
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
-                                            <div className="w-20 h-20 bg-fuchsia-500/10 rounded-[1.5rem] flex items-center justify-center border border-fuchsia-500/20 text-4xl text-fuchsia-400 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-bolt drop-shadow-[0_0_15px_rgba(217,70,239,0.5)]"></i>
-                                            </div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight">Superpoderes Técnicos</h3>
-                                        </div>
-                                        <ul className="space-y-6 relative z-10">
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Arquitetura Impecável:</strong> Criar aplicações complexas do zero, escaláveis para milhões de usuários, usando React/Next.js.</p></li>
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Performance de Elite:</strong> Dominar o Render Tree, SSR e SSG para fazer sites carregarem em menos de 1 segundo.</p></li>
-                                            <li className="flex items-start gap-4 bg-black/20 p-4 rounded-2xl border border-white/5"><div className="mt-1 bg-fuchsia-500/20 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-fuchsia-500/30"><i className="fa-solid fa-check text-fuchsia-400 text-xs"></i></div> <p className="text-slate-300 text-sm leading-relaxed"><strong>Segurança Bancária:</strong> Proteger sistemas contra ataques reais (XSS, CSRF) entendendo cabeçalhos, CSP e JWT.</p></li>
-                                        </ul>
-                                    </div>
-
                                     <div className="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(16,185,129,0.2)] hover:bg-slate-900/60">
                                         <div className="absolute -left-20 -top-20 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
                                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
@@ -1469,13 +1436,6 @@
                                             <h3 className="text-3xl font-black text-white tracking-tight">O Mapa da Riqueza</h3>
                                         </div>
                                         <div className="space-y-4 relative z-10">
-                                            <div className="bg-black/20 p-5 rounded-2xl border border-white/5 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-white/10 transition-colors">
-                                                <div>
-                                                    <p className="font-bold text-slate-200">Júnior (Início pós-trilha)</p>
-                                                    <p className="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Desenvolve com supervisão.</p>
-                                                </div>
-                                                <span className="text-xl font-black text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">R$ 3.5k - 6k</span>
-                                            </div>
                                             <div className="bg-emerald-500/5 p-5 rounded-2xl border border-emerald-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative overflow-hidden">
                                                 <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
                                                 <div className="ml-2">
@@ -1483,13 +1443,6 @@
                                                     <p className="text-[11px] text-emerald-400/60 uppercase tracking-widest mt-1">Autonomia e arquitetura.</p>
                                                 </div>
                                                 <span className="text-2xl font-black text-emerald-400 drop-shadow-md">R$ 7k - 12k</span>
-                                            </div>
-                                            <div className="bg-black/20 p-5 rounded-2xl border border-white/5 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-white/10 transition-colors">
-                                                <div>
-                                                    <p className="font-bold text-slate-200">Sênior / Tech Lead</p>
-                                                    <p className="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Liderança de alta carga.</p>
-                                                </div>
-                                                <span className="text-xl font-black text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">R$ 13k - 20k+</span>
                                             </div>
                                             <div className="bg-gradient-to-r from-amber-500/10 to-black/20 p-5 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 mt-6 shadow-inner">
                                                 <div>
@@ -1500,74 +1453,33 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 relative z-10">
-                                    <div className="glass-panel rounded-[2rem] p-8 md:p-10 hover:border-indigo-500/30 transition-colors">
-                                        <h3 className="text-xl font-black text-white mb-8 border-b border-white/5 pb-5 flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20"><i className="fa-solid fa-briefcase text-indigo-400"></i></div> Cargos Atingíveis</h3>
-                                        <div className="flex flex-wrap gap-3">
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">Front-End Engineer</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">UI/UX Developer</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">Web Perf Specialist</span>
-                                            <span className="px-5 py-2.5 bg-black/40 border border-white/5 rounded-xl text-sm font-bold text-slate-300 hover:border-indigo-500/30 hover:text-indigo-300 transition-colors cursor-default shadow-inner">React/Next.js Expert</span>
-                                        </div>
-                                    </div>
                                     
-                                    <div className="glass-panel rounded-[2rem] p-8 md:p-10 hover:border-indigo-500/30 transition-colors">
-                                        <h3 className="text-xl font-black text-white mb-8 border-b border-white/5 pb-5 flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20"><i className="fa-solid fa-building text-indigo-400"></i></div> Campos de Batalha</h3>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-slate-500/30 transition-colors group">
-                                                <i className="fa-solid fa-building-columns text-2xl text-slate-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Bancos & Fintechs</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Nubank, Itaú, XP</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-rose-500/30 transition-colors group">
-                                                <i className="fa-solid fa-rocket text-2xl text-rose-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Startups Ágeis</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Ifood, QuintoAndar</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-colors group">
-                                                <i className="fa-solid fa-globe text-2xl text-cyan-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Big Techs</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">Mercado Livre, Amazon</p>
-                                            </div>
-                                            <div className="bg-black/30 p-5 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-colors group">
-                                                <i className="fa-solid fa-laptop-code text-2xl text-emerald-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                                <p className="font-bold text-white text-sm">Consultorias</p>
-                                                <p className="text-[10px] text-slate-500 mt-1">CI&T, Accenture</p>
-                                            </div>
+                                    <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
+                                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+                                        <div className="text-center mb-8 relative z-10">
+                                            <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">O Escudo de Titânio <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">(Anti-IA)</span></h3>
+                                            <p className="text-slate-400 text-sm max-w-3xl mx-auto">Por que o ChatGPT não vai roubar a sua cadeira.</p>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
-                                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-                                    <div className="text-center mb-16 relative z-10">
-                                        <h3 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter">O Escudo de Titânio <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">(Anti-IA)</span></h3>
-                                        <p className="text-slate-400 text-lg max-w-3xl mx-auto">Por que o ChatGPT, Cursor ou Copilot não vão roubar a sua cadeira após você terminar esta trilha.</p>
-                                    </div>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-rose-500/20 hover:border-rose-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-rose-500/10 rounded-[1.25rem] flex items-center justify-center border border-rose-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-brain text-3xl text-rose-400 drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]"></i>
+                                        
+                                        <div className="flex flex-col gap-4 relative z-10">
+                                            <div className="bg-black/40 p-5 rounded-2xl border border-rose-500/20 flex gap-4">
+                                                <div className="w-10 h-10 shrink-0 bg-rose-500/10 rounded-xl flex items-center justify-center border border-rose-500/30">
+                                                    <i className="fa-solid fa-brain text-rose-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-white text-sm">Engenharia, não Digitação</h4>
+                                                    <p className="text-xs text-slate-400 mt-1">A IA gera o código, mas não decide onde ele deve morar ou qual padrão usar.</p>
+                                                </div>
                                             </div>
-                                            <h4 className="text-xl font-black text-white mb-3">Engenharia, não Digitação</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">A IA gera o código da função, mas não decide <strong>onde</strong> a função deve morar, qual padrão arquitetural usar ou como lidar com as dívidas técnicas legadas da empresa.</p>
-                                        </div>
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-amber-500/20 hover:border-amber-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-amber-500/10 rounded-[1.25rem] flex items-center justify-center border border-amber-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-comments-dollar text-3xl text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]"></i>
+                                            <div className="bg-black/40 p-5 rounded-2xl border border-cyan-500/20 flex gap-4">
+                                                <div className="w-10 h-10 shrink-0 bg-cyan-500/10 rounded-xl flex items-center justify-center border border-cyan-500/30">
+                                                    <i className="fa-solid fa-shield-halved text-cyan-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-white text-sm">O Orquestrador</h4>
+                                                    <p className="text-xs text-slate-400 mt-1">Você será o desenvolvedor que julga e orquestra a IA com segurança e autonomia.</p>
+                                                </div>
                                             </div>
-                                            <h4 className="text-xl font-black text-white mb-3">Tradução de Negócios</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">O trabalho de um Sênior é ouvir o CEO, identificar ambiguidades absurdas nos pedidos e transformar o caos conceitual em um software lucrativo.</p>
-                                        </div>
-                                        <div className="bg-black/40 p-8 rounded-[2rem] border border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-500 hover:-translate-y-2 group">
-                                            <div className="w-16 h-16 bg-cyan-500/10 rounded-[1.25rem] flex items-center justify-center border border-cyan-500/30 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-shield-halved text-3xl text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"></i>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white mb-3">O Orquestrador</h4>
-                                            <p className="text-sm text-slate-400 leading-relaxed">Você não será substituído pela IA. Você será o <strong>Desenvolvedor que julga e orquestra a IA</strong> usando a base sólida dos 21 módulos para garantir segurança e performance.</p>
                                         </div>
                                     </div>
                                 </div>
