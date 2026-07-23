@@ -66,7 +66,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useLayoutEffect, useCallback } = React;
 
-        // --- DADOS ESTÁTICOS COMUNS (AGORA LOTADOS) ---
+        // --- DADOS ESTÁTICOS COMUNS ---
         const toolList = [
             { n: 'Notion', i: 'fa-cube', d: 'Organização global, anotações em Markdown e gestão de projetos.', url: 'https://notion.so' },
             { n: 'Excalidraw', i: 'fa-pen-clip', d: 'Whiteboard virtual para desenhar arquitetura e fluxos de dados.', url: 'https://excalidraw.com/' },
@@ -103,17 +103,16 @@
             { title: "Mindset de Crescimento", icon: "fa-seedling", tip: "Não diga 'Eu não sei React'. Diga 'Eu AINDA não sei React'. A neuroplasticidade garante que seu cérebro pode se adaptar e aprender absolutamente qualquer lógica com repetição." }
         ];
 
+        // APENAS CURSOS 100% GRATUITOS DE ALTO NÍVEL
         const platformList = [
-            { n: 'Curso em Vídeo', url: 'https://www.cursoemvideo.com/', d: 'A melhor base do Brasil. Gustavo Guanabara ensina HTML, CSS, JS e Git de forma lendária. Essencial para criar fundações blindadas.' },
-            { n: 'DIO', url: 'https://www.dio.me/', d: 'Bootcamps focados em frameworks (React, Angular) com projetos práticos, desafios de código e emissão de certificados válidos no mercado.' },
-            { n: 'FreeCodeCamp', url: 'https://www.freecodecamp.org/portuguese/', d: 'Milhares de horas práticas direto no navegador. Você aprende fazendo. Certificações open-source com peso global em empresas gigantes.' },
-            { n: 'Rocketseat (Discover)', url: 'https://www.rocketseat.com.br/discover', d: 'Trilha básica gratuita com qualidade audiovisual impecável. Excelente para entender a padronização moderna e ferramental web.' },
-            { n: 'Origamid', url: 'https://www.origamid.com/', d: 'Foco excepcional em UI/UX, CSS avançado e JavaScript puro. Cursos extremamente visuais, perfeitos para quem ama interfaces refinadas.' },
-            { n: 'The Odin Project', url: 'https://www.theodinproject.com/', d: 'Currículo open-source brutal. Você aprende construindo projetos reais do zero e configurando seu próprio ambiente (Linux/Git).' },
-            { n: 'Alura', url: 'https://www.alura.com.br/', d: 'O maior ecossistema tech do Brasil. Dezenas de formações que vão do zero ao avançado cobrindo qualquer tecnologia ou soft skill.' },
-            { n: 'Frontend Masters', url: 'https://frontendmasters.com/', d: 'A elite do Front-end global. Cursos avançados ministrados pelos próprios criadores das ferramentas (ex: Kyle Simpson, Evan You).' },
-            { n: 'Scrimba', url: 'https://scrimba.com/', d: 'Formato revolucionário e interativo onde você pode pausar o vídeo e editar o código diretamente no player onde o professor estava digitando.' },
-            { n: 'Full Stack Open', url: 'https://fullstackopen.com/pt-br/', d: 'Oferecido pela Universidade de Helsinque. Foco denso e moderno em React, Redux, Node.js, GraphQL, Docker e TypeScript.' }
+            { n: 'Curso em Vídeo', url: 'https://www.cursoemvideo.com/', d: 'A melhor base do Brasil. Gustavo Guanabara ensina HTML, CSS, JS e Git de forma lendária. Essencial para criar fundações blindadas. (100% Grátis)' },
+            { n: 'FreeCodeCamp', url: 'https://www.freecodecamp.org/portuguese/', d: 'Milhares de horas práticas direto no navegador. Você aprende fazendo. Certificações com peso global em empresas gigantes. (100% Grátis)' },
+            { n: 'The Odin Project', url: 'https://www.theodinproject.com/', d: 'Currículo open-source brutal. Você aprende construindo projetos reais do zero e configurando seu próprio ambiente (Linux/Git). (100% Grátis)' },
+            { n: 'Full Stack Open', url: 'https://fullstackopen.com/pt-br/', d: 'Oferecido pela Universidade de Helsinque. Foco denso e moderno em React, Redux, Node.js, GraphQL e TypeScript. (100% Grátis)' },
+            { n: 'Rocketseat (Discover)', url: 'https://app.rocketseat.com.br/trails/discover', d: 'Trilha básica gratuita com qualidade audiovisual impecável. Excelente para entender a padronização moderna e ferramental web. (100% Grátis)' },
+            { n: 'Harvard CS50', url: 'https://cs50.harvard.edu/x/', d: 'O curso de introdução à Ciência da Computação mais famoso do mundo, direto de Harvard. Cria uma base lógica inquebrável. (100% Grátis)' },
+            { n: 'JavaScript.info', url: 'https://javascript.info/', d: 'O tutorial moderno de JavaScript. A documentação mais clara, profunda e passo a passo existente para dominar a linguagem nativa. (100% Grátis)' },
+            { n: 'Roadmap.sh', url: 'https://roadmap.sh/frontend', d: 'Mapeamento visual global apoiado pela comunidade. Te mostra exatamente o que estudar, com links gratuitos para cada conceito. (100% Grátis)' }
         ];
 
         const allAchievements = [
@@ -131,7 +130,7 @@
             { id: 'architect', t: 'Arquiteto Web', d: 'Dominou o Design System, SSR, GraphQL e PWAs. O Front-end agora obedece a você.' },
             { id: 'polyglot', t: 'Poliglota', d: 'Terminou S.U. Future. Seu cérebro agora compila e roda em Inglês nativo.' },
             { id: 'css_artist', t: 'Artista CSS', d: 'Dominou CSS Grid, Tailwind, BEM e Pré-processadores. Sem medo de centralizar divs.' },
-            { id: 'ts_god', t: 'TypeScript God', d: 'Fugiu do caos do Javascript puro e adotou a paz da tipagem estática estrutural com Genéricos.' },
+            { id: 'ts_god', t: 'TypeScript God', d: 'Fugiu do caos do Javascript puro e adotou a paz da tipagem estática estrutural.' },
             { id: 'deploy_master', t: 'Deploy Master', d: 'Github Actions, Vercel, e CI/CD dominados. O código não funciona só na sua máquina.' },
             { id: 'community', t: 'Dev Social', d: 'Dominou o trabalho em equipe, sabe orquestrar um Code Review e lidar com PRs rejeitados.' },
             { id: 'hacker', t: 'Hacker Ético', d: 'Compreendeu CORS, XSS, CSP e a segurança base da Web. Suas rotas estão blindadas.' }
@@ -150,6 +149,8 @@
                 id: 'internet', title: '1. Internet', estimatedHours: 10, dependsOn: [],
                 description: 'A base da infraestrutura. Redes, DNS e como o mundo se conecta.',
                 masterAdvice: 'Configure um servidor DNS local ou use o Wireshark para capturar o "3-way handshake" do TCP.',
+                future: 'Entender redes te diferencia do "fazedor de telas". Isso te dá a fundação invisível para quando começarmos a consumir APIs complexas lá na frente.',
+                didYouKnow: 'O primeiro servidor web do mundo era um computador NeXT com um adesivo dizendo "Não desligue, é um servidor!".',
                 projectTasks: [{ id: 'saas', task: 'Rascunhe mentalmente como seu Dashboard fará requisições HTTP para buscar os dados financeiros do servidor.' }],
                 subItems: [ { id: 'i1', label: 'How does the internet work?' }, { id: 'i2', label: 'What is HTTP?' }, { id: 'i3', label: 'DNS and how it works?' }, { id: 'i4', label: 'Browsers and how they work?' } ]
             },
@@ -157,6 +158,8 @@
                 id: 'html', title: '2. HTML', estimatedHours: 12, dependsOn: ['internet'],
                 description: 'O esqueleto semântico da web e padrões de acessibilidade.',
                 masterAdvice: 'Navegue pelo seu site usando um leitor de tela (NVDA) com o monitor desligado.',
+                future: 'Você está criando os ossos do seu projeto. O próximo passo lógico é o CSS, que servirá como a pele e a roupa deste esqueleto.',
+                didYouKnow: 'A tag <marquee> foi criada nos anos 90 para fazer textos rolarem na tela e virou febre, mas hoje é considerada obsoleta e ruim para acessibilidade.',
                 projectTasks: [{ id: 'ecom', task: 'Crie o esqueleto semântico da página de produto (tags <header>, <main>, <article> e <form> para compra).' }],
                 subItems: [ { id: 'h1', label: 'Writing Semantic HTML' }, { id: 'h2', label: 'Forms and Validations' }, { id: 'h3', label: 'Accessibility (A11y)' }, { id: 'h4', label: 'SEO Basics' } ]
             },
@@ -164,6 +167,8 @@
                 id: 'css', title: '3. CSS', estimatedHours: 25, dependsOn: ['html'],
                 description: 'Estilização profunda, algoritmos de layout e responsividade.',
                 masterAdvice: 'Compreenda o Stacking Context. É o segredo para entender por que seu z-index: 9999 falha.',
+                future: 'Você dominou a arte visual e o design responsivo. Seu próximo passo será o JavaScript, que vai injetar cérebro e movimento nessa pintura.',
+                didYouKnow: 'O CSS foi proposto em 1994, mas o Internet Explorer demorou quase uma década para suportar o Box Model corretamente.',
                 projectTasks: [{ id: 'ds', task: 'Defina as variáveis nativas (CSS Variables) para cores e tipografia do seu Design System.' }, { id: 'saas', task: 'Desenvolva o layout principal usando CSS Grid e Flexbox.' }],
                 subItems: [ { id: 'c1', label: 'Box Model & Layouts' }, { id: 'c2', label: 'Flexbox & CSS Grid' }, { id: 'c3', label: 'Responsive Design (Media Queries)' } ]
             },
@@ -171,13 +176,17 @@
                 id: 'js', title: '4. JavaScript', estimatedHours: 40, dependsOn: ['html'],
                 description: 'A linguagem do navegador. Closures, assincronicidade e manipulação.',
                 masterAdvice: 'Domine a fundo o Event Loop. Desenhe num papel a ordem de Call Stack e Microtasks.',
+                future: 'Você deixou de fazer panfletos estáticos e agora programa softwares reais. Em breve, usaremos Ferramentas e Frameworks para multiplicar essa produtividade por 100.',
+                didYouKnow: 'O JavaScript foi criado em apenas 10 dias por Brendan Eich em 1995.',
                 projectTasks: [{ id: 'ecom', task: 'Construa a lógica de adicionar/remover produtos no carrinho manipulando Arrays e salvando no LocalStorage.' }, { id: 'saas', task: 'Use a Fetch API para buscar um arquivo JSON mockado e popular as tabelas financeiras dinamicamente.' }],
                 subItems: [ { id: 'j1', label: 'DOM Manipulation' }, { id: 'j2', label: 'ES6+ (Arrow Functions, Destructuring)' }, { id: 'j3', label: 'Fetch API / Async Await' } ]
             },
             {
-                id: 'vcs', title: '5. Version Control Systems', estimatedHours: 10, dependsOn: ['html'],
+                id: 'vcs', title: '5. Version Control', estimatedHours: 10, dependsOn: ['html'],
                 description: 'Git, gerenciamento de branches, rebase e histórico.',
                 masterAdvice: 'Crie conflitos intencionais e resolva-os manualmente no bloco de notas lendo os marcadores <<<<<<< HEAD.',
+                future: 'Com o Git dominado, você está pronto para jogar seu código na nuvem (VCS Hosting) e provar ao mercado que sabe trabalhar em equipe.',
+                didYouKnow: 'Linus Torvalds criou o Git em apenas 2 semanas para gerenciar o imenso código do Linux após uma briga com uma empresa de software.',
                 projectTasks: [{ id: 'saas', task: 'Inicialize um repositório Git local e faça o primeiro commit estrutural do Dashboard.' }],
                 subItems: [ { id: 'v1', label: 'Git Concepts (Commit, Push, Pull)' }, { id: 'v2', label: 'Branching & Merging' } ]
             },
@@ -185,6 +194,8 @@
                 id: 'vcshost', title: '6. VCS Hosting', estimatedHours: 5, dependsOn: ['vcs'],
                 description: 'Plataformas de repositório e CI/CD.',
                 masterAdvice: 'Crie uma GitHub Action simples que faça "lint" automático a cada push.',
+                future: 'Seu portfólio agora é público. Daqui para frente, usaremos esse hub para automatizar os deploys (Build Tools) dos seus projetos.',
+                didYouKnow: 'O GitHub tem o código-fonte de missões da NASA congelados no Ártico, incluindo softwares que rodaram em Marte.',
                 projectTasks: [{ id: 'ecom', task: 'Faça o push do código para o GitHub e ative o GitHub Pages para ver a interface estática online.' }],
                 subItems: [ { id: 'vh1', label: 'GitHub / GitLab' } ]
             },
@@ -192,27 +203,35 @@
                 id: 'pkg', title: '7. Package Managers', estimatedHours: 5, dependsOn: ['js'],
                 description: 'Ecossistema Node.js e gestão de dependências.',
                 masterAdvice: 'Entenda a diferença entre node_modules flat (npm clássico) e o sistema de symlinks ultrarrápido do PNPM.',
+                future: 'Você abriu as portas da comunidade. No próximo módulo (Frameworks), você usará gerenciadores de pacotes para instalar o React/Vue com um único comando.',
+                didYouKnow: 'A pasta node_modules é famosa por ser o "objeto mais pesado do universo" dev devido à sua árvore colossal de dependências aninhadas.',
                 projectTasks: [{ id: 'ds', task: 'Rode "npm init -y" no Design System para configurar o package.json e preparar instalações de bibliotecas.' }],
                 subItems: [ { id: 'pk1', label: 'npm / pnpm / yarn' } ]
             },
             {
-                id: 'frameworks', title: '8. Pick a Framework', estimatedHours: 50, dependsOn: ['js', 'pkg'],
+                id: 'frameworks', title: '8. Frameworks UI', estimatedHours: 50, dependsOn: ['js', 'pkg'],
                 description: 'Adoção de UI libraries reativas (React, Vue, Angular).',
                 masterAdvice: 'Não decore hooks. Entenda o "Reconciliation" (Virtual DOM) para escrever código performático.',
+                future: 'Você atingiu o nível de produtividade de empresas gigantes. Em seguida, vamos refinar como você estiliza esses componentes gerados (Modern CSS).',
+                didYouKnow: 'O React foi criado no Facebook para resolver um bug crônico de notificações que simplesmente não desapareciam da barra superior.',
                 projectTasks: [ { id: 'saas', task: 'Migre os trechos de HTML do Dashboard para Componentes isolados em React (ex: <Sidebar />).' }, { id: 'chat', task: 'Inicie o Chat usando useState para armazenar as mensagens ativamente na tela.' } ],
                 subItems: [ { id: 'fw1', label: 'Components & Props' }, { id: 'fw2', label: 'State & Effect Hooks' }, { id: 'fw3', label: 'Routing' } ]
             },
             {
-                id: 'modcss', title: '9. Writing CSS (Modern)', estimatedHours: 15, dependsOn: ['css'],
+                id: 'modcss', title: '9. Modern CSS', estimatedHours: 15, dependsOn: ['css'],
                 description: 'Tailwind e abordagens modernas Utility-First.',
                 masterAdvice: 'Entenda como o compilador JIT purga o CSS morto, gerando apenas os bytes necessários.',
+                future: 'Com a velocidade do Tailwind, você estiliza na velocidade do pensamento. O próximo desafio é escalar isso para arquiteturas corporativas sem virar bagunça.',
+                didYouKnow: 'O Tailwind foi criado por Adam Wathan apenas como um projeto pessoal (um arquivo LESS) que ele usava para não ter que reescrever estilos básicos.',
                 projectTasks: [{ id: 'saas', task: 'Refatore as estilizações do Dashboard utilizando puramente classes do Tailwind.' }, { id: 'ecom', task: 'Utilize classes responsivas do Tailwind para estruturar a vitrine mobile-first.' }],
                 subItems: [ { id: 'mcss1', label: 'Tailwind CSS Utility Classes' } ]
             },
             {
-                id: 'cssarch', title: '10. CSS Architecture', estimatedHours: 10, dependsOn: ['modcss'],
+                id: 'cssarch', title: '10. CSS Arch.', estimatedHours: 10, dependsOn: ['modcss'],
                 description: 'Organização em larga escala para evitar conflitos.',
                 masterAdvice: 'A metodologia BEM não é só sobre classes longas. É garantir que estilos nunca vazem.',
+                future: 'Seu código agora escala. Com BEM e arquitetura modularizada, logo automatizaremos tarefas pesadas com Pré-processadores CSS.',
+                didYouKnow: 'A metodologia BEM (Block, Element, Modifier) foi criada pelos desenvolvedores do Yandex, o gigantesco "Google da Rússia".',
                 projectTasks: [{ id: 'ds', task: 'Aplique a padronização de nomenclatura (BEM) nos tokens do Design System.' }],
                 subItems: [ { id: 'carch1', label: 'BEM Methodology' } ]
             },
@@ -220,6 +239,8 @@
                 id: 'csspre', title: '11. CSS Preprocessors', estimatedHours: 10, dependsOn: ['css'],
                 description: 'Sass, mixins e manipulação com JS.',
                 masterAdvice: 'Evite o "nesting" profundo (> 3 níveis). Isso gera seletores com peso (especificidade) colossal.',
+                future: 'Seu CSS tem lógica (variáveis, loops). Agora que a UI e estilos estão sólidos, entraremos nos Build Tools para empacotar tudo para produção.',
+                didYouKnow: 'O Sass é na verdade escrito em Ruby, mas precisou ganhar versões em C e Dart para compilar rápido o suficiente em máquinas modernas.',
                 projectTasks: [{ id: 'ds', task: 'Configure processadores modernos como PostCSS/Sass para otimizar o CSS exportado do Design System.' }],
                 subItems: [ { id: 'cpre1', label: 'Sass / PostCSS' } ]
             },
@@ -227,6 +248,8 @@
                 id: 'buildtools', title: '12. Build Tools', estimatedHours: 20, dependsOn: ['frameworks'],
                 description: 'Module bundlers e transpilação de código nativa.',
                 masterAdvice: 'Aprenda por que o Vite (que usa ESM nativo e esbuild) estilhaçou a lentidão do Webpack antigo.',
+                future: 'Sua base de desenvolvimento está super otimizada. O empacotamento ágil permite que você integre Testes Automatizados no próximo passo com facilidade.',
+                didYouKnow: 'O Vite foi criado por Evan You (o mesmo criador do Vue.js) e seu nome literalmente significa "Rápido" em francês.',
                 projectTasks: [{ id: 'chat', task: 'Estruture o ecossistema do Chat utilizando Vite.js para Hot Module Replacement rápido.' }, { id: 'ds', task: 'Instale ESLint e Prettier para padronizar a formatação.' }],
                 subItems: [ { id: 'bt1', label: 'Linters and Formatters (ESLint)' }, { id: 'bt2', label: 'Module Bundlers (Vite)' } ]
             },
@@ -234,20 +257,26 @@
                 id: 'testing', title: '13. Testing', estimatedHours: 25, dependsOn: ['js'],
                 description: 'Garantia de qualidade, testes unitários e E2E.',
                 masterAdvice: 'Entenda o conceito de Mocks e Spies. Testes unitários NUNCA devem bater em bancos de dados reais.',
+                future: 'Com a segurança de que seu código não quebra, você está preparado para assumir a verdadeira Segurança (Web Security) das aplicações em produção.',
+                didYouKnow: 'A famosa frase "Não escreva testes, escreva código que funciona" é a maior armadilha já contada a desenvolvedores juniores.',
                 projectTasks: [{ id: 'ecom', task: 'Desenvolva testes unitários em Vitest para garantir que o cálculo de preço total nunca quebre.' }, { id: 'ds', task: 'Escreva validações de renderização para os botões do Design System.' }],
                 subItems: [ { id: 'tst1', label: 'Jest / Vitest' }, { id: 'tst2', label: 'Cypress / Playwright' } ]
             },
             {
-                id: 'security', title: '14. Web Security Basics', estimatedHours: 15, dependsOn: ['js'],
+                id: 'security', title: '14. Security Basics', estimatedHours: 15, dependsOn: ['js'],
                 description: 'Proteção essencial contra injeções e ataques.',
                 masterAdvice: 'Abra a aba Network. Entenda a requisição OPTIONS (Preflight) do CORS.',
+                future: 'Você blindou as rotas. Com o conceito de CORS e CSP em mente, agora você pode implementar Sistemas de Autenticação com segurança real.',
+                didYouKnow: 'O ataque de injeção mais famoso (SQL Injection) existe oficialmente desde 1998 e surpreendentemente ainda é uma das vulnerabilidades mais exploradas.',
                 projectTasks: [{ id: 'chat', task: 'Ajuste os cabeçalhos de CORS no back-end/mock para que o Chat só aceite requisições seguras.' }, { id: 'saas', task: 'Implemente lógica de sanitização nos inputs de busca para prevenir ataques XSS.' }],
                 subItems: [ { id: 'sec1', label: 'CORS & HTTPS' }, { id: 'sec2', label: 'Content Security Policy (CSP)' }, { id: 'sec3', label: 'OWASP Security Risks' } ]
             },
             {
-                id: 'auth', title: '15. Authentication Strategies', estimatedHours: 15, dependsOn: ['security'],
+                id: 'auth', title: '15. Authentication', estimatedHours: 15, dependsOn: ['security'],
                 description: 'Validação e Sessão segura de usuários.',
                 masterAdvice: 'Cole um token no JWT.io. Veja como o Payload é público. O segredo é validar a Assinatura.',
+                future: 'O usuário está logado. Agora você domina o controle de estado global para acesso seguro, essencial para o desenvolvimento de PWA e aplicações fechadas.',
+                didYouKnow: 'Um token JWT não é criptografado; ele é apenas codificado em Base64. Qualquer um que interceptá-lo pode ler o conteúdo, o que o protege é a assinatura digital.',
                 projectTasks: [{ id: 'saas', task: 'Crie uma tela de Login e armazene de forma segura o JWT nos headers.' }, { id: 'chat', task: 'Proteja as rotas do chat para impedir renderização sem login.' }],
                 subItems: [ { id: 'aut1', label: 'JWT' }, { id: 'aut2', label: 'OAuth & SSO' }, { id: 'aut3', label: 'Session Auth' } ]
             },
@@ -255,20 +284,26 @@
                 id: 'webcomp', title: '16. Web Components', estimatedHours: 10, dependsOn: ['js'],
                 description: 'Componentização isolada nativa sem frameworks.',
                 masterAdvice: 'O "Shadow DOM" é um escudo onde estilos globais não conseguem vazar para o componente.',
+                future: 'Se o React morrer, você não morre com ele. Você agora domina componentes nativos do Browser e está pronto para criar bibliotecas robustas e agnósticas.',
+                didYouKnow: 'Plataformas gigantescas como o YouTube da Google e a EA Games utilizam Web Components puros nativamente para garantir performance extrema em qualquer dispositivo.',
                 projectTasks: [{ id: 'ds', task: 'Desafio extra: Construa um Tooltip usando Shadow DOM nativo, totalmente agnóstico de frameworks.' }],
                 subItems: [ { id: 'wc1', label: 'Custom Elements' }, { id: 'wc2', label: 'Shadow DOM' } ]
             },
             {
-                id: 'ts', title: '17. Type Checkers', estimatedHours: 35, dependsOn: ['js'],
+                id: 'ts', title: '17. TypeScript', estimatedHours: 35, dependsOn: ['js'],
                 description: 'Tipagem estática estrutural em Javascript.',
                 masterAdvice: 'TypeScript adota "Duck Typing". Domine Generics (<T>) e crie funções reutilizáveis ilimitadas.',
+                future: 'Você entrou na liga corporativa pesada. Projetos escaláveis exigem tipagem, que servirá de alicerce perfeito para nosso mergulho em SSR e Next.js.',
+                didYouKnow: 'O TypeScript foi criado pela Microsoft, sendo liderado por Anders Hejlsberg, o gênio que também foi o arquiteto do C# e do Turbo Pascal.',
                 projectTasks: [{ id: 'saas', task: 'Substitua o JS pelo TS e mapeie rigidamente através de Interfaces todas as respostas JSON.' }, { id: 'ds', task: 'Refatore o Design System para garantir tipagem obrigatória das Props.' }],
                 subItems: [ { id: 'ts1', label: 'TypeScript Interfaces & Types' }, { id: 'ts2', label: 'Generics' } ]
             },
             {
-                id: 'ssr', title: '18. SSR (Server Side Rendering)', estimatedHours: 35, dependsOn: ['frameworks', 'ts'],
+                id: 'ssr', title: '18. Server Rendering', estimatedHours: 35, dependsOn: ['frameworks', 'ts'],
                 description: 'Renderização na borda para SEO e TTFB extremo.',
                 masterAdvice: 'Estude "Hydration": o momento em que o Javascript acorda no navegador e costura os eventos no HTML estático.',
+                future: 'Performance máxima no primeiro carregamento e ranqueamento Google absoluto. O terreno está preparado para integrarmos GraphQL nessas rotas rápidas.',
+                didYouKnow: 'Os bots do Google até tentam ler JavaScript Client-side hoje em dia, mas o SSR garante que seu site seja indexado milissegundos após a publicação.',
                 projectTasks: [{ id: 'ecom', task: 'Evolução máxima: Migre o E-commerce para Next.js implementando SSR e otimizando o SEO dos produtos.' }],
                 subItems: [ { id: 'ssr1', label: 'Next.js App Router' }, { id: 'ssr2', label: 'Server Components vs Client Components' } ]
             },
@@ -276,20 +311,26 @@
                 id: 'graphql', title: '19. GraphQL', estimatedHours: 15, dependsOn: ['js'],
                 description: 'Queries em grafos para evitar under/overfetching.',
                 masterAdvice: 'Cuidado com o "Problema N+1". Entenda como o DataLoader cria lotes (batching) nas requisições.',
+                future: 'Sua comunicação com APIs agora é cirúrgica. Você está montando a arquitetura moderna completa, preparando-se para servir aplicações complexas via SSG e PWA.',
+                didYouKnow: 'Criado pelo Facebook em 2012 para resolver a lentidão do seu app mobile, o GraphQL revolucionou a comunicação web que era engessada pelo padrão REST desde os anos 2000.',
                 projectTasks: [{ id: 'saas', task: 'Substitua chamadas REST por Apollo Client, requisitando através do GraphQL apenas as chaves exatas necessárias.' }],
                 subItems: [ { id: 'gq1', label: 'GraphQL Queries & Mutations' }, { id: 'gq2', label: 'Apollo Client' } ]
             },
             {
-                id: 'ssg', title: '20. Static Site Generators', estimatedHours: 15, dependsOn: ['frameworks'],
+                id: 'ssg', title: '20. Static Gen.', estimatedHours: 15, dependsOn: ['frameworks'],
                 description: 'Geração estática no momento do Build.',
                 masterAdvice: 'A Arquitetura em Ilhas (Islands Architecture) entrega zero JS pro cliente por padrão, hidratando apenas o necessário.',
+                future: 'Segurança absoluta e custo zero de servidor. Tudo está empacotado. Seu destino final agora é transformar essas páginas perfeitas em um aplicativo instalável (PWA).',
+                didYouKnow: 'O site da Casa Branca já utilizou arquiteturas baseadas em geradores de sites estáticos para ficar invulnerável aos brutais ataques de DDoS mundiais.',
                 projectTasks: [{ id: 'ds', task: 'Gere um portal completo de documentação estática dos componentes em produção utilizando o Storybook build ou Astro.' }],
                 subItems: [ { id: 'ssg1', label: 'Astro / Next.js SSG' } ]
             },
             {
-                id: 'mobile_pwa', title: '21. Mobile, Desktop & PWAs', estimatedHours: 40, dependsOn: ['frameworks'],
+                id: 'mobile_pwa', title: '21. Mobile & PWAs', estimatedHours: 40, dependsOn: ['frameworks'],
                 description: 'Experiência nativa e offline e performance (Web Vitals).',
                 masterAdvice: 'Service Workers interceptam requisições na raiz. Eles são capazes de servir o site inteiro sem internet.',
+                future: 'O topo da montanha. Seu projeto Web virou um aplicativo nativo que funciona offline, fechando o ciclo do desenvolvedor Front-end completo.',
+                didYouKnow: 'Os Progressive Web Apps foram introduzidos por Steve Jobs no lançamento do primeiro iPhone em 2007, antes mesmo de existir o conceito oficial de "App Store".',
                 projectTasks: [{ id: 'chat', task: 'Configure o App Manifest e integre Service Workers para que o Chat seja instalado no celular e funcione offline.' }, { id: 'ecom', task: 'Realize auditorias até atingir score 100 em Perfomance no Lighthouse.' }],
                 subItems: [ { id: 'mp1', label: 'PWAs (Service Workers, Web Sockets, Storage)' }, { id: 'mp2', label: 'Core Web Vitals & Lighthouse' } ]
             }
@@ -312,13 +353,17 @@
                 id: 'su_1', title: 'Season 1', estimatedHours: 29, dependsOn: [],
                 description: '52 episódios (11 min/cada). A introdução ao mundo e construção do vocabulário base.',
                 masterAdvice: 'Técnica 3x: Assista o MESMO episódio 3 vezes. 1) Áudio EN + Legenda PT. 2) Áudio EN + Leg PT. 3) Áudio EN puro.',
+                future: 'Construindo o repertório passivo. O foco aqui é acostumar seu ouvido; as legendas vão cair gradualmente.',
+                didYouKnow: 'Steven Universe foi criado por Rebecca Sugar, a primeira mulher na história a criar uma série animada de forma independente no Cartoon Network.',
                 projectTasks: [],
                 subItems: [ { id: 'su1_1', label: 'Episódios 01 a 13 (Técnica 3x)' }, { id: 'su1_2', label: 'Episódios 14 a 26 (Técnica 3x)' }, { id: 'su1_3', label: 'Episódios 27 a 39 (Técnica 3x)' }, { id: 'su1_4', label: 'Episódios 40 a 52 (Técnica 3x)' } ]
             },
             {
                 id: 'su_2', title: 'Season 2', estimatedHours: 15, dependsOn: ['su_1'],
-                description: '26 episódios. A trama se aprofunda. Você começará a notar padrões nos sotaques e piadas naturais.',
+                description: '26 episódios. A trama se aprofunda. Você começará a notar padrões nos sotaques.',
                 masterAdvice: 'Nesta fase, tente repetir frases curtas em voz alta (Shadowing) durante a 3ª rodada.',
+                future: 'A transição. Seu cérebro está mapeando a fonética. Logo prepararemos os ouvidos para músicas e ritmos densos (Season 3).',
+                didYouKnow: 'Muitos dubladores da série são cantores profissionais e atores da Broadway, o que ajuda intensamente na clareza e dicção para quem aprende o idioma.',
                 projectTasks: [],
                 subItems: [ { id: 'su2_1', label: 'Episódios 01 a 13 (Técnica 3x)' }, { id: 'su2_2', label: 'Episódios 14 a 26 (Técnica 3x)' } ]
             },
@@ -326,6 +371,8 @@
                 id: 'su_3', title: 'Season 3', estimatedHours: 14, dependsOn: ['su_2'],
                 description: '25 episódios. Foco em diálogos mais dramáticos e músicas mais complexas.',
                 masterAdvice: 'Use a velocidade 0.75x nas músicas se tiver dificuldade de linkar o "Connected Speech".',
+                future: 'Sua percepção emocional do idioma afiou. O passo seguinte (Season 4) vai forçar o corte radical das legendas em português.',
+                didYouKnow: 'As músicas da série foram desenhadas não só pela narrativa, mas também exploram métricas rítmicas e gírias extremamente naturais do cotidiano americano.',
                 projectTasks: [],
                 subItems: [ { id: 'su3_1', label: 'Episódios 01 a 12 (Técnica 3x)' }, { id: 'su3_2', label: 'Episódios 13 a 25 (Técnica 3x)' } ]
             },
@@ -333,6 +380,8 @@
                 id: 'su_4', title: 'Season 4', estimatedHours: 14, dependsOn: ['su_3'],
                 description: '25 episódios. O ritmo exige mais do seu vocabulário de emoções e ações.',
                 masterAdvice: 'A partir de agora, elimine a 1ª rodada (Legenda PT) nos episódios cotidianos. Vá direto pro EN/EN.',
+                future: 'Você está no treino de resistência sem colete salva-vidas. Passar por isso é o que garantirá o sucesso no clímax complexo da Season 5.',
+                didYouKnow: 'Nesta temporada, personagens que raramente falavam ganham foco, o que introduz arquétipos vocais totalmente novos e sotaques regionais dos EUA.',
                 projectTasks: [],
                 subItems: [ { id: 'su4_1', label: 'Episódios 01 a 12 (Técnica 3x Adaptada)' }, { id: 'su4_2', label: 'Episódios 13 a 25 (Técnica 3x Adaptada)' } ]
             },
@@ -340,6 +389,8 @@
                 id: 'su_5', title: 'Season 5', estimatedHours: 18, dependsOn: ['su_4'],
                 description: '32 episódios. Clímax absoluto. Diálogos rápidos sobre diplomacia e sentimentos.',
                 masterAdvice: 'Teste de fogo do Listening. Seu cérebro entende o conceito diretamente em inglês agora.',
+                future: 'Fluência de compreensão. Você aguentou o peso dos diálogos densos. Sua recompensa é absorver o filme oficial, quase um longa de conversação fluida.',
+                didYouKnow: 'Esta temporada apresenta discussões intensas; o ritmo de fala (Words Per Minute) de certos personagens atinge picos iguais ao de jornais de notícias (CNN, Fox).',
                 projectTasks: [],
                 subItems: [ { id: 'su5_1', label: 'Episódios 01 a 10 (Técnica Raw)' }, { id: 'su5_2', label: 'Episódios 11 a 20 (Técnica Raw)' }, { id: 'su5_3', label: 'Episódios 21 a 32 (Técnica Raw)' } ]
             },
@@ -347,13 +398,17 @@
                 id: 'su_m', title: 'The Movie', estimatedHours: 4, dependsOn: ['su_5'],
                 description: 'O Filme Oficial (82 minutos). Um musical frenético que vai testar sua estamina.',
                 masterAdvice: 'Divida o filme em 3 blocos de ~27 minutos para não causar exaustão neural.',
+                future: 'Um teste de maratona de foco sem interrupções. É a preparação final para a saga epílogo "Future", seu mestrado no idioma.',
+                didYouKnow: 'A vilã do filme, Spinel, foi animada usando técnicas dos anos 30 (rubber hose), o que faz suas falas exigirem um trabalho labial bizarro e veloz da dubladora.',
                 projectTasks: [],
                 subItems: [ { id: 'sum_1', label: 'Ato 1 (Ameaça) 3x' }, { id: 'sum_2', label: 'Ato 2 (Recuperação) 3x' }, { id: 'sum_3', label: 'Ato 3 (Clímax) 3x' } ]
             },
             {
                 id: 'su_f', title: 'Future (Epilogue)', estimatedHours: 11, dependsOn: ['su_m'],
-                description: '20 episódios que encerram a saga. Foco em saúde mental e conversas difíceis.',
+                description: '20 episódios que encerram a saga. Foco em conversas densas de saúde mental.',
                 masterAdvice: 'Sua graduação! Assista APENAS em Raw (sem legenda) de primeira.',
+                future: 'A glória final. Terminar em Raw prova que você está apto a assistir aulas de código gringas no YouTube e fazer entrevistas internacionais.',
+                didYouKnow: 'A série Future é baseada quase inteiramente na jornada do trauma pós-TCC, trazendo os diálogos emocionais mais profundos e adultos de toda a franquia.',
                 projectTasks: [],
                 subItems: [ { id: 'suf_1', label: 'Episódios 01 a 10 (Imersão Total)' }, { id: 'suf_2', label: 'Episódios 11 a 20 (Graduação)' } ]
             }
@@ -369,6 +424,8 @@
                 id: 'typ_1', title: '1. Base (Home Row)', estimatedHours: 5, dependsOn: [],
                 description: 'Postura, posicionamento das mãos e domínio completo das teclas centrais.',
                 masterAdvice: 'NUNCA olhe para o teclado. O erro ensina o cérebro; olhar destrói a memória muscular.',
+                future: 'Esta é a base do foguete. Com os dedos repousados em ASDF JKL;, o próximo salto te levará para as teclas superiores.',
+                didYouKnow: 'O teclado QWERTY foi inventado em 1873 propositalmente para desacelerar as mãos e evitar que os braços de metal das antigas máquinas de escrever travassem.',
                 projectTasks: [],
                 subItems: [ { id: 't1_1', label: 'Dominar ASDF' }, { id: 't1_2', label: 'Dominar JKL;' }, { id: 't1_3', label: 'Precisão > 95%' } ]
             },
@@ -376,13 +433,17 @@
                 id: 'typ_2', title: '2. Top Row', estimatedHours: 8, dependsOn: ['typ_1'],
                 description: 'Expansão para a linha superior (QWERTY UIOP).',
                 masterAdvice: 'Seus dedos sempre devem retornar à "Home Row" após apertar uma tecla superior.',
+                future: 'Você domina quase todo o alfabeto. Em seguida, desceremos para a desafiadora Bottom Row sem quebrar os pulsos.',
+                didYouKnow: 'A palavra "TYPEWRITER" (máquina de escrever) é uma das maiores palavras do inglês que pode ser escrita usando apenas a "Top Row" do teclado QWERTY.',
                 projectTasks: [],
                 subItems: [ { id: 't2_1', label: 'Mão Esquerda (QWERT)' }, { id: 't2_2', label: 'Mão Direita (YUIOP)' } ]
             },
             {
                 id: 'typ_3', title: '3. Bottom Row', estimatedHours: 8, dependsOn: ['typ_2'],
-                description: 'A linha inferior (ZXCVB NM,.). A mais desafiadora por causa do ângulo dos pulsos.',
+                description: 'A linha inferior (ZXCVB NM,.). A mais desafiadora pelo ângulo dos pulsos.',
                 masterAdvice: 'Evite mover os pulsos. Apenas os dedos devem esticar para alcançar a linha inferior.',
+                future: 'O domínio alfabético está feito. Agora o salto é para os Números e o Shift, a porta de entrada para a codificação profissional.',
+                didYouKnow: 'A linha inferior é estatisticamente a região que gera a maior taxa de erros (Typo Rate) entre programadores iniciantes e causam fadiga do pulso.',
                 projectTasks: [],
                 subItems: [ { id: 't3_1', label: 'Mão Esquerda (ZXCVB)' }, { id: 't3_2', label: 'Mão Direita (NM,./)' } ]
             },
@@ -390,13 +451,17 @@
                 id: 'typ_4', title: '4. Números e Shift', estimatedHours: 10, dependsOn: ['typ_3'],
                 description: 'Uso fluído das teclas Numéricas e ativação do Shift oposto.',
                 masterAdvice: 'Sempre use o Shift da mão OPOSTA à letra que você vai digitar. Ex: Para "A", use o Right Shift.',
+                future: 'A coreografia das mãos sincronizou. A etapa final será o teste de fogo de todo DEV: A linha letal de caracteres e colchetes.',
+                didYouKnow: 'Usar o mesmo lado para apertar o Shift e uma letra gera o movimento de "Garra de Águia", sendo a causa número um de tendinite em programadores que não fazem pausas.',
                 projectTasks: [],
                 subItems: [ { id: 't4_1', label: 'Linha Numérica' }, { id: 't4_2', label: 'Letras Maiúsculas Fluídas' } ]
             },
             {
                 id: 'typ_5', title: '5. Símbolos Code', estimatedHours: 15, dependsOn: ['typ_4'],
-                description: 'O verdadeiro foco do Dev: chaves, colchetes, parênteses e operadores matemáticos.',
+                description: 'O verdadeiro foco do Dev: chaves, colchetes e operadores matemáticos.',
                 masterAdvice: 'Programação usa muito o dedo mindinho (pinky) da mão direita. Pratique para não causar lesão.',
+                future: 'Seu arsenal de símbolos está pronto. A jornada termina calibrando tudo isso para atingir altas velocidades (Speed Building).',
+                didYouKnow: 'Enquanto o texto comum usa 85% de letras e espaço, um código-fonte tem até 40% de símbolos espalhados pelos cantos extremos do teclado.',
                 projectTasks: [],
                 subItems: [ { id: 't5_1', label: 'Chaves e Colchetes { } [ ]' }, { id: 't5_2', label: 'Operadores = + - ! > <' } ]
             },
@@ -404,6 +469,8 @@
                 id: 'typ_6', title: '6. Speed Building', estimatedHours: 20, dependsOn: ['typ_5'],
                 description: 'Consolidação. Atingir velocidade produtiva e manter a técnica em fluxo.',
                 masterAdvice: 'Treine com foco em precisão (98%+). A velocidade (WPM) é uma consequência natural da precisão.',
+                future: 'O topo da colina. Seu pensamento agora viaja para a tela sem engasgos. Você deixou de ser um digitador e virou um maestro de código.',
+                didYouKnow: 'Os maiores programadores do mundo não olham para o teclado; o cérebro deles se conecta diretamente ao monitor pela memória muscular pura (Flow State).',
                 projectTasks: [],
                 subItems: [ { id: 't6_1', label: 'Atingir 40 WPM Consistente' }, { id: 't6_2', label: 'Atingir 60+ WPM (Sênior Speed)' } ]
             }
@@ -413,12 +480,14 @@
             ['typ_1'], ['typ_2'], ['typ_3'], ['typ_4'], ['typ_5'], ['typ_6']
         ];
 
-        // --- TRILHA 4: SOFT SKILLS (Expandida) ---
+        // --- TRILHA 4: SOFT SKILLS ---
         const detailedPersonalData = [
             {
                 id: 'pd_1', title: '1. Gestão de Foco', estimatedHours: 10, dependsOn: [],
                 description: 'Deep Work e design de ambiente. Como proteger sua atenção da dopamina barata.',
                 masterAdvice: 'Trabalho profundo não é força de vontade, é bloqueio arquitetural. Deixe o celular em outro cômodo.',
+                future: 'Foco blindado. Com a mente operando sem interrupções diárias, construiremos sua muralha emocional contra bugs e Síndrome do Impostor.',
+                didYouKnow: 'Um estudo da Universidade da Califórnia (UCI) provou que após uma notificação no celular, o cérebro leva exatos 23 minutos para retornar ao estado profundo de foco (Deep Work).',
                 projectTasks: [],
                 subItems: [ { id: 'p1_1', label: 'Aplicar Pomodoro estrito' }, { id: 'p1_2', label: 'Remover notificações ativas' } ]
             },
@@ -426,6 +495,8 @@
                 id: 'pd_2', title: '2. Inteligência Emocional', estimatedHours: 15, dependsOn: ['pd_1'],
                 description: 'Lidar com frustração (bugs infinitos) e Síndrome do Impostor.',
                 masterAdvice: 'A frustração é o cérebro gastando energia para criar novas conexões. Se não dói, você não está aprendendo.',
+                future: 'Resiliência estabelecida. Com o psicológico preparado para frustrações, o próximo nível é como você se comunica claramente para pedir e dar ajuda técnica.',
+                didYouKnow: 'A Síndrome do Impostor atinge quase 70% dos desenvolvedores seniores em grandes corporações, segundo pesquisas globais de engenharia de software.',
                 projectTasks: [],
                 subItems: [ { id: 'p2_1', label: 'Tolerância a Bugs Críticos' }, { id: 'p2_2', label: 'Desvincular o Ego do Código' } ]
             },
@@ -433,6 +504,8 @@
                 id: 'pd_3', title: '3. Comunicação Clara', estimatedHours: 15, dependsOn: ['pd_1'],
                 description: 'Escuta ativa e como interagir no Slack/Teams sem causar ruídos.',
                 masterAdvice: 'Aprenda a fazer a "Pergunta Perfeita": o que você tentou, qual o erro exato e o que esperava que acontecesse.',
+                future: 'Saber comunicar o erro corta horas de código. Integrar a Comunicação com o Controle Emocional te jogará direto no fluxo do Trabalho em Equipe e processos Ágeis.',
+                didYouKnow: 'Nas Big Techs, devs que mandam mensagens isoladas de "Oi, tudo bem?" sem enviar logo o contexto da dúvida no Slack são considerados menos produtivos e ganham apelidos internos.',
                 projectTasks: [],
                 subItems: [ { id: 'p3_1', label: 'Sintetização de Ideias' }, { id: 'p3_2', label: 'Pedir Ajuda com Contexto' } ]
             },
@@ -440,13 +513,17 @@
                 id: 'pd_4', title: '4. Trabalho em Equipe', estimatedHours: 12, dependsOn: ['pd_2', 'pd_3'],
                 description: 'Como operar dentro de Metodologias Ágeis (Scrum/Kanban) e ser um facilitador.',
                 masterAdvice: 'Você não trabalha isolado. A maior habilidade técnica de um Dev é não travar o trabalho do colega.',
+                future: 'Você é um soldado perfeito no campo Ágil. Naturalmente, em times, surgirão tensões severas; a Resolução de Conflitos é a próxima habilidade de sobrevivência.',
+                didYouKnow: 'A revisão de código (Code Review) foi criada não só para achar bugs, mas primariamente para espalhar o conhecimento do projeto por toda a equipe (Bus Factor).',
                 projectTasks: [],
                 subItems: [ { id: 'p4_1', label: 'Entender Rituais Ágeis (Dailies/Retros)' }, { id: 'p4_2', label: 'Code Review Construtivo' } ]
             },
             {
                 id: 'pd_5', title: '5. Resolução de Conflitos', estimatedHours: 12, dependsOn: ['pd_2', 'pd_3'],
                 description: 'Estratégias para lidar com divergências técnicas e prazos irreais com a gestão.',
-                masterAdvice: 'Nunca responda na emoção. Se o PR foi rejeitado rudemente, respire, leia o código de novo e foque no dado, não no tom.',
+                masterAdvice: 'Nunca responda na emoção. Se o PR foi rejeitado rudemente, respire, leia de novo e foque no dado, não no tom.',
+                future: 'Você é um apaziguador tático capaz de lidar com chefes tóxicos e deadlines. Essa maturidade nos permite formatar e vender quem você é no mercado (Marca Pessoal).',
+                didYouKnow: 'A Comunicação Não-Violenta (CNV) é uma ferramenta mandatória nos treinamentos de gestão da Microsoft criada por Satya Nadella para reformar a cultura beligerante da empresa.',
                 projectTasks: [],
                 subItems: [ { id: 'p5_1', label: 'Técnicas de Negociação de Prazos' }, { id: 'p5_2', label: 'Feedback Non-Violent Communication (NVC)' } ]
             },
@@ -454,6 +531,8 @@
                 id: 'pd_6', title: '6. Marca Pessoal', estimatedHours: 15, dependsOn: ['pd_4', 'pd_5'],
                 description: 'Posicionamento autêntico no LinkedIn, GitHub Readme e Portfólio.',
                 masterAdvice: 'Recrutador não roda seu código, ele olha seu Readme. Documente seus projetos como se fossem produtos reais.',
+                future: 'Vitrine brilhante. Você está visível para recrutadores globais, o que significa que o combate nas trincheiras das Entrevistas Técnicas será seu próximo e inevitável desafio.',
+                didYouKnow: 'Recrutadores de RH gastam em média assustadores 6 segundos batendo o olho num perfil do LinkedIn ou currículo antes de decidir se te aprovam para a primeira conversa.',
                 projectTasks: [],
                 subItems: [ { id: 'p6_1', label: 'LinkedIn Otimizado (SEO)' }, { id: 'p6_2', label: 'Readmes Profissionais no GitHub' } ]
             },
@@ -461,13 +540,17 @@
                 id: 'pd_7', title: '7. Entrevistas Técnicas', estimatedHours: 20, dependsOn: ['pd_6'],
                 description: 'Estratégias para Whiteboard, Live Coding e avaliação Comportamental.',
                 masterAdvice: 'Em Live Coding, o avaliador quer ver COMO você pensa. Pense em voz alta o tempo todo, mesmo se travar.',
+                future: 'Aprovação carimbada. Você está empregado e prosperando. Para subir de Pleno para Sênior, mergulharemos em Mentoria, influenciando os devs ao seu redor.',
+                didYouKnow: 'No método STAR (Situação, Tarefa, Ação, Resultado) de entrevistas, a métrica de ouro para ser aprovado nas Big Techs é detalhar quantitativamente a letra "R" (o resultado).',
                 projectTasks: [],
                 subItems: [ { id: 'p7_1', label: 'Narrativa de Resolução de Problemas' }, { id: 'p7_2', label: 'STAR Method para Comportamental' } ]
             },
             {
                 id: 'pd_8', title: '8. Liderança e Mentoria', estimatedHours: 15, dependsOn: ['pd_7'],
                 description: 'Como guiar desenvolvedores juniores e propor melhorias de arquitetura ativamente.',
-                masterAdvice: 'A transição para Sênior acontece quando você para de focar no "Como fazer" e passa a focar no "Por que fazer".',
+                masterAdvice: 'A transição para Sênior acontece quando você para de focar no "Como fazer" e foca no "Por que fazer".',
+                future: 'Você é a rocha da sua equipe. Para concluir seu cinturão Soft, treinaremos sua Adaptabilidade para cenários de crise mundiais, layoffs e mortes de tecnologias.',
+                didYouKnow: 'O Google fez um projeto interno (Project Oxygen) de anos só para descobrir que as habilidades sociais (Mentoria) eram muito mais importantes em um gerente tech que a habilidade bruta de codar.',
                 projectTasks: [],
                 subItems: [ { id: 'p8_1', label: 'Onboarding de novos Devs' }, { id: 'p8_2', label: 'Defesa de Refatorações' } ]
             },
@@ -475,6 +558,8 @@
                 id: 'pd_9', title: '9. Adaptabilidade', estimatedHours: 10, dependsOn: ['pd_8'],
                 description: 'Lidar com mudanças drásticas de stack, lay-offs ou reestruturações empresariais.',
                 masterAdvice: 'As linguagens morrem, a engenharia de software fica. Apaixone-se pelo problema de negócio, não pela ferramenta.',
+                future: 'Mestrado concluído. Você se tornou inquebrável às flutuações do mercado de IA e layoffs. Sua atitude profissional ditará seu sucesso financeiro perpétuo.',
+                didYouKnow: 'No Vale do Silício, os "Layoffs" (demissões em massa) não são vistos como um fracasso de carreira do engenheiro de software, mas como um reajuste de ciclo normal. A resiliência é a chave.',
                 projectTasks: [],
                 subItems: [ { id: 'p9_1', label: 'Aprender a Desaprender (Unlearning)' }, { id: 'p9_2', label: 'Resiliência Profissional' } ]
             }
@@ -490,6 +575,8 @@
                 id: 'fin_1', title: '1. Psicologia do Dinheiro', estimatedHours: 10, dependsOn: [],
                 description: 'Compreendendo crenças limitantes e a relação emocional com o consumo.',
                 masterAdvice: 'Riqueza é o que você não vê. Os carros caros e as roupas de grife representam dinheiro que já foi gasto, não patrimônio.',
+                future: 'Cérebro desintoxicado de gastos. O próximo passo é pegar essa clareza mental e partir para a guerra do papel e caneta: estancar dívidas e gerar orçamento rígido.',
+                didYouKnow: 'A esmagadora maioria dos ganhadores de loteria declara falência em até 5 anos, provando que muito dinheiro sem educação financeira resulta em perda absoluta.',
                 projectTasks: [],
                 subItems: [ { id: 'f1_1', label: 'Identificar Padrões de Consumo' }, { id: 'f1_2', label: 'Entender Inflação de Estilo de Vida' } ]
             },
@@ -497,6 +584,8 @@
                 id: 'fin_2', title: '2. Orçamento e Dívidas', estimatedHours: 15, dependsOn: ['fin_1'],
                 description: 'Estratégias de alocação de renda e métodos de quitação de passivos.',
                 masterAdvice: 'A regra 50/30/20 salva vidas: 50% necessidades, 30% desejos, 20% investimentos. Pague a si mesmo primeiro.',
+                future: 'Orçamento estabilizado. Com o balanço da vida sob controle, usaremos o excedente para montar seu escudo vitalício contra demissões: a Reserva de Emergência.',
+                didYouKnow: 'O "Método Bola de Neve", focado em quitar primeiro a dívida mais barata para gerar vitória psicológica, supera estatisticamente métodos de cálculos de juros complexos.',
                 projectTasks: [],
                 subItems: [ { id: 'f2_1', label: 'Aplicar Regra 50/30/20' }, { id: 'f2_2', label: 'Método Bola de Neve para Dívidas' } ]
             },
@@ -504,6 +593,8 @@
                 id: 'fin_3', title: '3. Reserva de Emergência', estimatedHours: 10, dependsOn: ['fin_2'],
                 description: 'A base da tranquilidade mental. Construindo seu colchão de liquidez.',
                 masterAdvice: 'Sua reserva de emergência não é para render muito, é para estar disponível HOJE. Foco em liquidez, não rentabilidade.',
+                future: 'Escudo anti-desespero ativado. Uma vez seguro no colchão de liquidez, os novos aportes mensais irão para as engrenagens da Renda Fixa Brasileira.',
+                didYouKnow: 'Na engenharia de software, possuir 6 a 12 meses do custo mensal garantido na conta é a maior arma que um desenvolvedor pode ter contra burnouts e chefes abusivos.',
                 projectTasks: [],
                 subItems: [ { id: 'f3_1', label: 'Calcular Custo Mensal Vital' }, { id: 'f3_2', label: 'Acumular 6 meses de Custo' } ]
             },
@@ -511,20 +602,26 @@
                 id: 'fin_4', title: '4. Renda Fixa (BR)', estimatedHours: 15, dependsOn: ['fin_3'],
                 description: 'Mecanismos do Tesouro Direto, CDBs, LCIs e a taxa Selic.',
                 masterAdvice: 'Entenda a marcação a mercado. Se você comprar um título IPCA+ para 2035 e resgatar antes, pode perder dinheiro.',
+                future: 'Inflação anulada pelo Tesouro. Com as bases nacionais estabilizadas, mergulharemos nos aluguéis eternos e dividendos por cotas: Os Fundos Imobiliários.',
+                didYouKnow: 'A Renda Fixa brasileira, por conta das taxas de juros astronômicas constantes, costuma performar melhor ao longo dos anos que muitas Bolsas de Valores da Europa.',
                 projectTasks: [],
                 subItems: [ { id: 'f4_1', label: 'Dominar Tesouro Selic/IPCA' }, { id: 'f4_2', label: 'Entender FGC e Bancos Menores' } ]
             },
             {
-                id: 'fin_5', title: '5. Renda Variável (FIIs)', estimatedHours: 20, dependsOn: ['fin_4'],
+                id: 'fin_5', title: '5. FIIs e Dividendos', estimatedHours: 20, dependsOn: ['fin_4'],
                 description: 'Fundos Imobiliários e a introdução ao recebimento de dividendos mensais.',
                 masterAdvice: 'FIIs de Papel sofrem mais com a Selic, FIIs de Tijolo acompanham a inflação dos imóveis físicos. Diversifique.',
+                future: 'Renda mensal caindo automaticamente (Efeito Bola de Neve iniciado). A escalada natural agora leva seu portfólio a adquirir frações diretas das maiores empresas (Ações).',
+                didYouKnow: 'O Brasil possui uma legislação rara que torna os dividendos de Fundos Imobiliários totalmente isentos de Imposto de Renda (IR) para pessoas físicas comuns.',
                 projectTasks: [],
                 subItems: [ { id: 'f5_1', label: 'Analisar P/VP e Vacância' }, { id: 'f5_2', label: 'Montar Carteira Base de FIIs' } ]
             },
             {
-                id: 'fin_6', title: '6. Renda Variável (Ações)', estimatedHours: 30, dependsOn: ['fin_5'],
+                id: 'fin_6', title: '6. Ações (Mercado Local)', estimatedHours: 30, dependsOn: ['fin_5'],
                 description: 'Como ser sócio de empresas, análise fundamentalista e valuation básico.',
-                masterAdvice: 'No curto prazo o mercado é uma máquina de votação; no longo prazo, é uma balança de pesagem. Foque no lucro das empresas.',
+                masterAdvice: 'No curto prazo o mercado é uma máquina de votação; no longo prazo, é uma balança de pesagem. Foque no lucro.',
+                future: 'Você é oficialmente um sócio corporativo no Brasil. Como este país carrega forte instabilidade política, no próximo nível vamos aportar patrimônio para a segurança global: O Exterior.',
+                didYouKnow: 'Warren Buffett, o maior investidor de todos os tempos, conquistou 90% de sua fortuna inteira de centenas de bilhões de dólares DEPOIS de completar seus 65 anos de idade (Poder dos Juros Compostos).',
                 projectTasks: [],
                 subItems: [ { id: 'f6_1', label: 'Análise de Múltiplos (P/L, ROE)' }, { id: 'f6_2', label: 'Buy and Hold vs Trading' } ]
             },
@@ -532,13 +629,17 @@
                 id: 'fin_7', title: '7. Investimento Exterior', estimatedHours: 25, dependsOn: ['fin_6'],
                 description: 'Proteção contra o risco Brasil (Dólar, ETFs e Stocks).',
                 masterAdvice: 'O Brasil representa menos de 2% do mercado financeiro global. Não investir fora é uma aposta arriscada de 98%.',
+                future: 'Seu patrimônio é dolarizado e dolar-forte. O capital de risco assimétrico (com possibilidade de retornos violentos) abre portas para estudarmos Alternativos e Cripto de maneira fria.',
+                didYouKnow: 'Comprar um único fundo (ETF) chamado VT na Bolsa Americana te torna imediatamente dono de uma pequena fração de mais de 9 mil empresas ao redor de todo o mundo.',
                 projectTasks: [],
                 subItems: [ { id: 'f7_1', label: 'Abrir conta em Corretora Internacional' }, { id: 'f7_2', label: 'Montar carteira de ETFs globais (ex: VT)' } ]
             },
             {
-                id: 'fin_8', title: '8. Alternativos e Cripto', estimatedHours: 15, dependsOn: ['fin_7'],
+                id: 'fin_8', title: '8. Alternativos & Cripto', estimatedHours: 15, dependsOn: ['fin_7'],
                 description: 'Bitcoin, fundamentos de descentralização e gestão de risco extremo.',
                 masterAdvice: 'Não coloque em cripto o dinheiro do aluguel. É uma classe de ativo de assimetria alta: pode ir a zero, ou multiplicar por 10.',
+                future: 'O portfólio agora é robusto, diversificado globalmente e possui um gatilho de crescimento assimétrico. No fim do funil, unificaremos tudo para calcular a sua Independência Financeira Final (FIRE).',
+                didYouKnow: 'O Bitcoin é fundamentalmente impossível de ser paralisado ou congelado por qualquer governo do planeta, e 21 milhões é o número máximo que existirá matematicamente.',
                 projectTasks: [],
                 subItems: [ { id: 'f8_1', label: 'Fundamentos de Blockchain' }, { id: 'f8_2', label: 'Custódia em Cold Wallet' } ]
             },
@@ -546,6 +647,8 @@
                 id: 'fin_9', title: '9. Movimento FIRE', estimatedHours: 20, dependsOn: ['fin_8'],
                 description: 'Financial Independence, Retire Early. Cálculo matemático de aposentadoria.',
                 masterAdvice: 'A Regra dos 4%. Quando seus investimentos anuais permitirem saques de 4% que cobrem todo o seu custo de vida, você é livre.',
+                future: 'Você venceu o Jogo Corporativo. Com o portfólio autossuficiente e o número FIRE matematicamente atingido, trabalhar (ou continuar codando) não é mais por obrigação financeira, mas por paixão e desafio.',
+                didYouKnow: 'A famosa "Regra dos 4%" foi validada por um mega estudo acadêmico (Trindade Study), e prova que uma carteira diversificada sobrevive 30 anos ininterruptos sacando essa porcentagem por ano.',
                 projectTasks: [],
                 subItems: [ { id: 'f9_1', label: 'Cálculo do Número FIRE' }, { id: 'f9_2', label: 'Estratégia de Desacumulação' } ]
             }
@@ -572,7 +675,7 @@
 
             const [state, setState] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('FE_Definitive_V4.3');
+                    const saved = localStorage.getItem('FE_Definitive_V4.4');
                     if (saved) {
                         return { ...defaultState, ...JSON.parse(saved) }; 
                     }
@@ -633,7 +736,7 @@
             };
 
             useEffect(() => {
-                localStorage.setItem('FE_Definitive_V4.3', JSON.stringify(state));
+                localStorage.setItem('FE_Definitive_V4.4', JSON.stringify(state));
                 checkGlobalAchievements();
 
                 if (isReadyForSync.current) {
@@ -900,15 +1003,14 @@
                             {/* Divisor Visual */}
                             <div className="w-px h-8 bg-white/10 shrink-0 hidden md:block"></div>
 
-                            {/* Restante dos Botões (Com scroll horizontal) - Aba "Extras" removida */}
+                            {/* Restante dos Botões (Com scroll horizontal) - Aba "Extras" e Aba "Futuro" removidas */}
                             <div className="flex-1 overflow-x-auto hide-scroll flex items-center">
                                 <div className="flex gap-2 min-w-max">
                                     {[
                                         { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
                                         { id: 'dicas', icon: 'fa-brain', name: 'Cérebro' },
                                         { id: 'cursos', icon: 'fa-globe', name: 'Cursos' },
-                                        { id: 'trofeus', icon: 'fa-medal', name: 'Troféus' },
-                                        { id: 'motivacao', icon: 'fa-rocket', name: 'Futuro' }
+                                        { id: 'trofeus', icon: 'fa-medal', name: 'Troféus' }
                                     ].map(tab => (
                                         <button key={tab.id} onClick={() => { setActiveTab(tab.id); setSelectedModule(null); setShowTrailMenu(false); }} 
                                             className={`px-5 py-2.5 rounded-[1.25rem] font-bold text-sm transition-all duration-500 flex items-center gap-2.5 border whitespace-nowrap
@@ -1118,10 +1220,24 @@
                                                     </div>
                                                 </div>
 
-                                                <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-6 rounded-r-3xl mb-10 relative overflow-hidden group">
+                                                <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-6 rounded-r-3xl mb-8 relative overflow-hidden group shadow-inner">
                                                     <i className="fa-solid fa-brain absolute -right-4 -bottom-4 text-8xl text-amber-500/5 group-hover:scale-110 transition-transform duration-700"></i>
                                                     <h4 className="text-amber-400 text-xs font-black uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2"><i className="fa-solid fa-lightbulb"></i> Conselho do Mestre</h4>
                                                     <p className="text-amber-100/70 text-sm italic relative z-10 leading-relaxed">"{m.masterAdvice}"</p>
+                                                </div>
+
+                                                {/* NOVO: O FUTURO / PARA ONDE VOU */}
+                                                <div className="bg-gradient-to-r from-fuchsia-500/10 to-indigo-500/10 border-l-4 border-fuchsia-500 p-6 rounded-r-3xl mb-8 relative overflow-hidden group shadow-inner">
+                                                    <i className="fa-solid fa-rocket absolute -right-4 -bottom-4 text-8xl text-fuchsia-500/5 group-hover:-translate-y-2 group-hover:translate-x-2 transition-transform duration-700"></i>
+                                                    <h4 className="text-fuchsia-400 text-xs font-black uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2"><i className="fa-solid fa-route"></i> O Futuro (Sua Jornada)</h4>
+                                                    <p className="text-fuchsia-100/80 text-sm relative z-10 leading-relaxed">{m.future}</p>
+                                                </div>
+
+                                                {/* NOVO: VOCÊ SABIA? */}
+                                                <div className="bg-slate-800/40 border border-slate-700/50 p-6 rounded-3xl mb-10 relative overflow-hidden group shadow-inner">
+                                                    <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 blur-[40px] rounded-full pointer-events-none group-hover:bg-sky-500/10 transition-colors duration-700"></div>
+                                                    <h4 className="text-sky-400 text-xs font-black uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2"><i className="fa-solid fa-circle-question"></i> Você Sabia?</h4>
+                                                    <p className="text-slate-300 text-sm relative z-10 leading-relaxed italic">"{m.didYouKnow}"</p>
                                                 </div>
 
                                                 {/* CRONÔMETRO */}
@@ -1272,7 +1388,7 @@
                             </>
                         )}
 
-                        {/* --- ABAS COMUNS (AGORA LOTADAS) --- */}
+                        {/* --- ABAS COMUNS RESTANTES --- */}
                         {activeTab === 'ferramentas' && (
                             <div className="animate-fade-in pb-20">
                                 <div className="text-center mb-16 relative">
@@ -1319,7 +1435,7 @@
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">O Acervo <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Definitivo</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Plataformas nacionais e internacionais com as grades mais densas e valiosas para o seu currículo.</p>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Plataformas nacionais e internacionais 100% gratuitas com as grades mais densas e valiosas para o seu currículo.</p>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                     {platformList.map((p, idx) => (
@@ -1374,105 +1490,6 @@
                                         )
                                     })}
                                 </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'motivacao' && (
-                            <div className="animate-fade-in pb-20 max-w-7xl mx-auto">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-fuchsia-400 to-indigo-400 mb-6 tracking-tighter drop-shadow-2xl relative z-10">
-                                        Combustível de Foguete
-                                    </h2>
-                                    <p className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed relative z-10">
-                                        O caminho é longo e a curva de aprendizado é cruel por um único motivo: <strong>a recompensa final é extraordinária</strong>.
-                                    </p>
-                                </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
-                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(16,185,129,0.2)] hover:bg-slate-900/60">
-                                        <div className="absolute -left-20 -top-20 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
-                                            <div className="w-20 h-20 bg-emerald-500/10 rounded-[1.5rem] flex items-center justify-center border border-emerald-500/20 text-4xl text-emerald-400 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                                <i className="fa-solid fa-sack-dollar drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
-                                            </div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight">O Mapa da Riqueza</h3>
-                                        </div>
-                                        <div className="space-y-4 relative z-10">
-                                            <div className="bg-emerald-500/5 p-5 rounded-2xl border border-emerald-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative overflow-hidden">
-                                                <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                                                <div className="ml-2">
-                                                    <p className="font-black text-emerald-300">Pleno (O seu alvo inicial)</p>
-                                                    <p className="text-[11px] text-emerald-400/60 uppercase tracking-widest mt-1">Autonomia e arquitetura de código.</p>
-                                                </div>
-                                                <span className="text-2xl font-black text-emerald-400 drop-shadow-md">R$ 7k - 12k</span>
-                                            </div>
-                                            <div className="bg-gradient-to-r from-amber-500/10 to-black/20 p-5 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 mt-6 shadow-inner">
-                                                <div>
-                                                    <p className="font-black text-amber-400 flex items-center gap-2"><i className="fa-solid fa-earth-americas"></i> Carreira Gringa (Remota)</p>
-                                                    <p className="text-[11px] text-amber-400/60 uppercase tracking-widest mt-1">Ganhando Dólar/Euro do Brasil.</p>
-                                                </div>
-                                                <span className="text-2xl font-black text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">U$ 3k - 8k+</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-10 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
-                                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-                                        <div className="text-center mb-8 relative z-10">
-                                            <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">O Escudo de Titânio <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">(Anti-IA)</span></h3>
-                                            <p className="text-slate-400 text-sm max-w-2xl mx-auto">Por que ferramentas como o ChatGPT não vão roubar a sua cadeira, e sim multiplicá-la.</p>
-                                        </div>
-                                        
-                                        <div className="flex flex-col gap-4 relative z-10">
-                                            <div className="bg-black/40 p-5 rounded-2xl border border-rose-500/20 flex gap-4">
-                                                <div className="w-10 h-10 shrink-0 bg-rose-500/10 rounded-xl flex items-center justify-center border border-rose-500/30">
-                                                    <i className="fa-solid fa-brain text-rose-400"></i>
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-bold text-white text-sm">Engenharia, não Digitação</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">A IA vomita o código isolado, mas não decide onde ele deve morar, qual padrão adotar ou como conectar as peças no longo prazo.</p>
-                                                </div>
-                                            </div>
-                                            <div className="bg-black/40 p-5 rounded-2xl border border-cyan-500/20 flex gap-4">
-                                                <div className="w-10 h-10 shrink-0 bg-cyan-500/10 rounded-xl flex items-center justify-center border border-cyan-500/30">
-                                                    <i className="fa-solid fa-shield-halved text-cyan-400"></i>
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-bold text-white text-sm">Você é o Orquestrador</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">Você será o desenvolvedor sênior que audita, julga e orquestra a IA com segurança. Sem a fundação, a IA vira uma caixa preta inútil.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-10">
-                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-sky-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(14,165,233,0.2)] bg-slate-900/40">
-                                        <div className="w-16 h-16 bg-sky-500/10 rounded-2xl flex items-center justify-center border border-sky-500/20 text-3xl text-sky-400 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                            <i className="fa-solid fa-plane-departure"></i>
-                                        </div>
-                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Liberdade Geográfica</h3>
-                                        <p className="text-sm text-slate-400 leading-relaxed">O Front-End te liberta do escritório. Seu notebook é sua empresa. Trabalhe de Curitiba, Tóquio, ou de uma cabana na serra, desde que tenha Wi-Fi.</p>
-                                    </div>
-
-                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-amber-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(245,158,11,0.2)] bg-slate-900/40">
-                                        <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20 text-3xl text-amber-400 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                            <i className="fa-solid fa-code-merge"></i>
-                                        </div>
-                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Ecossistema Infinito</h3>
-                                        <p className="text-sm text-slate-400 leading-relaxed">Dominar JavaScript abre portas secretas. Com a mesma lógica base, você passa a conseguir criar apps mobile nativos (React Native) e até servidores rápidos.</p>
-                                    </div>
-
-                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-purple-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(168,85,247,0.2)] md:col-span-2 xl:col-span-1 bg-slate-900/40">
-                                        <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center border border-purple-500/20 text-3xl text-purple-400 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                            <i className="fa-solid fa-stairs"></i>
-                                        </div>
-                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Evolução Acelerada</h3>
-                                        <p className="text-sm text-slate-400 leading-relaxed">A meritocracia técnica no Dev é real e acelerada. O mercado de tecnologia não liga para sua idade ou seus diplomas; ele só liga para os projetos que você consegue construir.</p>
-                                    </div>
-                                </div>
-
                             </div>
                         )}
 
