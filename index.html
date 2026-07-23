@@ -66,7 +66,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useLayoutEffect, useCallback } = React;
 
-        // --- DADOS ESTÁTICOS COMUNS ---
+        // --- DADOS ESTÁTICOS COMUNS (AGORA LOTADOS) ---
         const toolList = [
             { n: 'Notion', i: 'fa-cube', d: 'Organização global, anotações em Markdown e gestão de projetos.', url: 'https://notion.so' },
             { n: 'Excalidraw', i: 'fa-pen-clip', d: 'Whiteboard virtual para desenhar arquitetura e fluxos de dados.', url: 'https://excalidraw.com/' },
@@ -75,7 +75,17 @@
             { n: 'Figma', i: 'fa-bezier-curve', d: 'Ferramenta padrão da indústria para UI/UX e prototipagem.', url: 'https://figma.com/' },
             { n: 'Postman / Insomnia', i: 'fa-network-wired', d: 'Clientes de API para testar requisições HTTP e GraphQL.', url: 'https://www.postman.com/' },
             { n: 'Lighthouse', i: 'fa-lightbulb', d: 'Auditoria oficial do Google para Performance, SEO e Acessibilidade.', url: 'https://developer.chrome.com/docs/lighthouse/overview/' },
-            { n: 'Vercel', i: 'fa-server', d: 'Hospedagem serverless gratuita e otimizada para ecossistema front-end.', url: 'https://vercel.com/' }
+            { n: 'Vercel', i: 'fa-server', d: 'Hospedagem serverless gratuita e otimizada para ecossistema front-end.', url: 'https://vercel.com/' },
+            { n: 'Regex101', i: 'fa-code-branch', d: 'O melhor testador de Expressões Regulares (Regex) com explicação passo a passo.', url: 'https://regex101.com/' },
+            { n: 'Bundlephobia', i: 'fa-weight-hanging', d: 'Descubra o custo de performance e tamanho de um pacote NPM antes de instalá-lo.', url: 'https://bundlephobia.com/' },
+            { n: 'Sentry', i: 'fa-bug', d: 'Monitoramento de erros em produção. Saiba exatamente quando seu app quebra na máquina do cliente.', url: 'https://sentry.io/' },
+            { n: 'Supabase', i: 'fa-database', d: 'Alternativa Open Source ao Firebase. Banco PostgreSQL com API automática e Autenticação pronta.', url: 'https://supabase.com/' },
+            { n: 'JWT.io', i: 'fa-key', d: 'Decodifique, verifique e gere JSON Web Tokens de forma visual durante o debug de APIs.', url: 'https://jwt.io/' },
+            { n: 'Chrome DevTools', i: 'fa-chrome', d: 'O canivete suíço. Inspecione DOM, Network, Memória e debuge JS nativamente.', url: 'https://developer.chrome.com/docs/devtools/' },
+            { n: 'Ngrok', i: 'fa-route', d: 'Exponha seu localhost para a internet instantaneamente via túnel seguro.', url: 'https://ngrok.com/' },
+            { n: 'Coolors', i: 'fa-palette', d: 'Gerador super rápido de paletas de cores e contrastes para seus Design Systems.', url: 'https://coolors.co/' },
+            { n: 'CodePen', i: 'fa-codepen', d: 'Ambiente de desenvolvimento social para prototipar UI com HTML, CSS e JS rapidamente.', url: 'https://codepen.io/' },
+            { n: 'Wappalyzer', i: 'fa-magnifying-glass-chart', d: 'Extensão de navegador que revela quais tecnologias e frameworks foram usados em qualquer site.', url: 'https://www.wappalyzer.com/' }
         ];
 
         const tipsList = [
@@ -84,14 +94,47 @@
             { title: "Repetição Espaçada", icon: "fa-layer-group", tip: "O cérebro deleta informações que não usamos. Revise o material 1 dia, 3 dias, 1 semana e 1 mês depois." },
             { title: "Técnica Pomodoro", icon: "fa-clock", tip: "25 minutos de foco absoluto, sem celular. 5 minutos de descanso." },
             { title: "Prática Deliberada", icon: "fa-dumbbell", tip: "Sair da zona de conforto. Tente criar um algoritmo complexo. O aprendizado só ocorre na frustração controlada." },
-            { title: "Rubber Duck Debugging", icon: "fa-bug", tip: "Travou em um erro? Explique seu código linha por linha, em voz alta, para um pato de borracha." }
+            { title: "Rubber Duck Debugging", icon: "fa-bug", tip: "Travou em um erro? Explique seu código linha por linha, em voz alta, para um pato de borracha." },
+            { title: "A Regra dos 15 Minutos", icon: "fa-hourglass-half", tip: "Empacou num problema? Tente resolver sozinho por 15 minutos. Se não conseguir, é obrigatório pedir ajuda (StackOverflow/IA). Não perca horas num erro de digitação." },
+            { title: "Leia a Documentação (RTFM)", icon: "fa-book-open-reader", tip: "Tutoriais em vídeo ficam obsoletos rápido. A fonte da verdade sempre será a documentação oficial da tecnologia (ex: React Docs)." },
+            { title: "Sono Consolida a Memória", icon: "fa-bed", tip: "Virar a noite codando é extremamente ineficiente. O cérebro só transfere conhecimento da memória de curto para a de longo prazo durante as fases profundas do sono." },
+            { title: "Pare de Copiar e Colar", icon: "fa-copy", tip: "Encontrou a solução? Não dê Ctrl+C. Digite o código linha por linha. Isso força a memória muscular e obriga seu cérebro a ler o que está acontecendo." },
+            { title: "Decomposição (Chunking)", icon: "fa-puzzle-piece", tip: "Um projeto inteiro assusta. Quebre-o em micro-tarefas hiperfocadas (ex: 'hoje vou fazer apenas o fetch da API e printar no console')." },
+            { title: "Mindset de Crescimento", icon: "fa-seedling", tip: "Não diga 'Eu não sei React'. Diga 'Eu AINDA não sei React'. A neuroplasticidade garante que seu cérebro pode se adaptar e aprender absolutamente qualquer lógica com repetição." }
         ];
 
         const platformList = [
-            { n: 'Curso em Vídeo', url: 'https://www.cursoemvideo.com/', d: 'A melhor base do Brasil. Gustavo Guanabara ensina HTML, CSS, JS e Git de forma lendária.' },
-            { n: 'DIO', url: 'https://www.dio.me/', d: 'Bootcamps focados em frameworks (React, Angular) com projetos práticos e emissão de certificados.' },
-            { n: 'FreeCodeCamp', url: 'https://www.freecodecamp.org/portuguese/', d: 'Milhares de horas práticas direto no navegador. Certificações com peso global.' },
-            { n: 'Rocketseat (Discover)', url: 'https://www.rocketseat.com.br/discover', d: 'Trilha básica gratuita excelente para padronização moderna de desenvolvimento web.' }
+            { n: 'Curso em Vídeo', url: 'https://www.cursoemvideo.com/', d: 'A melhor base do Brasil. Gustavo Guanabara ensina HTML, CSS, JS e Git de forma lendária. Essencial para criar fundações blindadas.' },
+            { n: 'DIO', url: 'https://www.dio.me/', d: 'Bootcamps focados em frameworks (React, Angular) com projetos práticos, desafios de código e emissão de certificados válidos no mercado.' },
+            { n: 'FreeCodeCamp', url: 'https://www.freecodecamp.org/portuguese/', d: 'Milhares de horas práticas direto no navegador. Você aprende fazendo. Certificações open-source com peso global em empresas gigantes.' },
+            { n: 'Rocketseat (Discover)', url: 'https://www.rocketseat.com.br/discover', d: 'Trilha básica gratuita com qualidade audiovisual impecável. Excelente para entender a padronização moderna e ferramental web.' },
+            { n: 'Origamid', url: 'https://www.origamid.com/', d: 'Foco excepcional em UI/UX, CSS avançado e JavaScript puro. Cursos extremamente visuais, perfeitos para quem ama interfaces refinadas.' },
+            { n: 'The Odin Project', url: 'https://www.theodinproject.com/', d: 'Currículo open-source brutal. Você aprende construindo projetos reais do zero e configurando seu próprio ambiente (Linux/Git).' },
+            { n: 'Alura', url: 'https://www.alura.com.br/', d: 'O maior ecossistema tech do Brasil. Dezenas de formações que vão do zero ao avançado cobrindo qualquer tecnologia ou soft skill.' },
+            { n: 'Frontend Masters', url: 'https://frontendmasters.com/', d: 'A elite do Front-end global. Cursos avançados ministrados pelos próprios criadores das ferramentas (ex: Kyle Simpson, Evan You).' },
+            { n: 'Scrimba', url: 'https://scrimba.com/', d: 'Formato revolucionário e interativo onde você pode pausar o vídeo e editar o código diretamente no player onde o professor estava digitando.' },
+            { n: 'Full Stack Open', url: 'https://fullstackopen.com/pt-br/', d: 'Oferecido pela Universidade de Helsinque. Foco denso e moderno em React, Redux, Node.js, GraphQL, Docker e TypeScript.' }
+        ];
+
+        const allAchievements = [
+            { id: 'start', t: 'O Despertar', d: 'Iniciou sua jornada no sistema. O marco zero.' },
+            { id: 'mod_1', t: 'Primeira Vitória', d: 'Validou seu primeiro módulo de forma completa.' },
+            { id: 'perc_50', t: 'Meio Caminho', d: 'Concluiu implacáveis 50% de uma Trilha de estudos.' },
+            { id: 'perc_100', t: 'Domínio Total', d: 'Gabaritou 100% de uma Trilha. Conhecimento cristalizado.' },
+            { id: 'link_1', t: 'Curioso Investigador', d: 'Adicionou seu primeiro link customizado na plataforma.' },
+            { id: 'time_lord', t: 'Senhor do Tempo', d: 'Ajustou a carga horária real de um módulo. Gerenciou sua própria realidade.' },
+            { id: 'night_owl', t: 'Coruja Dev', d: 'Validou um módulo durante a madrugada (00:00 - 04:00). A noite pertence a você.' },
+            { id: 'su_fan', t: 'Crystal Gem', d: 'Completou a 1ª Temporada de S.U. inteira na técnica 3x!' },
+            { id: 'focus_master', t: 'Monge do Foco', d: 'Completou toda a Trilha de Soft Skills. Seu Deep Work agora é inquebrável.' },
+            { id: 'investor', t: 'Lobo de Wall Street', d: 'Finalizou a Trilha de Finanças. O patrimônio agradece seu conhecimento em FIIs e Tesouro.' },
+            { id: 'speed_demon', t: 'Speed Demon', d: 'Dominou todos os módulos de digitação. Voando a 60+ WPM no teclado mecânico.' },
+            { id: 'architect', t: 'Arquiteto Web', d: 'Dominou o Design System, SSR, GraphQL e PWAs. O Front-end agora obedece a você.' },
+            { id: 'polyglot', t: 'Poliglota', d: 'Terminou S.U. Future. Seu cérebro agora compila e roda em Inglês nativo.' },
+            { id: 'css_artist', t: 'Artista CSS', d: 'Dominou CSS Grid, Tailwind, BEM e Pré-processadores. Sem medo de centralizar divs.' },
+            { id: 'ts_god', t: 'TypeScript God', d: 'Fugiu do caos do Javascript puro e adotou a paz da tipagem estática estrutural com Genéricos.' },
+            { id: 'deploy_master', t: 'Deploy Master', d: 'Github Actions, Vercel, e CI/CD dominados. O código não funciona só na sua máquina.' },
+            { id: 'community', t: 'Dev Social', d: 'Dominou o trabalho em equipe, sabe orquestrar um Code Review e lidar com PRs rejeitados.' },
+            { id: 'hacker', t: 'Hacker Ético', d: 'Compreendeu CORS, XSS, CSP e a segurança base da Web. Suas rotas estão blindadas.' }
         ];
 
         // --- TRILHA 1: FRONT-END DEV ---
@@ -513,17 +556,6 @@
         ];
 
 
-        const allAchievements = [
-            { id: 'start', t: 'O Despertar', d: 'Iniciou sua jornada no sistema.' },
-            { id: 'mod_1', t: 'Primeira Vitória', d: 'Validou seu primeiro módulo de forma completa.' },
-            { id: 'perc_50', t: 'Meio Caminho', d: 'Concluiu 50% de uma Trilha.' },
-            { id: 'perc_100', t: 'Domínio Total', d: 'Gabaritou 100% de uma Trilha.' },
-            { id: 'link_1', t: 'Curioso', d: 'Adicionou seu primeiro link customizado.' },
-            { id: 'time_lord', t: 'Senhor do Tempo', d: 'Ajustou a carga horária real de um módulo.' },
-            { id: 'night_owl', t: 'Coruja', d: 'Validou um módulo durante a madrugada (00:00 - 04:00).' },
-            { id: 'su_fan', t: 'Crystal Gem', d: 'Completou a 1ª Temporada de S.U. inteira na técnica 3x!' }
-        ];
-
         // --- FIREBASE URL ---
         const RAW_FIREBASE_URL = "https://trilha-frontend-2688f-default-rtdb.firebaseio.com/";
         const FIREBASE_URL = RAW_FIREBASE_URL.replace(/:null\/?$/, '').replace(/\/?$/, '') + "/trilha_data.json";
@@ -535,8 +567,7 @@
                 customHours: {}, 
                 moduleTime: {}, 
                 dailyHours: 2,
-                achievements: ['start'],
-                extraCourses: [] 
+                achievements: ['start']
             };
 
             const [state, setState] = useState(() => {
@@ -561,8 +592,6 @@
                                 if (safeData.achievements && !Array.isArray(safeData.achievements)) safeData.achievements = Object.values(safeData.achievements);
                                 safeData.moduleTime = safeData.moduleTime || {};
                                 safeData.progress = safeData.progress || {};
-                                safeData.extraCourses = safeData.extraCourses || []; 
-                                if (!Array.isArray(safeData.extraCourses)) safeData.extraCourses = Object.values(safeData.extraCourses);
                                 return { ...prev, ...safeData };
                             });
                         }
@@ -620,7 +649,6 @@
 
             const [selectedModule, setSelectedModule] = useState(null); 
             const [linkInputText, setLinkInputText] = useState('');
-            const [extraCourseInput, setExtraCourseInput] = useState(''); 
             const [celebration, setCelebration] = useState(null); 
             const [svgLines, setSvgLines] = useState([]);
             const treeContainerRef = useRef(null);
@@ -717,14 +745,6 @@
                 const h = Math.floor(ts / 3600); const m = Math.floor((ts % 3600) / 60);
                 return h > 0 ? `${h}h ${m}m` : `${m}m`;
             };
-
-            const handleAddExtraCourse = () => {
-                if(!extraCourseInput.trim()) return;
-                setState(p => ({ ...p, extraCourses: [...(p.extraCourses || []), { id: Date.now().toString(), name: extraCourseInput.trim(), done: false }] }));
-                setExtraCourseInput('');
-            };
-            const toggleExtraCourse = (id) => setState(p => ({ ...p, extraCourses: (p.extraCourses || []).map(c => c.id === id ? { ...c, done: !c.done } : c) }));
-            const deleteExtraCourse = (id) => setState(p => ({ ...p, extraCourses: (p.extraCourses || []).filter(c => c.id !== id) }));
 
             const isModuleLocked = useCallback((moduleId) => {
                 const mod = currentData.find(m => m.id === moduleId);
@@ -880,11 +900,10 @@
                             {/* Divisor Visual */}
                             <div className="w-px h-8 bg-white/10 shrink-0 hidden md:block"></div>
 
-                            {/* Restante dos Botões (Com scroll horizontal) */}
+                            {/* Restante dos Botões (Com scroll horizontal) - Aba "Extras" removida */}
                             <div className="flex-1 overflow-x-auto hide-scroll flex items-center">
                                 <div className="flex gap-2 min-w-max">
                                     {[
-                                        { id: 'extras', icon: 'fa-book-bookmark', name: 'Cursos Extras' }, 
                                         { id: 'ferramentas', icon: 'fa-toolbox', name: 'Arsenal' },
                                         { id: 'dicas', icon: 'fa-brain', name: 'Cérebro' },
                                         { id: 'cursos', icon: 'fa-globe', name: 'Cursos' },
@@ -1253,70 +1272,17 @@
                             </>
                         )}
 
-                        {/* --- ABAS COMUNS RESTANTES --- */}
-                        {activeTab === 'extras' && (
-                            <div className="animate-fade-in pb-20 max-w-4xl mx-auto">
-                                <div className="text-center mb-16 relative">
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-sky-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Cursos <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Adicionais</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Adicione aqui outras habilidades para construir sua T-Shape (Especialista em um, generalista em vários).</p>
-                                </div>
-
-                                <div className="glass-panel p-6 md:p-10 rounded-[2.5rem] relative overflow-hidden">
-                                    <div className="flex flex-col sm:flex-row gap-3 mb-10 relative z-10">
-                                        <input type="text" value={extraCourseInput} onChange={e => setExtraCourseInput(e.target.value)} 
-                                            placeholder="Ex: Padrões de Projeto em JS..." 
-                                            className="flex-1 bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all shadow-inner" 
-                                            onKeyDown={e => e.key === 'Enter' && handleAddExtraCourse()} />
-                                        <button onClick={handleAddExtraCourse} className="bg-sky-600 hover:bg-sky-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(2,132,199,0.4)] hover:scale-[1.02] active:scale-95">
-                                            Adicionar
-                                        </button>
-                                    </div>
-
-                                    <div className="space-y-4 relative z-10">
-                                        {!(state.extraCourses || []).length ? (
-                                            <div className="text-center py-10 bg-black/20 rounded-2xl border border-white/5 border-dashed">
-                                                <i className="fa-solid fa-book-open-reader text-4xl text-slate-600 mb-4"></i>
-                                                <p className="text-slate-400 font-medium text-sm">Nenhum curso extra adicionado ainda.</p>
-                                            </div>
-                                        ) : (
-                                            (state.extraCourses || []).map(course => (
-                                                <div key={course.id} className={`flex items-center justify-between p-5 md:p-6 rounded-2xl border transition-all duration-300 group
-                                                    ${course.done ? 'bg-emerald-950/20 border-emerald-500/30 shadow-[0_5px_15px_-5px_rgba(16,185,129,0.15)]' : 'bg-black/30 border-white/5 hover:border-white/10 hover:bg-black/50'}`}>
-                                                    
-                                                    <label className="flex items-center gap-5 cursor-pointer flex-1 mr-4">
-                                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors border
-                                                            ${course.done ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-black/50 border-white/20 group-hover:border-sky-500/50'}`}>
-                                                            {course.done && <i className="fa-solid fa-check text-slate-900 font-black text-sm"></i>}
-                                                        </div>
-                                                        <span className={`text-base md:text-lg font-bold transition-colors
-                                                            ${course.done ? 'text-emerald-400 line-through opacity-70' : 'text-slate-200'}`}>
-                                                            {course.name}
-                                                        </span>
-                                                        <input type="checkbox" checked={course.done} onChange={() => toggleExtraCourse(course.id)} className="hidden" />
-                                                    </label>
-
-                                                    <button onClick={() => deleteExtraCourse(course.id)} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 flex items-center justify-center transition-colors shrink-0">
-                                                        <i className="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            ))
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
+                        {/* --- ABAS COMUNS (AGORA LOTADAS) --- */}
                         {activeTab === 'ferramentas' && (
                             <div className="animate-fade-in pb-20">
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10"><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Arsenal</span> Grátis</h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">As mesmas ferramentas de arquitetura e auditoria usadas pelas big techs, sem custo algum.</p>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">As mesmas ferramentas de arquitetura, banco e auditoria usadas pelas big techs, totalmente grátis para estudar.</p>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8">
                                     {toolList.map((t, idx) => (
-                                        <div key={idx} className="glass-panel p-8 rounded-[2rem] hover:border-cyan-500/40 hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full hover:shadow-[0_15px_40px_-15px_rgba(6,182,212,0.3)]">
+                                        <div key={idx} className="glass-panel p-8 rounded-[2rem] hover:border-cyan-500/40 hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full hover:shadow-[0_15px_40px_-15px_rgba(6,182,212,0.3)] bg-slate-900/40">
                                             <div className="w-16 h-16 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center text-3xl text-cyan-400 mb-6 border border-white/5 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-500"><i className={`fa-solid ${t.i}`}></i></div>
                                             <h3 className="text-xl font-black text-white mb-3 group-hover:text-cyan-300 transition-colors">{t.n}</h3>
                                             <p className="text-sm text-slate-400 mb-8 leading-relaxed flex-1">{t.d}</p>
@@ -1332,7 +1298,7 @@
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Engenharia do <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-400">Cérebro</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">O front-end não entra na cabeça lendo tutorial. Use métodos baseados em neurociência.</p>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">O código não entra na cabeça só lendo tutorial. Hackeie seu aprendizado com métodos baseados em neurociência.</p>
                                 </div>
                                 <div className="space-y-6">
                                     {tipsList.map((t, idx) => (
@@ -1352,8 +1318,8 @@
                             <div className="animate-fade-in pb-20">
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">Mina de Ouro <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">PT-BR</span></h2>
-                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Plataformas com ensino brutal e gratuito.</p>
+                                    <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter relative z-10">O Acervo <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Definitivo</span></h2>
+                                    <p className="text-slate-400 text-lg max-w-2xl mx-auto relative z-10">Plataformas nacionais e internacionais com as grades mais densas e valiosas para o seu currículo.</p>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                     {platformList.map((p, idx) => (
@@ -1362,7 +1328,7 @@
                                             <h3 className="text-2xl font-black text-white mb-4 group-hover:text-emerald-300 transition-colors">{p.n}</h3>
                                             <p className="text-slate-400 mb-8 flex-1 leading-relaxed text-sm">{p.d}</p>
                                             <a href={p.url} target="_blank" className="block text-center w-full py-4 bg-black/30 hover:bg-emerald-500/10 text-emerald-400 hover:text-emerald-300 font-black uppercase tracking-widest rounded-xl border border-white/5 hover:border-emerald-500/30 transition-all text-xs">
-                                                Explorar Acervo
+                                                Explorar Catálogo
                                             </a>
                                         </div>
                                     ))}
@@ -1371,8 +1337,8 @@
                         )}
 
                         {activeTab === 'trofeus' && (
-                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
-                                <div className="text-center mb-16 glass-panel p-10 md:p-16 rounded-[3rem] border-2 border-amber-500/20 shadow-2xl relative overflow-hidden">
+                            <div className="animate-fade-in pb-20 max-w-7xl mx-auto">
+                                <div className="text-center mb-16 glass-panel p-10 md:p-16 rounded-[3rem] border-2 border-amber-500/20 shadow-2xl relative overflow-hidden bg-slate-900/40">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     
                                     <i className="fa-solid fa-trophy text-7xl md:text-[8rem] text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 mb-8 drop-shadow-[0_0_40px_rgba(245,158,11,0.5)] relative z-10 animate-pulse"></i>
@@ -1380,7 +1346,7 @@
                                     
                                     <div className="inline-flex bg-black/40 border border-white/10 p-4 md:p-6 rounded-[2rem] items-center gap-6 relative z-10 shadow-inner backdrop-blur-xl">
                                         <div className="text-left hidden sm:block border-r border-white/10 pr-6">
-                                            <span className="text-[10px] font-black text-amber-400/70 uppercase tracking-widest block mb-1">Ouro Coletado</span>
+                                            <span className="text-[10px] font-black text-amber-400/70 uppercase tracking-widest block mb-1">Conquistas Validadas</span>
                                             <span className="text-white font-bold text-sm">Status Atual</span>
                                         </div>
                                         <span className="text-4xl md:text-6xl font-black text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">
@@ -1389,7 +1355,7 @@
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 relative z-10">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 relative z-10">
                                     {allAchievements.map(a => {
                                         const unl = safeAchievements.includes(a.id);
                                         return (
@@ -1412,19 +1378,19 @@
                         )}
 
                         {activeTab === 'motivacao' && (
-                            <div className="animate-fade-in pb-20 max-w-6xl mx-auto">
+                            <div className="animate-fade-in pb-20 max-w-7xl mx-auto">
                                 <div className="text-center mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                                     <h2 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-fuchsia-400 to-indigo-400 mb-6 tracking-tighter drop-shadow-2xl relative z-10">
                                         Combustível de Foguete
                                     </h2>
                                     <p className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed relative z-10">
-                                        O caminho é árduo e a regra é cruel por um motivo: <strong>o prêmio final é extraordinário</strong>.
+                                        O caminho é longo e a curva de aprendizado é cruel por um único motivo: <strong>a recompensa final é extraordinária</strong>.
                                     </p>
                                 </div>
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
-                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(16,185,129,0.2)] hover:bg-slate-900/60">
+                                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-500 hover:shadow-[0_15px_50px_-15px_rgba(16,185,129,0.2)] hover:bg-slate-900/60">
                                         <div className="absolute -left-20 -top-20 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
                                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-10 relative z-10">
                                             <div className="w-20 h-20 bg-emerald-500/10 rounded-[1.5rem] flex items-center justify-center border border-emerald-500/20 text-4xl text-emerald-400 shadow-inner group-hover:scale-110 transition-transform duration-500">
@@ -1436,26 +1402,26 @@
                                             <div className="bg-emerald-500/5 p-5 rounded-2xl border border-emerald-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative overflow-hidden">
                                                 <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
                                                 <div className="ml-2">
-                                                    <p className="font-black text-emerald-300">Pleno (O seu alvo)</p>
-                                                    <p className="text-[11px] text-emerald-400/60 uppercase tracking-widest mt-1">Autonomia e arquitetura.</p>
+                                                    <p className="font-black text-emerald-300">Pleno (O seu alvo inicial)</p>
+                                                    <p className="text-[11px] text-emerald-400/60 uppercase tracking-widest mt-1">Autonomia e arquitetura de código.</p>
                                                 </div>
                                                 <span className="text-2xl font-black text-emerald-400 drop-shadow-md">R$ 7k - 12k</span>
                                             </div>
                                             <div className="bg-gradient-to-r from-amber-500/10 to-black/20 p-5 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3 mt-6 shadow-inner">
                                                 <div>
-                                                    <p className="font-black text-amber-400 flex items-center gap-2"><i className="fa-solid fa-earth-americas"></i> Carreira Gringa (Remoto)</p>
-                                                    <p className="text-[11px] text-amber-400/60 uppercase tracking-widest mt-1">Dólar / Euro direto no Brasil.</p>
+                                                    <p className="font-black text-amber-400 flex items-center gap-2"><i className="fa-solid fa-earth-americas"></i> Carreira Gringa (Remota)</p>
+                                                    <p className="text-[11px] text-amber-400/60 uppercase tracking-widest mt-1">Ganhando Dólar/Euro do Brasil.</p>
                                                 </div>
                                                 <span className="text-2xl font-black text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">U$ 3k - 8k+</span>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
+                                    <div className="glass-panel border-t border-l border-white/10 rounded-[3rem] p-8 md:p-10 shadow-2xl relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-[#020617]">
                                         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
                                         <div className="text-center mb-8 relative z-10">
                                             <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">O Escudo de Titânio <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">(Anti-IA)</span></h3>
-                                            <p className="text-slate-400 text-sm max-w-3xl mx-auto">Por que o ChatGPT não vai roubar a sua cadeira.</p>
+                                            <p className="text-slate-400 text-sm max-w-2xl mx-auto">Por que ferramentas como o ChatGPT não vão roubar a sua cadeira, e sim multiplicá-la.</p>
                                         </div>
                                         
                                         <div className="flex flex-col gap-4 relative z-10">
@@ -1465,7 +1431,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 className="font-bold text-white text-sm">Engenharia, não Digitação</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">A IA gera o código, mas não decide onde ele deve morar ou qual padrão usar.</p>
+                                                    <p className="text-xs text-slate-400 mt-1">A IA vomita o código isolado, mas não decide onde ele deve morar, qual padrão adotar ou como conectar as peças no longo prazo.</p>
                                                 </div>
                                             </div>
                                             <div className="bg-black/40 p-5 rounded-2xl border border-cyan-500/20 flex gap-4">
@@ -1473,13 +1439,40 @@
                                                     <i className="fa-solid fa-shield-halved text-cyan-400"></i>
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-bold text-white text-sm">O Orquestrador</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">Você será o desenvolvedor que julga e orquestra a IA com segurança e autonomia.</p>
+                                                    <h4 className="font-bold text-white text-sm">Você é o Orquestrador</h4>
+                                                    <p className="text-xs text-slate-400 mt-1">Você será o desenvolvedor sênior que audita, julga e orquestra a IA com segurança. Sem a fundação, a IA vira uma caixa preta inútil.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-10">
+                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-sky-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(14,165,233,0.2)] bg-slate-900/40">
+                                        <div className="w-16 h-16 bg-sky-500/10 rounded-2xl flex items-center justify-center border border-sky-500/20 text-3xl text-sky-400 mb-6 group-hover:scale-110 transition-transform duration-500">
+                                            <i className="fa-solid fa-plane-departure"></i>
+                                        </div>
+                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Liberdade Geográfica</h3>
+                                        <p className="text-sm text-slate-400 leading-relaxed">O Front-End te liberta do escritório. Seu notebook é sua empresa. Trabalhe de Curitiba, Tóquio, ou de uma cabana na serra, desde que tenha Wi-Fi.</p>
+                                    </div>
+
+                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-amber-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(245,158,11,0.2)] bg-slate-900/40">
+                                        <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20 text-3xl text-amber-400 mb-6 group-hover:scale-110 transition-transform duration-500">
+                                            <i className="fa-solid fa-code-merge"></i>
+                                        </div>
+                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Ecossistema Infinito</h3>
+                                        <p className="text-sm text-slate-400 leading-relaxed">Dominar JavaScript abre portas secretas. Com a mesma lógica base, você passa a conseguir criar apps mobile nativos (React Native) e até servidores rápidos.</p>
+                                    </div>
+
+                                    <div className="glass-panel rounded-[2rem] p-8 group hover:border-purple-500/40 transition-all duration-500 hover:shadow-[0_15px_40px_-15px_rgba(168,85,247,0.2)] md:col-span-2 xl:col-span-1 bg-slate-900/40">
+                                        <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center border border-purple-500/20 text-3xl text-purple-400 mb-6 group-hover:scale-110 transition-transform duration-500">
+                                            <i className="fa-solid fa-stairs"></i>
+                                        </div>
+                                        <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Evolução Acelerada</h3>
+                                        <p className="text-sm text-slate-400 leading-relaxed">A meritocracia técnica no Dev é real e acelerada. O mercado de tecnologia não liga para sua idade ou seus diplomas; ele só liga para os projetos que você consegue construir.</p>
+                                    </div>
+                                </div>
+
                             </div>
                         )}
 
